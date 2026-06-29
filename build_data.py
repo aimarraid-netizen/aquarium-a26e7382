@@ -161,6 +161,17 @@ def build() -> dict:
 
 def main() -> int:
     data = build()
+    # updatedAt muutub iga käivitusega — et cron ei push'iks asjata, säilita vana tempel
+    # kui sisuline andmestik on identne (timestamp näitab siis "viimati MUUTUS", mitte "viimati laeti").
+    if OUT.exists():
+        try:
+            old = json.loads(OUT.read_text(encoding="utf-8"))
+            if {k: v for k, v in data.items() if k != "updatedAt"} == {
+                k: v for k, v in old.items() if k != "updatedAt"
+            }:
+                data["updatedAt"] = old.get("updatedAt", data["updatedAt"])
+        except (json.JSONDecodeError, OSError):
+            pass
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     print(f"data.json: {data['nMatches']} mängu, {len(data['names'])} mängijat, uuendatud {data['updatedAt']}")
     return 0
