@@ -181,7 +181,7 @@ function speciesShape(sp){switch(sp){
  case 'perch':return {body:'M15 24 Q16 12 37 11 Q58 12 61 24 Q58 36 37 37 Q16 36 15 24 Z',dorsal:'<path d="M25 11 l2 -7 l2 6 l2 -7 l2 6 l2 -6 l2 6 l2 -5 l2 5 Z"/>',belly:'<path d="M22 32 Q37 38 56 31" fill="BELLY" opacity=".45"/>',bars:'<g fill="DK" opacity=".4"><rect x="28" y="13" width="3" height="22"/><rect x="37" y="12" width="3" height="24"/><rect x="46" y="13" width="3" height="22"/></g>'};
  case 'herring':return {body:'M15 24 Q18 17 39 16 Q58 17 62 24 Q58 31 39 32 Q18 31 15 24 Z',dorsal:'<polygon points="34,16 44,16 38,9"/>',belly:'<path d="M22 29 Q40 34 58 27" fill="BELLY" opacity=".5"/>'};
  case 'sword':return {body:'M15 24 Q18 16 40 15 Q56 16 61 23 L78 22 L61 25 Q56 32 40 33 Q18 32 15 24 Z',dorsal:'<polygon points="33,15 45,15 36,7"/>',belly:'<path d="M22 29 Q40 34 56 27" fill="BELLY" opacity=".45"/>'};
- case 'deadfish':return {body:'M15 24 Q22 20 41 20 Q57 20.5 61 24 Q57 27.5 41 28 Q22 28 15 24 Z',dorsal:'<polygon points="35,20 43,20 39,16.5"/>',belly:'<path d="M23 26 Q41 29 57 25" fill="BELLY" opacity=".35"/>',ribs:'<g stroke="DK" stroke-width=".6" opacity=".5"><line x1="29" y1="21.5" x2="29" y2="26.5"/><line x1="35" y1="21" x2="35" y2="27"/><line x1="41" y1="21.5" x2="41" y2="26.5"/><line x1="47" y1="22" x2="47" y2="26"/></g>'};
+ case 'deadfish':return {body:'M15 23 Q24 18 41 18 Q56 18.5 61 23 Q57 29 41 29.5 Q24 29.5 15 23 Z',dorsal:'<path d="M30 18 L35 11.5 L40 18 Z"/>',belly:'<path d="M20 26 Q40 31.5 58 25" fill="BELLY" opacity=".55"/>',ribs:'<g stroke="DK" stroke-width=".65" opacity=".55"><line x1="28" y1="19.5" x2="28" y2="28.5"/><line x1="34" y1="19" x2="34" y2="29"/><line x1="40" y1="19.5" x2="40" y2="29"/><line x1="46" y1="20.5" x2="46" y2="27.5"/></g>'};
  default:return {body:'M14 24 Q15 11 37 10 Q60 11 63 24 Q60 37 37 38 Q15 37 14 24 Z',dorsal:'<path d="M30 10 Q37 1 46 11 Z"/>',belly:'<path d="M22 33 Q37 40 58 31" fill="BELLY" opacity=".5"/>'};
 }}
 function rankBadge(metal,vx,vy,vw,vh){
@@ -271,7 +271,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:
   f.target=sizeOf(o.v);f.sizeMul=RANKBOOST[rank]||1;
   const morph=N>1?rank/(N-1):0;f.morph=morph;f.homeY=PAD+morph*(VH-2*PAD)*0.62;
   let sp,metal=null;if(rank<3){sp=TOP3[rank];metal=METAL3[rank];}else if(rank>=N-3){sp='deadfish';}else{sp=f.base;}
-  const dead=rank>=N-3;f.dead=dead;if(dead){f.sizeMul=0.72;f.homeY=PAD+14;}
+  const dead=rank>=N-3;f.dead=dead;if(dead){f.sizeMul=0.72;f.homeY=VH-PAD-4;}
   const bucket=bucketOf(morph),skin=sp+'|'+bucket+'|'+(metal||'');
   if(skin!==f.skin){f.body.innerHTML=fishSVG(o.n,idx,sp,bucket,metal);f.skin=skin;}
   f.el.classList.toggle('boss',rank===0);f.el.classList.toggle('r-silver',rank===1);f.el.classList.toggle('r-bronze',rank===2);
@@ -345,9 +345,9 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
    else if(dz){f.vx+=(Math.random()-.5)*.34;f.vy+=(Math.random()-.5)*.34;const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;f.x+=f.vx*f.sp*0.6*dt;f.y+=f.vy*f.sp*0.6*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
    else{if(f.seek){const dx=f.seek.x-f.x,dy=f.seek.y-f.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.32;f.vy+=dy/d*0.32;}
     else if(f.flee){const dx=f.x-f.flee.x,dy=f.y-f.flee.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.34;f.vy+=dy/d*0.34;}
-    else{f.vx+=(Math.random()-.5)*.06;f.vy+=(Math.random()-.5)*.05+(f.homeY-f.y)*0.0006;}
+    else{f.vx+=(Math.random()-.5)*(f.dead?.02:.06);f.vy+=(Math.random()-.5)*(f.dead?.02:.05)+(f.homeY-f.y)*(f.dead?0.006:0.0006);}
     const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;
-    const slow=1-(f.size-MINR)/(MAXR-MINR)*.5;const v=f.sp*slow*1.6*(f.boost||1)*(f.dead?0.3:1);
+    const slow=1-(f.size-MINR)/(MAXR-MINR)*.5;const v=f.sp*slow*1.6*(f.boost||1)*(f.dead?0.15:1);
     f.x+=f.vx*v*dt;f.y+=f.vy*v*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
    if(f.x<PAD){f.x=PAD;f.vx=Math.abs(f.vx);wallHit(f);}if(f.x>VW-PAD){f.x=VW-PAD;f.vx=-Math.abs(f.vx);wallHit(f);}
    if(f.y<PAD){f.y=PAD;f.vy=Math.abs(f.vy);wallHit(f);}if(f.y>VH-PAD){f.y=VH-PAD;f.vy=-Math.abs(f.vy);wallHit(f);}
