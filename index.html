@@ -15,7 +15,7 @@ color:var(--txt);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:a
 h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:clamp(20px,3.6vw,27px);margin:0 0 4px}
 .psub{color:var(--mut);font-size:13px;margin:0 0 14px}
 /* sügavus + caustic + söögi-FX */
-.rays2{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.10;background:repeating-linear-gradient(76deg,transparent 0 80px,rgba(150,220,255,.4) 80px 84px,transparent 84px 180px);animation:caustic2 21s linear infinite}
+.rays2{position:absolute;inset:-35%;pointer-events:none;mix-blend-mode:screen;opacity:.10;background:repeating-linear-gradient(76deg,transparent 0 80px,rgba(150,220,255,.4) 80px 84px,transparent 84px 180px);animation:caustic2 21s linear infinite}
 .deep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(150,215,245,.09) 0%,transparent 26%,transparent 50%,rgba(2,10,20,.62) 100%)}
 .vig{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 110px 26px rgba(2,10,20,.5);border-radius:16px}
 .surface{position:absolute;left:0;right:0;top:0;height:40px;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(180deg,rgba(190,235,255,.20),transparent)}
@@ -25,8 +25,8 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 @keyframes snowdrift{0%{transform:translateY(-12px) translateX(0);opacity:0}12%{opacity:.55}88%{opacity:.45}100%{transform:translateY(var(--sf,520px)) translateX(20px);opacity:0}}
 .fish .tw{transform-box:view-box;transform-origin:15px 24px;animation:wag var(--wag,.85s) ease-in-out infinite}
 @keyframes wag{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
-@keyframes caustic{from{background-position:0 0}to{background-position:240px 64px}}
-@keyframes caustic2{from{background-position:0 0}to{background-position:-220px 90px}}
+@keyframes caustic{from{transform:translate(0,0)}to{transform:translate(145px,39px)}}
+@keyframes caustic2{from{transform:translate(0,0)}to{transform:translate(-175px,44px)}}
 .fmeta{font-family:'JetBrains Mono';font-size:11px;color:var(--txt);white-space:nowrap}.fmeta b{color:var(--gold)}
 .food .chunk{line-height:0;display:block}
 .chunkpiece{position:absolute;left:0;top:0;transform:translate(-50%,-50%);pointer-events:none;z-index:6;line-height:0;transition:left .45s cubic-bezier(.4,1.1,.5,1),top .45s cubic-bezier(.4,1.1,.5,1),opacity .42s ease-in,transform .45s}
@@ -35,12 +35,12 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 @keyframes pclb{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.25)}}
 .tank.flash{animation:tankflash .5s ease-out}
 @keyframes tankflash{0%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 0 rgba(255,150,70,0)}30%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 7px rgba(255,150,70,.45)}100%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 0 rgba(255,150,70,0)}}
-.fish.boss .body{filter:drop-shadow(0 0 12px var(--gold)) drop-shadow(0 0 5px var(--gold))}
-.fish.r-silver .body{filter:drop-shadow(0 0 11px #d4e4f0) drop-shadow(0 0 4px #aebfce)}
-.fish.r-bronze .body{filter:drop-shadow(0 0 11px #e6a868) drop-shadow(0 0 4px #c87b32)}
-.wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 208px}
-.wrap.fs-fallback .transport,.wrap:fullscreen .transport{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);width:min(700px,94vw);margin:0;z-index:10000;background:rgba(10,26,38,.82);backdrop-filter:blur(6px)}
-.arena{display:grid;grid-template-columns:1fr 244px;gap:16px;align-items:start}
+.fish.boss .body{filter:drop-shadow(0 0 6px rgba(255,213,74,.6))}
+.fish.r-silver .body{filter:drop-shadow(0 0 5px rgba(212,228,240,.5))}
+.fish.r-bronze .body{filter:drop-shadow(0 0 5px rgba(230,168,104,.5))}
+.wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 270px}
+.wrap.fs-fallback .transport,.wrap:fullscreen .transport{width:100%;margin-top:8px;background:rgba(10,26,38,.55)}
+.arena{display:grid;grid-template-columns:1fr 290px;gap:16px;align-items:start}
 @media(max-width:760px){.arena{grid-template-columns:1fr}}
 .flagico{display:inline-block;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.45);width:17px;height:11px;vertical-align:middle}
 .flagico svg{display:block;width:100%;height:100%}
@@ -48,7 +48,7 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 .flagpair .flagico{width:48%}
 .tank{position:relative;width:100%;height:480px;border-radius:16px;overflow:hidden;border:1px solid var(--line2);
 background:linear-gradient(180deg,#0e3a52 0%,#0a2c44 45%,#071f31 100%);box-shadow:inset 0 0 80px rgba(0,0,0,.45)}
-.rays{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.18;background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(180,235,255,.5) 60px 64px,transparent 64px 150px);animation:caustic 16s linear infinite}
+.rays{position:absolute;inset:-35%;pointer-events:none;mix-blend-mode:screen;opacity:.18;background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(180,235,255,.5) 60px 64px,transparent 64px 150px);animation:caustic 16s linear infinite}
 .sand{position:absolute;left:0;right:0;bottom:0;height:50px;background:linear-gradient(180deg,transparent,rgba(90,120,80,.35) 40%,rgba(70,95,60,.55));border-radius:0 0 16px 16px}
 .weed{position:absolute;bottom:32px;width:18px;transform-origin:bottom center;background:linear-gradient(180deg,transparent,rgba(60,170,120,.45));border-radius:50% 50% 8px 8px;animation:sway 5s ease-in-out infinite}
 @keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(7deg)}}
@@ -98,7 +98,7 @@ white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.55);pointer-events:none;z-i
 .pinrow{text-align:center;font-size:12.5px;color:var(--mut);min-height:16px;margin-top:12px}
 .pinrow .ok{color:var(--teal)} .pinrow .no{color:var(--mut2)}
 .transport{border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:14px 16px;margin-top:14px}
-.tr-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.tr-row{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
 button.ctl{font-family:Oswald;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:13px;color:var(--txt);background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:9px 13px;cursor:pointer;transition:.15s}
 button.ctl:hover{border-color:var(--gold);color:var(--gold)}
 button.ctl.primary{background:var(--gold);color:#06121b;border-color:var(--gold)}
@@ -111,6 +111,17 @@ input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:4p
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid #06121b;box-shadow:0 0 0 1px var(--gold)}
 input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid #06121b}
 .ticks{display:flex;justify-content:space-between;margin-top:6px;font-family:'JetBrains Mono';font-size:10px;color:var(--mut2)}
+.timeline{display:flex;gap:3px;align-items:stretch;margin-top:14px;width:100%}
+.tl-day{flex:1;display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:4px 2px 2px;border-radius:7px;transition:background .15s;min-width:0}
+.tl-day:hover{background:rgba(255,255,255,.06)}
+.tl-day.cur{background:rgba(255,213,74,.12)}
+.tl-cells{display:flex;gap:2px;height:15px}
+.tl-cell{flex:1;background:rgba(255,255,255,.13);border-radius:2px;transition:background .25s,box-shadow .25s;min-width:2px}
+.tl-cell.done{background:rgba(255,213,74,.5)}
+.tl-cell.now{background:var(--gold);box-shadow:0 0 7px var(--gold)}
+.tl-date{font-family:'JetBrains Mono';font-size:9.5px;color:var(--mut2);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-day:hover .tl-date{color:var(--txt)}
+.tl-day.cur .tl-date{color:var(--gold);font-weight:700}
 .hint{font-size:12px;color:var(--mut2);margin-top:13px;text-align:center}.hint b{color:var(--mut)}
 .wrap:fullscreen,.wrap.fs-fallback{position:fixed;inset:0;max-width:none;width:100vw;height:100vh;padding:12px 16px;display:flex;flex-direction:column;overflow:hidden;background:var(--ink);z-index:9999}
 .wrap:fullscreen h1.page,.wrap.fs-fallback h1.page,.wrap:fullscreen .psub,.wrap.fs-fallback .psub,.wrap:fullscreen .hint,.wrap.fs-fallback .hint{display:none}
@@ -130,7 +141,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 </style></head>
 <body><div class="wrap">
 <h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
-<p class="psub">Iga osaleja on kala — eri liik ja saba-lipp näitavad teda. Iga mäng kukub söögitükina; õigesti pakkunu rebib tüki ja kasvab, 2 punkti = suurem tükk. Esikolmik tõuseb tippu: 🥇 kuld-piraaja · 🥈 hõbe-hai · 🥉 pronks-kiskja. Kliki kalal või edetabelil → spotlight.</p>
+<p class="psub">Iga osaleja on kala — liik ja saba-lipp eristavad teda. Iga mäng kukub akvaariumi söögitükina: õigesti pakkunu rebib tüki ja kasvab (2 punkti = suurem tükk). Esikolmik ujub tippu kuld-, hõbe- ja pronkshaina 🥇 🥈 🥉. Kliki kalal või edetabeli real — avaneb spotlight.</p>
 <div class="arena">
  <div class="tank" id="tank"><div class="deep"></div><div class="shafts"></div><div class="rays"></div><div class="rays2"></div><div class="sand"></div><div id="fishlayer"></div><div class="surface"></div><div class="vig"></div></div>
  <div class="board" id="board"><h3><span>Edetabel</span><span id="b-step" class="mono">–/–</span></h3><div class="lbwrap" id="lbwrap"></div></div>
@@ -139,7 +150,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 <div class="transport"><div class="tr-row">
  <button class="ctl primary" id="play">▶ Söötmine</button><button class="ctl" id="restart">⟲ Algusest</button>
  <button class="ctl" id="step-b">◀</button><button class="ctl" id="step-f">▶</button><button class="ctl" id="fs">⛶ Täisekraan</button>
-</div><div class="scrub"><input type="range" id="scrub" min="0" max="0" value="0"><div class="ticks" id="ticks"></div></div></div>
+</div><div class="timeline" id="timeline"></div></div>
 <div class="hint">Kala suurus = kumulatiivsed punktid (eksponentskaala). Maailmameistri 5 p pole veel jagatud.</div>
 </div>
 <script>
@@ -257,14 +268,16 @@ const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height
 names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
  r.innerHTML='<span class="p">–</span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span><span class="chg"></span>';
  r.addEventListener('click',()=>togglePin(n));lbwrap.appendChild(r);LB[n]={el:r,p:r.querySelector('.p'),v:r.querySelector('.v'),nEl:r.querySelector('.n'),chg:r.querySelector('.chg')};});
-function fitNames(){names.forEach(n=>{const e=LB[n].nEl;if(!e)return;e.style.fontSize='';let fs=12.5,g=0;e.style.fontSize=fs+'px';while(e.scrollWidth>e.clientWidth+0.5&&fs>8&&g++<16){fs-=0.5;e.style.fontSize=fs+'px';}});}
+function fitNames(){let fs=12.5,g=0;const set=v=>names.forEach(n=>{const e=LB[n].nEl;if(e)e.style.fontSize=v+'px';});
+ set(fs);const over=()=>names.some(n=>{const e=LB[n].nEl;return e&&e.scrollWidth>e.clientWidth+0.5;});
+ while(over()&&fs>8&&g++<16){fs-=0.5;set(fs);}}              // ühtlane font: kahanda KÕIKI kuni pikim mahub
 const pinned=new Set();
 function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
  document.getElementById('tank').classList.toggle('dim',pinned.size>0);
  names.forEach(m=>{F[m].el.classList.toggle('pinned',pinned.has(m));LB[m].el.classList.toggle('pinned',pinned.has(m));});renderPin();}
 const TOP3=['shark','shark','shark'],METAL3=['gold','silver','bronze'],RANKBOOST=[1.32,1.22,1.14];
 function bucketOf(m){return m<0.34?0:m<0.67?1:2;}
-let curStep=LAST,playing=false,speed=1,timer=null,food=null,feedTok=0;
+let curStep=LAST,playing=false,speed=1,timer=null,food=null,feedTok=0,playUntil=LAST;
 let celebrating=false,bannerEl=null;const OLLE='Olle & Kätlin';const OLLE_STEP=(ptsByPlayer[OLLE]||[]).findIndex(p=>p===2);
 function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:null;
  arr.forEach((o,rank)=>{const f=F[o.n];const idx=IDX[o.n];
@@ -280,7 +293,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:
   const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.el.classList.toggle('silver',rank===1);L.el.classList.toggle('bronze',rank===2);L.p.textContent=rank+1;L.v.textContent=o.v;
   const dch=prevM?(prevM[o.n]-rank):0;if(L.chg){if(dch>0){L.chg.textContent='▲'+dch;L.chg.className='chg up';}else if(dch<0){L.chg.textContent='▼'+(-dch);L.chg.className='chg down';}else{L.chg.textContent='';L.chg.className='chg';}}});
  document.getElementById('b-step').textContent=(i+1)+'/'+nMatches;renderPin();
- const sb=document.getElementById('scrub');sb.value=i;sb.style.setProperty('--p',(i/LAST*100)+'%');
+ updateTimeline(i);
  if(eat) triggerFeed(i);
  if(eat&&i===LAST) finale();}
 function finale(){const {a:arr}=rankAt(LAST);const w=arr[0];
@@ -381,13 +394,12 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
 function wallHit(f){}
 const playBtn=document.getElementById('play');
 function setPlaying(p){playing=p;playBtn.textContent=p?'⏸ Paus':'▶ Söötmine';if(p){if(curStep>=LAST)goto(0,false);tick();}else clearTimeout(timer);}
-function tick(){if(!playing)return;if(curStep>=LAST){setPlaying(false);return;}goto(curStep+1,true);if(celebrating)return;/* tähistamise ajaks ajatelg pausile — celebrateOlle lõpp jätkab ise */timer=setTimeout(tick,1300/speed);}
+function tick(){if(!playing)return;if(curStep>=playUntil||curStep>=LAST){setPlaying(false);return;}goto(curStep+1,true);if(celebrating)return;/* tähistamise ajaks ajatelg pausile — celebrateOlle lõpp jätkab ise */timer=setTimeout(tick,1300/speed);}
 function goto(i,eat){curStep=Math.max(0,Math.min(LAST,i));applyStep(curStep,eat);}
-playBtn.onclick=()=>setPlaying(!playing);
-document.getElementById('restart').onclick=()=>{setPlaying(false);resetFX();goto(0,false);};
-document.getElementById('step-f').onclick=()=>{setPlaying(false);goto(curStep+1,true);};
-document.getElementById('step-b').onclick=()=>{setPlaying(false);resetFX();goto(curStep-1,false);};
-document.getElementById('scrub').oninput=e=>{setPlaying(false);resetFX();goto(+e.target.value,false);};
+playBtn.onclick=()=>{if(playing){setPlaying(false);}else{playUntil=LAST;setPlaying(true);}};
+document.getElementById('restart').onclick=()=>{setPlaying(false);resetFX();playUntil=LAST;goto(0,false);};
+document.getElementById('step-f').onclick=()=>{setPlaying(false);playUntil=LAST;goto(curStep+1,true);};
+document.getElementById('step-b').onclick=()=>{setPlaying(false);resetFX();playUntil=LAST;goto(curStep-1,false);};
 const fsBtn=document.getElementById('fs');
 function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';setTimeout(measure,60);}
 function fsFallbackOn(){wrap.classList.add('fs-fallback');afterFS();}
@@ -396,9 +408,19 @@ fsBtn.onclick=()=>{const inFS=!!document.fullscreenElement||wrap.classList.conta
  else{const rq=wrap.requestFullscreen||wrap.webkitRequestFullscreen;if(rq){try{const pr=rq.call(wrap);if(pr&&pr.catch)pr.catch(fsFallbackOn);}catch(e){fsFallbackOn();}}else fsFallbackOn();}};
 document.addEventListener('fullscreenchange',afterFS);document.addEventListener('webkitfullscreenchange',afterFS);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&wrap.classList.contains('fs-fallback')){wrap.classList.remove('fs-fallback');afterFS();}});
-const sb=document.getElementById('scrub');sb.max=LAST;
-const tk=document.getElementById('ticks');const seen=new Set();
-matchLabels.forEach((m,i)=>{const day=m.d.split(' ')[1];if(!seen.has(day)&&(i%9===0||i===LAST)){seen.add(day);const s=document.createElement('span');s.textContent=day;tk.appendChild(s);}});
+// --- Päeva-ajatelg: iga mängupäev eraldi klikitav segment, mängud sees lahtritena ---
+const DAYS=[];matchLabels.forEach((m,i)=>{const day=m.d.split(' ')[1];const last=DAYS[DAYS.length-1];if(last&&last.day===day){last.last=i;last.idxs.push(i);}else DAYS.push({day,first:i,last:i,idxs:[i]});});
+const tl=document.getElementById('timeline');
+DAYS.forEach((d,di)=>{const g=document.createElement('div');g.className='tl-day';g.dataset.di=di;g.title=d.day+' — '+d.idxs.length+' mängu (kliki et vaadata päeva sööte)';
+ const cells=document.createElement('div');cells.className='tl-cells';
+ d.cellEls=d.idxs.map(i=>{const c=document.createElement('span');c.className='tl-cell';c.dataset.i=i;c.title=matchLabels[i].m+'  '+matchLabels[i].r;c.onclick=ev=>{ev.stopPropagation();setPlaying(false);resetFX();playUntil=LAST;goto(i,true);};cells.appendChild(c);return c;});
+ const lbl=document.createElement('div');lbl.className='tl-date';lbl.textContent=d.day;
+ g.appendChild(cells);g.appendChild(lbl);g.onclick=()=>playDay(di);tl.appendChild(g);d.el=g;});
+function updateTimeline(i){if(!DAYS.length)return;DAYS.forEach(d=>{d.el.classList.toggle('cur',i>=d.first&&i<=d.last);
+ d.cellEls.forEach(c=>{const ci=+c.dataset.i;c.classList.toggle('done',ci<=i);c.classList.toggle('now',ci===i);});});}
+function playDay(di){const d=DAYS[di];setPlaying(false);resetFX();playUntil=d.last;
+ if(d.first>0){applyStep(d.first-1,false);curStep=d.first-1;}else{curStep=-1;}
+ setPlaying(true);}
 (function(){const t=document.getElementById('tank');
  for(let i=0;i<16;i++){const b=document.createElement('div');b.className='bub';const s=4+Math.random()*9;b.style.width=b.style.height=s+'px';b.style.left=(Math.random()*100)+'%';b.style.animationDuration=(6+Math.random()*7)+'s';b.style.animationDelay=(-Math.random()*8)+'s';t.appendChild(b);}
  [12,28,55,72,88].forEach(lx=>{const w=document.createElement('div');w.className='weed';w.style.left=lx+'%';w.style.height=(60+Math.random()*55)+'px';w.style.animationDelay=(-Math.random()*5)+'s';w.style.opacity=.6;t.appendChild(w);});
