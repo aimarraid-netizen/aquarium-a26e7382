@@ -125,7 +125,7 @@ function flagOne(cc){
  if(cc==='EE')return '<span class="flagico"><svg viewBox="0 0 21 14" preserveAspectRatio="none"><rect width="21" height="14" fill="#0072CE"/><rect y="4.667" width="21" height="4.667" fill="#0a0a0a"/><rect y="9.333" width="21" height="4.667" fill="#fff"/></svg></span>';
  return '<span class="flagico"><svg viewBox="0 0 21 14" preserveAspectRatio="none"><rect width="21" height="7" fill="#fff"/><rect y="7" width="21" height="7" fill="#DC143C"/></svg></span>';
 }
-function flagHTML(n){const c=FCODE[n]||'';if(c==='EEPL')return '<span class="flagpair">'+flagOne('EE')+flagOne('PL')+'</span>';return c?flagOne(c):'';}
+function flagHTML(n){const c=FCODE[n]||'';if(c.length===4)return '<span class="flagpair">'+flagOne(c.slice(0,2))+flagOne(c.slice(2))+'</span>';return c?flagOne(c):'';}
 const {names,matchLabels,ptsByPlayer,betsByPlayer,champ,nMatches}=DATA;
 const COL={};names.forEach((n,i)=>COL[n]=PAL[i%PAL.length]);
 const N=names.length,LAST=nMatches-1;const VW=900,VH=560,PAD=56;
