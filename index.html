@@ -279,7 +279,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:
  const sb=document.getElementById('scrub');sb.value=i;sb.style.setProperty('--p',(i/LAST*100)+'%');
  if(eat) triggerFeed(i);
  if(eat&&i===LAST) finale();}
-function finale(){const {a:arr}=rankAt(LAST);const w=arr[0];showBanner('🏆 '+w.n+' — akvaariumi kuningas!');
+function finale(){const {a:arr}=rankAt(LAST);const w=arr[0];
  let c=0;const iv=setInterval(()=>{const f=F[w.n];spawnParticles(f.x,f.y,c%2?'#ffd54a':'#fff3b0',7);if(++c>10)clearInterval(iv);},220);}
 function removeFood(){if(food&&food.el&&food.el.parentNode)food.el.parentNode.removeChild(food.el);food=null;}
 const PCL=[];let pclI=0;(function(){const t=document.getElementById('tank');for(let i=0;i<48;i++){const p=document.createElement('div');p.className='pcl';t.appendChild(p);PCL.push(p);}})();
