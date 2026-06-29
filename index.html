@@ -39,7 +39,7 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 .fish.r-silver .body{filter:drop-shadow(0 0 5px rgba(212,228,240,.5))}
 .fish.r-bronze .body{filter:drop-shadow(0 0 5px rgba(230,168,104,.5))}
 .wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 270px}
-.wrap.fs-fallback .transport,.wrap:fullscreen .transport{width:100%;margin-top:8px;background:rgba(10,26,38,.55)}
+.wrap.fs-fallback .transport,.wrap:fullscreen .transport{width:100%;padding:6px 14px;background:rgba(10,26,38,.55)}
 .arena{display:grid;grid-template-columns:1fr 290px;gap:16px;align-items:start}
 @media(max-width:760px){.arena{grid-template-columns:1fr}}
 .flagico{display:inline-block;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.45);width:17px;height:11px;vertical-align:middle}
@@ -134,9 +134,16 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .wrap:fullscreen .arena,.wrap.fs-fallback .arena{flex:1;min-height:0;grid-template-rows:1fr;align-items:stretch}
 .wrap:fullscreen .tank,.wrap.fs-fallback .tank{height:100%!important}
 .wrap:fullscreen .board,.wrap.fs-fallback .board{height:100%;overflow:auto}
-.wrap:fullscreen .transport,.wrap.fs-fallback .transport{margin-top:10px}
+.wrap:fullscreen .transport,.wrap.fs-fallback .transport{margin-top:6px}
+.wrap:fullscreen .ctl,.wrap.fs-fallback .ctl{padding:6px 12px;font-size:12px}
+.wrap:fullscreen .tr-row,.wrap.fs-fallback .tr-row{gap:7px}
+.wrap:fullscreen .timeline,.wrap.fs-fallback .timeline{margin-top:7px}
+.wrap:fullscreen .tl-cells,.wrap.fs-fallback .tl-cells{height:10px}
+.wrap:fullscreen .tl-day,.wrap.fs-fallback .tl-day{gap:3px;padding:3px 2px 1px}
+.wrap:fullscreen .tl-date,.wrap.fs-fallback .tl-date{font-size:8.5px}
+.wrap:fullscreen .pinrow,.wrap.fs-fallback .pinrow{margin-top:4px;min-height:0}
 .wrap:fullscreen .comm,.wrap.fs-fallback .comm{margin-bottom:8px}
-.vamos{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%) scale(.5);font-family:Oswald;font-weight:700;font-size:clamp(34px,8vw,74px);color:var(--gold);text-transform:uppercase;letter-spacing:.04em;text-shadow:0 4px 18px rgba(0,0,0,.6),0 0 28px rgba(255,213,74,.65);opacity:0;z-index:8;pointer-events:none;white-space:nowrap;animation:vamosIn .6s cubic-bezier(.2,1.4,.4,1) forwards}
+.vamos{position:absolute;left:50%;top:11%;transform:translate(-50%,-50%) scale(.5);font-family:Oswald;font-weight:700;font-size:clamp(34px,8vw,74px);color:var(--gold);text-transform:uppercase;letter-spacing:.04em;text-shadow:0 4px 18px rgba(0,0,0,.6),0 0 28px rgba(255,213,74,.65);opacity:0;z-index:8;pointer-events:none;white-space:nowrap;animation:vamosIn .6s cubic-bezier(.2,1.4,.4,1) forwards}
 @keyframes vamosIn{to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 .vamos.out{animation:vamosOut .5s ease-in forwards}
 @keyframes vamosOut{to{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
