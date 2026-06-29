@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="et"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MM 2026 · Ennustusakvaarium 🐟</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#06121b;--ink2:#0a1a26;--panel:#0e2433;--line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.17);
+--txt:#e6f3fb;--mut:#7fa3b8;--mut2:#4d6f85;--gold:#ffd54a;--teal:#34e0c4;--red:#ff6b6b;--rise:480px;}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:radial-gradient(1100px 600px at 70% -10%,rgba(52,224,196,.07),transparent 60%),var(--ink);
+color:var(--txt);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 16px 60px}
+.mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:clamp(20px,3.6vw,27px);margin:0 0 4px}
+.psub{color:var(--mut);font-size:13px;margin:0 0 14px}
+.comm{font-size:13.5px;color:var(--txt);text-align:center;min-height:20px;margin:0 0 10px;line-height:1.4}
+.arena{display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start}
+@media(max-width:760px){.arena{grid-template-columns:1fr}}
+.flagico{display:inline-block;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.45);width:17px;height:11px;vertical-align:middle}
+.flagico svg{display:block;width:100%;height:100%}
+.flagpair{display:inline-flex;gap:1px;vertical-align:middle}
+.flagpair .flagico{width:48%}
+.tank{position:relative;width:100%;height:480px;border-radius:16px;overflow:hidden;border:1px solid var(--line2);
+background:linear-gradient(180deg,#0e3a52 0%,#0a2c44 45%,#071f31 100%);box-shadow:inset 0 0 80px rgba(0,0,0,.45)}
+.rays{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.18;background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(180,235,255,.5) 60px 64px,transparent 64px 150px)}
+.sand{position:absolute;left:0;right:0;bottom:0;height:50px;background:linear-gradient(180deg,transparent,rgba(90,120,80,.35) 40%,rgba(70,95,60,.55));border-radius:0 0 16px 16px}
+.weed{position:absolute;bottom:32px;width:18px;transform-origin:bottom center;background:linear-gradient(180deg,transparent,rgba(60,170,120,.45));border-radius:50% 50% 8px 8px;animation:sway 5s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(7deg)}}
+.bub{position:absolute;bottom:-14px;border-radius:50%;background:rgba(210,240,255,.18);border:1px solid rgba(220,245,255,.25);animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}10%{opacity:.7}90%{opacity:.5}100%{transform:translateY(calc(-1 * var(--rise))) translateX(14px);opacity:0}}
+/* food */
+.food{position:absolute;left:0;top:0;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;
+background:rgba(6,18,27,.86);border:1px solid var(--line2);border-radius:18px;padding:4px 11px 4px 7px;font-size:12px;
+white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.55);pointer-events:none;z-index:6;transition:opacity .4s}
+.food .ball{font-size:14px}.food .res{font-family:'JetBrains Mono';font-weight:700;color:var(--gold)}
+/* fish */
+.fish{position:absolute;left:0;top:0;will-change:left,top}.fish>*{position:absolute;left:0;top:0}
+.fish .body{transform-origin:center;display:block}
+.fish.hot .body{filter:drop-shadow(0 0 9px var(--gold)) drop-shadow(0 0 4px var(--gold))}
+.fish .flag{transform:translate(-50%,-50%);pointer-events:none;line-height:0}
+.fish .flag .flagico{width:100%;height:auto;aspect-ratio:17/11}
+.fish .flag .flagpair{width:100%}
+.fish .rankic{pointer-events:none;text-align:center}
+.fish .lab{transform:translateX(-50%);white-space:nowrap;font-size:10.5px;color:var(--txt);background:rgba(4,18,27,.6);border-radius:5px;padding:0 5px;opacity:0;transition:opacity .25s;pointer-events:none}
+.fish.show .lab{opacity:1}
+.fish .pop{transform:translateX(-50%);font-family:'JetBrains Mono';font-weight:700;font-size:13px;opacity:0;pointer-events:none}
+.fish .pop.go{animation:popup 1s ease-out}
+@keyframes popup{0%{opacity:0;transform:translate(-50%,0)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}
+.fish .burst{width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}
+.fish .burst.go{animation:burst .75s ease-out}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.3);opacity:.95}100%{transform:translate(-50%,-50%) scale(4.2);opacity:0}}
+.tank.dim .fish:not(.pinned){opacity:.26;transition:opacity .3s}
+.board{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:8px 6px}
+.board h3{font-family:Oswald;font-weight:500;text-transform:uppercase;letter-spacing:.07em;font-size:11px;color:var(--mut2);margin:4px 8px 8px;display:flex;justify-content:space-between}
+.lbwrap{position:relative}
+.lbrow{position:absolute;left:0;right:0;height:30px;display:grid;grid-template-columns:20px 12px 24px 1fr auto;align-items:center;gap:7px;padding:0 8px;border-radius:7px;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.05,.45,1),background .2s}
+.lbrow:hover{background:rgba(255,255,255,.04)}
+.lbrow.lead{background:rgba(255,213,74,.09)}
+.lbrow.pinned{background:rgba(52,224,196,.1);box-shadow:inset 0 0 0 1px rgba(52,224,196,.3)}
+.lbrow .p{font-family:Oswald;font-weight:600;font-size:13px;color:var(--mut2);text-align:center}
+.lbrow.lead .p{color:var(--gold)}
+.lbrow .dot{width:10px;height:10px;border-radius:50%}
+.lbrow .n{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lbrow .v{font-family:'JetBrains Mono';font-weight:700;font-size:13.5px}
+.lbrow.lead .v{color:var(--gold)}
+.pinrow{text-align:center;font-size:12.5px;color:var(--mut);min-height:16px;margin-top:12px}
+.pinrow .ok{color:var(--teal)} .pinrow .no{color:var(--mut2)}
+.transport{border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:14px 16px;margin-top:14px}
+.tr-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+button.ctl{font-family:Oswald;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:13px;color:var(--txt);background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:9px 13px;cursor:pointer;transition:.15s}
+button.ctl:hover{border-color:var(--gold);color:var(--gold)}
+button.ctl.primary{background:var(--gold);color:#06121b;border-color:var(--gold)}
+.spd{display:flex;gap:4px;margin-left:auto;align-items:center}
+.spd .lbl{font-family:'JetBrains Mono';font-size:11px;color:var(--mut2);margin-right:2px}
+.spd button{font-family:Oswald;font-weight:500;text-transform:uppercase;letter-spacing:.03em;font-size:12px;padding:7px 9px;background:transparent;color:var(--mut);border:1px solid var(--line);border-radius:6px;cursor:pointer}
+.spd button.on{color:var(--gold);border-color:var(--gold)}
+.scrub{margin-top:14px}
+input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:4px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold) var(--p,100%),rgba(255,255,255,.1) var(--p,100%));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid #06121b;box-shadow:0 0 0 1px var(--gold)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid #06121b}
+.ticks{display:flex;justify-content:space-between;margin-top:6px;font-family:'JetBrains Mono';font-size:10px;color:var(--mut2)}
+.hint{font-size:12px;color:var(--mut2);margin-top:13px;text-align:center}.hint b{color:var(--mut)}
+.wrap:fullscreen,.wrap.fs-fallback{position:fixed;inset:0;max-width:none;width:100vw;height:100vh;padding:12px 16px;display:flex;flex-direction:column;overflow:hidden;background:var(--ink);z-index:9999}
+.wrap:fullscreen h1.page,.wrap.fs-fallback h1.page,.wrap:fullscreen .psub,.wrap.fs-fallback .psub,.wrap:fullscreen .hint,.wrap.fs-fallback .hint{display:none}
+.wrap:fullscreen .arena,.wrap.fs-fallback .arena{flex:1;min-height:0;grid-template-rows:1fr;align-items:stretch}
+.wrap:fullscreen .tank,.wrap.fs-fallback .tank{height:100%!important}
+.wrap:fullscreen .board,.wrap.fs-fallback .board{height:100%;overflow:auto}
+.wrap:fullscreen .transport,.wrap.fs-fallback .transport{margin-top:10px}
+.wrap:fullscreen .comm,.wrap.fs-fallback .comm{margin-bottom:8px}
+.vamos{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%) scale(.5);font-family:Oswald;font-weight:700;font-size:clamp(34px,8vw,74px);color:var(--gold);text-transform:uppercase;letter-spacing:.04em;text-shadow:0 4px 18px rgba(0,0,0,.6),0 0 28px rgba(255,213,74,.65);opacity:0;z-index:8;pointer-events:none;white-space:nowrap;animation:vamosIn .6s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes vamosIn{to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.vamos.out{animation:vamosOut .5s ease-in forwards}
+@keyframes vamosOut{to{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
+.fw{position:absolute;font-size:34px;z-index:7;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.4);animation:fwPop 1.1s ease-out forwards}
+@keyframes fwPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}
+.fish .dizzy{opacity:0;font-size:13px;transition:opacity .2s}
+.fish.dizzy .dizzy{opacity:1}
+</style></head>
+<body><div class="wrap">
+<h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
+<p class="psub">Iga osaleja on kala (lipp keha peal). Iga mäng kukub akvaariumi söögina ⚽ — kalad rabavad, mõni saab 2 p, mõni 1, mõni mitte midagi. Õigesti pakkunu kasvab. Kliki kalal või edetabelil → spotlight.</p>
+<div class="comm" id="comm">🌊 –</div>
+<div class="arena">
+ <div class="tank" id="tank"><div class="rays"></div><div class="sand"></div><div id="fishlayer"></div></div>
+ <div class="board" id="board"><h3><span>Edetabel</span><span id="b-step" class="mono">–/–</span></h3><div class="lbwrap" id="lbwrap"></div></div>
+</div>
+<div class="pinrow" id="pin"></div>
+<div class="transport"><div class="tr-row">
+ <button class="ctl primary" id="play">▶ Söötmine</button><button class="ctl" id="restart">⟲ Algusest</button>
+ <button class="ctl" id="step-b">◀</button><button class="ctl" id="step-f">▶</button><button class="ctl" id="fs">⛶ Täisekraan</button>
+ <div class="spd" id="spd"><span class="lbl">tempo</span><button data-s="1" class="on">Aeglane</button><button data-s="2">Keskmine</button><button data-s="4">Kärme</button></div>
+</div><div class="scrub"><input type="range" id="scrub" min="0" max="0" value="0"><div class="ticks" id="ticks"></div></div></div>
+<div class="hint">Kala suurus = kumulatiivsed punktid (eksponentskaala). Maailmameistri 5 p pole veel jagatud.</div>
+</div>
+<script>
+const DATA={"names": ["Aimar", "Avo", "Hania", "Herbert", "Janusz", "Jaś", "Joanna & Adam", "Magda & Krzysiek", "Mihkel", "Ola & Kaur", "Olle & Kätlin", "Paweł", "Piotrek", "Przemek", "Sebastian", "Timo"], "matchLabels": [{"m": "Mexico - South Africa", "d": "Thu 11.06", "r": "2:0"}, {"m": "Korea Republic - Czechia", "d": "Fri 12.06", "r": "2:1"}, {"m": "Canada - Bosnia", "d": "Fri 12.06", "r": "1:1"}, {"m": "USA - Paraguay", "d": "Sat 13.06", "r": "4:1"}, {"m": "Qatar - Switzerland", "d": "Sat 13.06", "r": "1:1"}, {"m": "Brazil - Morocco", "d": "Sun 14.06", "r": "1:1"}, {"m": "Haiti - Scotland", "d": "Sun 14.06", "r": "0:1"}, {"m": "Australia - Turkiye", "d": "Sun 14.06", "r": "2:0"}, {"m": "Germany - Curacao", "d": "Sun 14.06", "r": "7:1"}, {"m": "Netherlands - Japan", "d": "Sun 14.06", "r": "2:2"}, {"m": "Ivory Coast - Ecuador", "d": "Mon 15.06", "r": "1:0"}, {"m": "Sweden - Tunisia", "d": "Mon 15.06", "r": "5:1"}, {"m": "Spain - Cape Verde", "d": "Mon 15.06", "r": "0:0"}, {"m": "Belgium - Egypt", "d": "Mon 15.06", "r": "1:1"}, {"m": "Saudi Arabia - Uruguay", "d": "Tue 16.06", "r": "1:1"}, {"m": "Iran - New Zealand", "d": "Tue 16.06", "r": "2:2"}, {"m": "France - Senegal", "d": "Tue 16.06", "r": "3:1"}, {"m": "Iraq - Norway", "d": "Wed 17.06", "r": "1:4"}, {"m": "Argentina - Algeria", "d": "Wed 17.06", "r": "3:0"}, {"m": "Austria - Jordan", "d": "Wed 17.06", "r": "3:1"}, {"m": "Portugal - Congo DR", "d": "Wed 17.06", "r": "1:1"}, {"m": "England - Croatia", "d": "Wed 17.06", "r": "4:2"}, {"m": "Ghana - Panama", "d": "Thu 18.06", "r": "1:0"}, {"m": "Uzbekistan - Colombia", "d": "Thu 18.06", "r": "1:3"}, {"m": "Czechia - South Africa", "d": "Thu 18.06", "r": "1:1"}, {"m": "Switzerland - Bosnia", "d": "Thu 18.06", "r": "4:1"}, {"m": "Canada - Qatar", "d": "Fri 19.06", "r": "6:0"}, {"m": "Mexico - Korea Republic", "d": "Fri 19.06", "r": "1:0"}, {"m": "USA - Australia", "d": "Fri 19.06", "r": "2:0"}, {"m": "Scotland - Morocco", "d": "Sat 20.06", "r": "0:1"}, {"m": "Brazil - Haiti", "d": "Sat 20.06", "r": "3:0"}, {"m": "Turkiye - Paraguay", "d": "Sat 20.06", "r": "0:1"}, {"m": "Netherlands - Sweden", "d": "Sat 20.06", "r": "5:1"}, {"m": "Germany - Ivory Coast", "d": "Sat 20.06", "r": "2:1"}, {"m": "Ecuador - Curacao", "d": "Sun 21.06", "r": "0:0"}, {"m": "Tunisia - Japan", "d": "Sun 21.06", "r": "0:4"}, {"m": "Spain - Saudi Arabia", "d": "Sun 21.06", "r": "4:0"}, {"m": "Belgium - Iran", "d": "Sun 21.06", "r": "0:0"}, {"m": "Uruguay - Cape Verde", "d": "Mon 22.06", "r": "2:2"}, {"m": "New Zealand - Egypt", "d": "Mon 22.06", "r": "1:3"}, {"m": "Argentina - Austria", "d": "Mon 22.06", "r": "2:0"}, {"m": "France - Iraq", "d": "Mon 22.06", "r": "3:0"}, {"m": "Norway - Senegal", "d": "Tue 23.06", "r": "3:2"}, {"m": "Jordan - Algeria", "d": "Tue 23.06", "r": "1:2"}, {"m": "Portugal - Uzbekistan", "d": "Tue 23.06", "r": "5:0"}, {"m": "England - Ghana", "d": "Tue 23.06", "r": "0:0"}, {"m": "Panama - Croatia", "d": "Wed 24.06", "r": "0:1"}, {"m": "Colombia - Congo DR", "d": "Wed 24.06", "r": "1:0"}, {"m": "Switzerland - Canada", "d": "Wed 24.06", "r": "2:1"}, {"m": "Bosnia - Qatar", "d": "Wed 24.06", "r": "3:1"}, {"m": "Scotland - Brazil", "d": "Thu 25.06", "r": "0:3"}, {"m": "Morocco - Haiti", "d": "Thu 25.06", "r": "4:2"}, {"m": "Czechia - Mexico", "d": "Thu 25.06", "r": "0:3"}, {"m": "South Africa - Korea Rep.", "d": "Thu 25.06", "r": "1:0"}, {"m": "Curacao - Ivory Coast", "d": "Thu 25.06", "r": "0:2"}, {"m": "Ecuador - Germany", "d": "Thu 25.06", "r": "2:1"}, {"m": "Japan - Sweden", "d": "Fri 26.06", "r": "1:1"}, {"m": "Tunisia - Netherlands", "d": "Fri 26.06", "r": "1:3"}, {"m": "Turkiye - USA", "d": "Fri 26.06", "r": "3:2"}, {"m": "Paraguay - Australia", "d": "Fri 26.06", "r": "0:0"}, {"m": "Norway - France", "d": "Fri 26.06", "r": "1:4"}, {"m": "Senegal - Iraq", "d": "Fri 26.06", "r": "5:0"}, {"m": "Cape Verde - Saudi Arabia", "d": "Sat 27.06", "r": "0:0"}, {"m": "Uruguay - Spain", "d": "Sat 27.06", "r": "0:1"}, {"m": "Egypt - Iran", "d": "Sat 27.06", "r": "1:1"}, {"m": "New Zealand - Belgium", "d": "Sat 27.06", "r": "1:5"}, {"m": "Panama - England", "d": "Sat 27.06", "r": "0:2"}, {"m": "Croatia - Ghana", "d": "Sat 27.06", "r": "2:1"}, {"m": "Colombia - Portugal", "d": "Sun 28.06", "r": "0:0"}, {"m": "Congo DR - Uzbekistan", "d": "Sun 28.06", "r": "3:1"}, {"m": "Algeria - Austria", "d": "Sun 28.06", "r": "3:3"}, {"m": "Jordan - Argentina", "d": "Sun 28.06", "r": "1:3"}, {"m": "South Africa - Canada", "d": "Sun 28.06", "r": "0:1"}], "ptsByPlayer": {"Aimar": [2.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 2.0, 2.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 0.0, 1.0, 2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 0.0, 2.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0], "Avo": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 2.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0], "Hania": [1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0], "Herbert": [2.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0], "Janusz": [2.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 2.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0], "Jaś": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0], "Joanna & Adam": [2.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 0.0, 1.0, 0.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 2.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 2.0, 2.0, 0.0, 1.0, 0.0, 1.0, 1.0], "Magda & Krzysiek": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 2.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 2.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], "Mihkel": [2.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0, 0.0, 2.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 2.0, 2.0, 1.0, 1.0, 0.0, 1.0, 1.0], "Ola & Kaur": [0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0, 1.0, 0.0, 1.0, 1.0], "Olle & Kätlin": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0], "Paweł": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0, 2.0, 1.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 0.0, 1.0, 0.0, 1.0, 1.0], "Piotrek": [1.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0], "Przemek": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 2.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 2.0], "Sebastian": [1.0, 2.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 2.0, 0.0, 0.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 2.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0], "Timo": [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 2.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "betsByPlayer": {"Aimar": ["2:0", "1:1", "2:0", "1:0", "0:2", "2:1", "0:2", "1:2", "3:0", "2:1", "0:1", "2:0", "3:0", "2:1", "0:2", "2:0", "2:0", "0:2", "2:0", "2:0", "2:0", "1:1", "1:1", "0:2", "1:1", "1:0", "2:0", "1:1", "2:0", "0:1", "3:0", "1:1", "2:1", "2:0", "2:0", "0:1", "3:0", "2:0", "1:0", "0:1", "2:1", "3:0", "2:1", "1:2", "2:0", "2:0", "0:2", "1:0", "1:1", "2:0", "0:2", "2:0", "0:1", "0:1", "0:2", "0:2", "1:1", "0:3", "1:1", "0:0", "1:2", "2:0", "1:1", "0:1", "1:1", "0:3", "0:2", "3:1", "2:1", "1:0", "1:0", "0:2", "1:2"], "Avo": ["1:0", "1:2", "0:1", "2:0", "0:2", "2:1", "1:0", "0:2", "3:0", "2:1", "1:1", "0:0", "3:0", "2:1", "1:1", "0:1", "2:1", "0:3", "2:1", "2:0", "2:1", "1:0", "1:0", "0:2", "1:0", "1:1", "2:0", "1:2", "2:0", "1:3", "4:0", "2:0", "2:2", "3:1", "1:0", "0:2", "2:1", "3:0", "2:1", "1:2", "3:1", "3:0", "3:2", "0:1", "2:1", "2:0", "0:2", "2:1", "2:2", "1:0", "1:2", "4:0", "1:2", "0:1", "0:1", "0:2", "2:1", "0:4", "1:1", "1:0", "2:1", "2:0", "1:1", "0:2", "2:1", "0:2", "0:2", "0:1", "1:2", "1:0", "1:1", "0:2", "0:2"], "Hania": ["3:1", "1:3", "2:0", "3:0", "2:2", "3:1", "0:3", "1:1", "6:0", "2:1", "1:3", "3:0", "6:0", "4:2", "2:2", "1:1", "5:0", "1:1", "4:0", "3:0", "5:1", "2:2", "2:2", "1:2", "2:1", "1:1", "2:1", "2:2", "2:1", "1:2", "3:0", "3:1", "2:2", "4:1", "2:2", "1:3", "3:1", "1:0", "1:1", "1:1", "2:1", "4:1", "2:2", "3:3", "3:0", "3:0", "0:3", "2:2", "2:2", "1:1", "1:3", "4:0", "1:3", "1:2", "1:2", "0:3", "2:1", "0:3", "0:3", "2:2", "1:2", "1:1", "1:0", "1:2", "2:1", "1:2", "0:5", "1:1", "2:2", "1:1", "1:2", "1:5", "1:2"], "Herbert": ["2:0", "0:1", "1:0", "2:1", "0:2", "3:0", "0:2", "1:1", "4:0", "2:0", "1:1", "1:0", "3:0", "1:0", "0:2", "0:1", "3:1", "0:2", "3:0", "1:0", "2:0", "1:0", "1:1", "0:2", "1:0", "1:0", "2:0", "1:1", "2:1", "1:0", "2:0", "2:0", "1:0", "2:1", "2:0", "0:1", "3:1", "1:0", "1:1", "1:1", "1:0", "1:0", "2:1", "0:1", "1:0", "2:0", "1:2", "3:0", "1:0", "1:0", "0:1", "1:0", "1:1", "1:1", "0:2", "1:3", "1:1", "0:2", "1:2", "0:1", "1:2", "2:0", "1:1", "1:2", "1:1", "0:1", "0:1", "1:1", "1:1", "1:1", "1:2", "0:1", "1:3"], "Janusz": ["2:0", "1:1", "1:1", "1:0", "0:2", "2:1", "0:2", "0:2", "3:0", "1:1", "2:1", "2:0", "3:0", "2:0", "0:2", "1:1", "2:1", "0:2", "2:0", "2:0", "2:0", "1:1", "1:0", "0:2", "2:1", "1:1", "2:0", "1:1", "3:1", "1:2", "2:0", "2:1", "2:2", "2:1", "2:0", "0:2", "2:0", "2:0", "1:1", "1:2", "2:0", "4:0", "2:1", "1:2", "3:0", "2:0", "0:2", "2:1", "2:2", "2:0", "0:2", "2:0", "0:2", "0:2", "0:2", "0:1", "2:2", "0:3", "1:1", "1:1", "1:1", "3:0", "1:1", "0:2", "2:1", "0:2", "0:2", "1:1", "1:2", "2:0", "1:1", "0:2", "0:2"], "Jaś": ["1:0", "1:2", "2:1", "1:0", "0:2", "2:1", "1:1", "0:1", "2:0", "2:1", "1:1", "1:1", "3:0", "2:1", "1:2", "1:1", "2:1", "0:2", "3:0", "1:0", "2:0", "2:2", "1:0", "1:2", "2:1", "1:1", "2:1", "1:1", "2:1", "1:2", "3:0", "2:1", "1:2", "4:1", "2:1", "1:2", "1:0", "2:1", "2:1", "1:2", "3:1", "3:1", "2:1", "0:0", "2:0", "2:1", "0:2", "2:1", "2:2", "2:1", "1:3", "2:1", "1:3", "1:2", "1:2", "1:3", "2:3", "0:4", "1:2", "2:1", "2:3", "3:1", "1:1", "1:3", "2:1", "1:2", "1:4", "3:1", "1:4", "2:1", "2:2", "1:4", "1:3"], "Joanna & Adam": ["2:0", "0:1", "1:0", "1:0", "0:2", "2:0", "1:2", "0:1", "5:0", "2:1", "1:1", "1:0", "3:0", "2:0", "0:2", "2:0", "2:0", "0:1", "2:1", "1:0", "2:0", "1:0", "1:1", "0:2", "1:0", "1:1", "2:1", "2:1", "2:0", "1:1", "4:0", "2:1", "2:1", "2:1", "2:0", "0:1", "3:0", "2:0", "2:0", "1:2", "1:0", "3:0", "1:1", "1:1", "3:0", "2:1", "0:2", "2:0", "1:0", "2:0", "0:3", "4:0", "0:1", "0:1", "0:3", "0:2", "0:1", "0:2", "1:2", "1:0", "1:2", "2:0", "0:1", "1:2", "2:0", "0:2", "0:2", "2:1", "1:2", "2:0", "0:1", "0:3", "1:2"], "Magda & Krzysiek": ["2:1", "1:1", "1:0", "2:0", "1:2", "3:2", "0:1", "1:3", "3:0", "2:2", "1:1", "2:0", "3:0", "2:0", "0:2", "2:1", "3:1", "0:2", "2:1", "3:0", "3:1", "2:1", "1:1", "1:3", "2:1", "1:0", "1:1", "2:2", "2:1", "0:2", "1:0", "2:1", "3:2", "3:1", "2:1", "0:2", "2:1", "1:1", "2:0", "1:1", "3:1", "4:0", "2:1", "0:2", "2:1", "3:0", "2:2", "2:0", "1:1", "1:0", "0:1", "2:0", "1:2", "1:2", "0:1", "0:4", "2:1", "0:2", "0:2", "0:1", "3:2", "1:0", "1:0", "1:2", "2:1", "1:2", "0:2", "3:1", "2:1", "2:0", "1:2", "0:3", "x 1:1"], "Mihkel": ["2:0", "1:0", "1:0", "2:1", "0:3", "2:1", "0:2", "0:1", "4:0", "2:1", "1:1", "1:0", "3:0", "2:0", "0:2", "2:1", "2:1", "1:2", "3:0", "2:0", "2:0", "2:1", "2:1", "1:2", "1:0", "1:1", "2:1", "2:1", "2:1", "1:2", "3:0", "2:1", "2:2", "2:1", "2:0", "1:2", "2:0", "1:1", "2:0", "1:2", "2:1", "3:0", "1:1", "0:2", "3:0", "2:1", "0:2", "2:0", "1:2", "1:1", "0:2", "2:0", "1:2", "1:2", "0:3", "1:2", "2:1", "0:2", "1:2", "1:2", "1:2", "2:0", "1:2", "1:2", "1:1", "0:2", "0:2", "2:1", "1:1", "2:0", "1:2", "0:3", "1:2"], "Ola & Kaur": ["1:1", "1:2", "1:1", "3:1", "1:3", "2:1", "0:2", "0:2", "3:0", "2:1", "0:2", "2:0", "4:0", "1:0", "0:2", "2:0", "2:0", "0:2", "2:0", "1:0", "2:0", "1:0", "0:1", "0:2", "1:0", "1:0", "1:0", "1:0", "2:1", "0:1", "2:0", "1:1", "2:2", "3:1", "2:0", "1:2", "3:1", "2:1", "1:2", "0:2", "3:0", "4:0", "2:1", "1:1", "3:0", "3:0", "0:2", "1:1", "1:0", "1:0", "0:2", "2:0", "0:1", "0:1", "0:2", "0:1", "1:0", "0:2", "1:1", "1:1", "2:2", "2:1", "3:1", "1:3", "2:2", "1:2", "0:3", "2:1", "1:2", "3:0", "0:1", "0:2", "1:2"], "Olle & Kätlin": ["1:0", "0:2", "2:1", "2:0", "0:2", "3:0", "0:2", "1:2", "3:0", "2:1", "1:1", "1:0", "5:0", "3:1", "0:2", "1:1", "2:1", "0:2", "2:0", "1:0", "3:0", "2:1", "1:1", "0:2", "2:1", "2:1", "2:0", "1:1", "2:1", "1:3", "4:0", "1:1", "3:1", "2:0", "2:0", "0:1", "5:0", "2:1", "2:0", "0:3", "3:0", "3:1", "1:1", "0:1", "3:0", "3:1", "1:2", "2:1", "1:1", "3:0", "0:2", "3:0", "1:2", "0:2", "0:2", "1:2", "2:1", "0:3", "0:2", "1:1", "1:2", "1:0", "1:1", "1:2", "2:1", "0:2", "0:3", "1:1", "1:3", "2:0", "0:1", "0:4", "1:2"], "Paweł": ["3:0", "1:1", "2:1", "2:1", "0:3", "2:1", "0:0", "1:1", "1:0", "2:1", "0:0", "3:0", "4:0", "2:1", "1:2", "3:0", "2:0", "1:1", "3:0", "0:0", "3:0", "2:2", "1:1", "0:0", "2:1", "2:1", "2:1", "2:1", "2:2", "1:2", "2:1", "1:1", "2:2", "3:0", "2:0", "0:2", "2:0", "2:1", "2:0", "2:1", "3:0", "3:0", "1:1", "0:2", "2:0", "3:1", "1:2", "2:0", "2:1", "0:0", "0:3", "2:0", "2:2", "0:2", "0:2", "1:3", "3:2", "0:3", "1:2", "0:0", "1:2", "2:0", "1:1", "0:2", "1:1", "0:2", "0:4", "2:1", "0:1", "2:0", "2:1", "0:4", "1:2"], "Piotrek": ["3:1", "0:0", "1:1", "1:0", "0:2", "2:1", "1:3", "1:1", "4:0", "2:1", "1:1", "1:0", "4:0", "2:0", "0:2", "1:3", "1:1", "1:3", "1:0", "2:0", "3:1", "1:1", "1:1", "0:1", "2:1", "1:1", "3:1", "2:1", "1:1", "0:0", "2:0", "2:1", "2:2", "3:1", "2:1", "0:2", "3:0", "2:1", "2:0", "1:1", "3:1", "4:0", "2:1", "1:3", "2:0", "2:0", "0:2", "2:0", "1:1", "3:0", "0:2", "2:0", "1:2", "1:1", "0:2", "1:3", "2:2", "0:3", "1:2", "1:1", "1:2", "2:0", "1:1", "1:2", "1:1", "0:2", "0:2", "1:0", "1:2", "2:1", "1:1", "0:3", "0:2"], "Przemek": ["3:1", "1:2", "2:0", "2:1", "0:2", "4:0", "0:2", "1:3", "5:0", "1:0", "0:2", "2:0", "4:0", "2:1", "1:2", "1:0", "2:0", "0:2", "3:0", "2:1", "2:0", "3:0", "1:2", "0:2", "2:0", "1:1", "1:0", "1:1", "2:2", "1:2", "3:0", "1:1", "2:1", "3:0", "2:0", "0:2", "3:0", "2:1", "2:0", "2:1", "2:0", "2:0", "2:1", "0:1", "2:0", "3:0", "0:2", "2:1", "1:1", "1:0", "0:2", "2:0", "0:2", "1:2", "0:1", "1:2", "1:1", "0:2", "1:2", "1:1", "1:1", "2:1", "2:1", "0:2", "2:1", "1:2", "0:3", "2:0", "1:2", "2:0", "0:2", "0:4", "0:1"], "Sebastian": ["3:1", "2:1", "2:0", "2:1", "0:3", "2:2", "0:2", "0:3", "6:0", "1:2", "2:2", "2:0", "7:0", "4:1", "0:4", "0:0", "4:1", "0:3", "2:1", "4:0", "3:0", "2:0", "3:1", "0:4", "2:0", "0:1", "1:1", "0:2", "3:1", "0:3", "3:0", "1:1", "2:2", "3:0", "0:0", "0:3", "3:1", "4:0", "2:0", "1:3", "3:0", "3:0", "2:2", "0:3", "4:0", "3:2", "0:3", "1:2", "1:1", "2:0", "1:3", "3:0", "2:0", "1:2", "0:2", "1:3", "2:2", "0:4", "0:2", "1:1", "3:1", "3:0", "1:1", "0:3", "2:0", "1:2", "0:5", "3:2", "1:1", "3:0", "0:2", "0:3", "2:0"], "Timo": ["2:1", "0:3", "0:2", "1:2", "0:3", "2:0", "0:1", "1:2", "3:0", "1:1", "1:2", "2:0", "3:0", "2:1", "0:2", "1:0", "2:1", "0:3", "2:2", "2:0", "3:0", "2:1", "2:1", "0:2", "2:1", "1:1", "2:0", "2:2", "2:1", "1:2", "3:0", "2:1", "2:1", "3:1", "2:0", "1:3", "2:0", "2:0", "2:1", "1:2", "2:1", "4:0", "2:2", "1:3", "3:0", "2:0", "0:2", "1:1", "1:1", "2:1", "1:3", "3:0", "1:2", "0:1", "0:2", "0:2", "2:1", "0:3", "1:1", "1:2", "1:2", "3:1", "1:1", "1:3", "2:1", "1:2", "0:2", "1:0", "2:2", "2:0", "1:1", "0:4", "1:2"]}, "total": {"Aimar": 61.0, "Avo": 47.0, "Hania": 39.0, "Herbert": 51.0, "Janusz": 56.0, "Jaś": 44.0, "Joanna & Adam": 48.0, "Magda & Krzysiek": 45.0, "Mihkel": 53.0, "Ola & Kaur": 48.0, "Olle & Kätlin": 45.0, "Paweł": 45.0, "Piotrek": 47.0, "Przemek": 46.0, "Sebastian": 50.0, "Timo": 47.0}, "exact": {"Aimar": 14, "Avo": 6, "Hania": 1, "Herbert": 7, "Janusz": 8, "Jaś": 3, "Joanna & Adam": 7, "Magda & Krzysiek": 5, "Mihkel": 8, "Ola & Kaur": 5, "Olle & Kätlin": 1, "Paweł": 8, "Piotrek": 4, "Przemek": 5, "Sebastian": 6, "Timo": 4}, "correct": {"Aimar": 47, "Avo": 41, "Hania": 38, "Herbert": 44, "Janusz": 48, "Jaś": 41, "Joanna & Adam": 41, "Magda & Krzysiek": 40, "Mihkel": 45, "Ola & Kaur": 43, "Olle & Kätlin": 44, "Paweł": 37, "Piotrek": 43, "Przemek": 41, "Sebastian": 44, "Timo": 43}, "champ": {"Aimar": "France", "Avo": "Norway", "Hania": "France", "Herbert": "England", "Janusz": "France", "Jaś": "Argentina", "Joanna & Adam": "Spain", "Magda & Krzysiek": "Japan", "Mihkel": "France", "Ola & Kaur": "Argentina", "Olle & Kätlin": "France", "Paweł": "Argentina", "Piotrek": "France", "Przemek": "Argentina", "Sebastian": "France", "Timo": "France"}, "nMatches": 73};
+const PAL=['#ffd54a','#4cc9f0','#7bed9f','#f78fb3','#b794f6','#ffa552','#5ee0c9','#ff8a8a','#a0c4ff','#ffcf8a','#c8b6ff','#74e0f2','#f4978e','#cfe377','#9bb1ff','#e0a3ff'];
+const FCODE={"Aimar":"EE","Avo":"EE","Hania":"PL","Herbert":"EE","Janusz":"PL","Jaś":"PL","Joanna & Adam":"PL","Magda & Krzysiek":"PL","Mihkel":"EE","Ola & Kaur":"EEPL","Olle & Kätlin":"EE","Paweł":"PL","Piotrek":"PL","Przemek":"PL","Sebastian":"PL","Timo":"EE"};
+function flagOne(cc){
+ if(cc==='EE')return '<span class="flagico"><svg viewBox="0 0 21 14" preserveAspectRatio="none"><rect width="21" height="14" fill="#0072CE"/><rect y="4.667" width="21" height="4.667" fill="#0a0a0a"/><rect y="9.333" width="21" height="4.667" fill="#fff"/></svg></span>';
+ return '<span class="flagico"><svg viewBox="0 0 21 14" preserveAspectRatio="none"><rect width="21" height="7" fill="#fff"/><rect y="7" width="21" height="7" fill="#DC143C"/></svg></span>';
+}
+function flagHTML(n){const c=FCODE[n]||'';if(c==='EEPL')return '<span class="flagpair">'+flagOne('EE')+flagOne('PL')+'</span>';return c?flagOne(c):'';}
+const {names,matchLabels,ptsByPlayer,betsByPlayer,champ,nMatches}=DATA;
+const COL={};names.forEach((n,i)=>COL[n]=PAL[i%PAL.length]);
+const N=names.length,LAST=nMatches-1;const VW=900,VH=560,PAD=56;
+const cum=names.reduce((o,n)=>(o[n]=[],o),{});
+names.forEach(n=>{let s=0;ptsByPlayer[n].forEach(p=>{s+=p;cum[n].push(s);});});
+const GMAX=Math.max(...names.map(n=>cum[n][LAST]));
+const rankAt=i=>{const a=names.map(n=>({n,v:cum[n][i]}));a.sort((x,y)=>y.v-x.v||x.n.localeCompare(y.n));const m={};a.forEach((o,r)=>m[o.n]=r);return {a,m};};
+const MINR=12,MAXR=138,EXP=2.6;const sizeOf=v=> MINR+(MAXR-MINR)*Math.pow(v/GMAX,EXP);
+function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;const f=t=>Math.max(0,Math.min(255,Math.round(p<0?t*(1+p):t+(255-t)*p)));return '#'+((1<<24)+(f(r)<<16)+(f(g)<<8)+f(b)).toString(16).slice(1);}
+function fishSVG(c,idx){
+ const dk=shade(c,-0.32),lt=shade(c,0.5);const ry=12+(idx%3)*2;const cl='cl'+idx;const pat=idx%5;
+ let inner;
+ if(pat===0) inner='<ellipse cx="30" cy="29" rx="22" ry="7" fill="'+lt+'" opacity=".55"/>';
+ else if(pat===1) inner='<g fill="'+dk+'" opacity=".5"><rect x="20" y="4" width="5" height="40"/><rect x="31" y="4" width="5" height="40"/><rect x="42" y="4" width="5" height="40"/></g>';
+ else if(pat===2) inner='<g fill="'+lt+'" opacity=".8"><circle cx="26" cy="20" r="3.2"/><circle cx="38" cy="28" r="3"/><circle cx="30" cy="30" r="2.6"/><circle cx="45" cy="19" r="2.6"/><circle cx="20" cy="27" r="2.3"/></g>';
+ else if(pat===3) inner='<rect x="0" y="8" width="70" height="16" fill="'+dk+'" opacity=".45"/>';
+ else inner='<path d="M6 24 q10 -7 20 0 t20 0 t20 0" stroke="'+dk+'" stroke-width="3" fill="none" opacity=".55"/><ellipse cx="30" cy="31" rx="20" ry="6" fill="'+lt+'" opacity=".4"/>';
+ const tail=(idx%2)?'<polygon points="12,24 -12,8 0,24 -12,40" fill="'+c+'"/>':'<polygon points="14,24 -12,9 -12,39" fill="'+c+'" opacity=".92"/>';
+ const fin='<polygon points="30,'+(24-ry)+' 47,'+(24-ry)+' 38,'+(24-ry-9)+'" fill="'+dk+'" opacity=".75"/>';
+ return '<svg viewBox="-14 0 92 48" width="80" xmlns="http://www.w3.org/2000/svg">'
+  +'<defs><clipPath id="'+cl+'"><ellipse cx="34" cy="24" rx="30" ry="'+ry+'"/></clipPath></defs>'
+  +tail+'<ellipse cx="34" cy="24" rx="30" ry="'+ry+'" fill="'+c+'"/>'
+  +'<g clip-path="url(#'+cl+')">'+inner+'</g>'+fin
+  +'<circle cx="54" cy="20" r="4.5" fill="#fff"/><circle cx="55.6" cy="20" r="2.3" fill="#0a1a26"/>'
+  +'<path d="M40 24 q6 4 12 0" stroke="rgba(0,0,0,.22)" stroke-width="1.4" fill="none"/></svg>';
+}
+const layer=document.getElementById('fishlayer');const F={};
+names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish';d.dataset.n=n;
+ d.innerHTML='<div class="body">'+fishSVG(COL[n],idx)+'</div><span class="rankic"></span><span class="dizzy">💫</span><span class="flag">'+flagHTML(n)+'</span><div class="lab">'+n+'</div><div class="pop"></div><div class="burst"></div>';
+ d.addEventListener('click',()=>togglePin(n));layer.appendChild(d);
+ const ang=Math.random()*Math.PI*2;
+ F[n]={el:d,body:d.querySelector('.body'),rankic:d.querySelector('.rankic'),dizzyEl:d.querySelector('.dizzy'),flag:d.querySelector('.flag'),lab:d.querySelector('.lab'),pop:d.querySelector('.pop'),burst:d.querySelector('.burst'),pair:FCODE[n]==='EEPL',
+  x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang),vy:Math.sin(ang),sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
+const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height=(N*ROWH)+'px';const LB={};
+names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
+ r.innerHTML='<span class="p">–</span><span class="dot" style="background:'+COL[n]+'"></span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span>';
+ r.addEventListener('click',()=>togglePin(n));lbwrap.appendChild(r);LB[n]={el:r,p:r.querySelector('.p'),v:r.querySelector('.v')};});
+const pinned=new Set();
+function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
+ document.getElementById('tank').classList.toggle('dim',pinned.size>0);
+ names.forEach(m=>{F[m].el.classList.toggle('pinned',pinned.has(m));LB[m].el.classList.toggle('pinned',pinned.has(m));});renderPin();}
+function commentary(i){const {a:arr,m}=rankAt(i);const prev=i>0?rankAt(i-1).m:m;
+ const exact=names.filter(n=>ptsByPlayer[n][i]===2);const scorers=names.filter(n=>ptsByPlayer[n][i]>0);
+ const lead=arr[0],second=arr[1],last=arr[arr.length-1],gap=lead.v-second.v;
+ let climber=null,best=0;names.forEach(n=>{const d=prev[n]-m[n];if(d>best){best=d;climber=n;}});
+ const ml=matchLabels[i],pool=[];
+ if(exact.length) pool.push('🎯 '+exact[0]+' õgib täppistabamuse '+ml.r+' ja paisub silmade ees!');
+ if(best>=3&&climber) pool.push('🐟💨 '+climber+' sööb end '+best+' koha võrra ette!');
+ if(gap===0) pool.push('📸 '+lead.n+' ja '+second.n+' sama suured — ninapidi ujumas!');
+ else if(gap>=6) pool.push('🐋 '+lead.n+' on akvaariumi vaal — '+gap+' p ees.');
+ if(scorers.length===0) pool.push('🫧 '+ml.m+': söök jäi püüdmata, kõhud korisevad.');
+ if(scorers.length>=8) pool.push('🍽️ '+scorers.length+' kala korraga söömas — veepind keeb!');
+ if(i===LAST) pool.push('🏁 Alagrupid läbi: '+lead.n+' on suurim kala ('+lead.v+' p).');
+ if(i%7===3) pool.push('🐠 '+last.n+' on veel kalapoeg ('+last.v+' p), aga kasvab veel.');
+ if(!pool.length) pool.push('🌊 '+ml.m+' '+ml.r+' — '+lead.n+' hoiab suurimat uime.');
+ return pool[i%pool.length];}
+let curStep=LAST,playing=false,speed=1,timer=null,food=null,feedTok=0;
+let celebrating=false,bannerEl=null;const OLLE='Olle & Kätlin';const OLLE_STEP=(ptsByPlayer[OLLE]||[]).findIndex(p=>p===2);
+const RANKIC=['👑','🥈','🥉'];
+function applyStep(i,eat){const {a:arr}=rankAt(i);
+ arr.forEach((o,rank)=>{const f=F[o.n];f.target=sizeOf(o.v);
+  f.rankic.textContent=RANKIC[rank]||'';f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
+  const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;});
+ document.getElementById('comm').textContent=commentary(i);
+ document.getElementById('b-step').textContent=(i+1)+'/'+nMatches;renderPin();
+ const sb=document.getElementById('scrub');sb.value=i;sb.style.setProperty('--p',(i/LAST*100)+'%');
+ if(eat) triggerFeed(i);}
+function removeFood(){if(food&&food.el&&food.el.parentNode)food.el.parentNode.removeChild(food.el);food=null;}
+function triggerFeed(i){feedTok++;const tok=feedTok;removeFood();names.forEach(n=>{F[n].seek=null;F[n].flee=null;F[n].boost=1;F[n].panic=false;});
+ const ml=matchLabels[i];const P={x:220+Math.random()*460,y:170+Math.random()*210};
+ const fd=document.createElement('div');fd.className='food';
+ fd.innerHTML='<span class="ball">⚽</span><span>'+ml.m+'</span><span class="res">'+ml.r+'</span>';
+ document.getElementById('tank').appendChild(fd);food={x:P.x,y:-40,ty:P.y,el:fd};
+ if(i===OLLE_STEP){celebrateOlle(i);}
+ else{names.forEach(n=>{const p=ptsByPlayer[n][i];if(p>0){F[n].seek={x:P.x,y:P.y};F[n].boost=2.6;}else{F[n].flee={x:P.x,y:P.y};F[n].boost=1.8;}});}
+ const D=Math.max(150,640/speed);
+ setTimeout(()=>{if(tok!==feedTok)return;
+   names.forEach(n=>{const dp=ptsByPlayer[n][i];if(dp>0){const f=F[n];
+     f.pop.textContent='⚽+'+dp;f.pop.style.color=dp===2?'var(--gold)':'var(--teal)';
+     f.pop.classList.remove('go');void f.pop.offsetWidth;f.pop.classList.add('go');
+     if(dp===2){f.burst.classList.remove('go');void f.burst.offsetWidth;f.burst.classList.add('go');
+       f.el.classList.add('hot');setTimeout(()=>f.el.classList.remove('hot'),750);}}});},D);
+ setTimeout(()=>{if(tok!==feedTok)return;names.forEach(n=>{F[n].seek=null;F[n].flee=null;F[n].boost=1;F[n].panic=false;});if(food&&food.el)food.el.style.opacity=0;},D+Math.max(350,520/speed));
+ setTimeout(()=>{if(tok!==feedTok)return;removeFood();},D+Math.max(750,900/speed));}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function spawnFW(){const e=document.createElement('div');e.className='fw';e.textContent=Math.random()<.5?'🎆':'🎇';e.style.left=(10+Math.random()*80)+'%';e.style.top=(8+Math.random()*55)+'%';document.getElementById('tank').appendChild(e);setTimeout(()=>{if(e.parentNode)e.remove();},1100);}
+function showBanner(txt){hideBanner();bannerEl=document.createElement('div');bannerEl.className='vamos';bannerEl.textContent=txt;document.getElementById('tank').appendChild(bannerEl);}
+function hideBanner(){if(bannerEl){const b=bannerEl;b.classList.add('out');setTimeout(()=>{if(b.parentNode)b.remove();},500);bannerEl=null;}}
+function resetFX(){celebrating=false;hideBanner();names.forEach(n=>{const f=F[n];f.seek=null;f.flee=null;f.orbit=null;f.panic=false;f.boost=1;f.sizeMul=1;f.dizzyUntil=0;f.el.classList.remove('dizzy','hot');});document.querySelectorAll('.fw').forEach(e=>e.remove());removeFood();}
+function celebrateOlle(i){celebrating=true;let k=0;
+ names.forEach(n=>{F[n].seek=null;F[n].flee=null;F[n].panic=false;F[n].boost=1;
+  if(n!==OLLE){F[n].orbit={r:108+(k%4)*24+Math.random()*14,a:(k/(N-1))*Math.PI*2,spd:0.02+Math.random()*0.012};k++;}});
+ F[OLLE].orbit=null;F[OLLE].sizeMul=1.6;showBanner('Vamos Olle! 🎉');
+ const fwT=setInterval(spawnFW,360);spawnFW();spawnFW();
+ setTimeout(()=>{clearInterval(fwT);names.forEach(n=>{F[n].orbit=null;});F[OLLE].sizeMul=1;hideBanner();celebrating=false;if(playing)tick();},9400);}
+function renderPin(){const pl=document.getElementById('pin');if(!pinned.size){pl.innerHTML='';return;}
+ pl.innerHTML=[...pinned].map(n=>{const bet=betsByPlayer[n][curStep]||'–';const p=ptsByPlayer[n][curStep];
+  const tag=p===2?'<span class="ok">+2 täppi 🎯</span>':p===1?'<span class="ok">+1</span>':'<span class="no">+0</span>';
+  return flagHTML(n)+' <b style="color:'+COL[n]+'">'+n+'</b> pakkus '+bet+' · '+tag;}).join('&nbsp;&nbsp;·&nbsp;&nbsp;');}
+const tank=document.getElementById('tank'),board=document.getElementById('board'),wrap=document.querySelector('.wrap');let sx=1,sy=1;
+function measure(){const w=tank.clientWidth;const fs=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');
+ let h;if(fs){tank.style.height='';h=tank.clientHeight;}else if(window.innerWidth<=760){h=Math.round(w*0.72);tank.style.height=h+'px';}else{h=board.offsetHeight;tank.style.height=h+'px';}
+ sx=w/VW;sy=h/VH;tank.style.setProperty('--rise',(h+20)+'px');}
+addEventListener('resize',measure);
+let lastT=performance.now();
+function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
+ if(food){food.y+=(food.ty-food.y)*0.14*dt;food.el.style.left=(food.x*sx)+'px';food.el.style.top=(food.y*sy)+'px';}
+ for(const n of names){const f=F[n];
+  if(f.dizzyUntil&&now>=f.dizzyUntil){f.dizzyUntil=0;f.el.classList.remove('dizzy');}
+  const dz=f.dizzyUntil&&now<f.dizzyUntil;let direct=false;
+  if(celebrating&&n!==OLLE&&f.orbit){f.orbit.a+=f.orbit.spd*dt;f.x=VW/2+Math.cos(f.orbit.a)*f.orbit.r;f.y=VH/2+Math.sin(f.orbit.a)*f.orbit.r*0.6;f.flip=(-Math.sin(f.orbit.a))>=0?1:-1;direct=true;}
+  if(!direct){
+   if(celebrating&&n===OLLE){const cx=VW/2,cy=VH/2;f.x+=(cx-f.x)*0.10*dt;f.y+=(cy-f.y)*0.10*dt;f.y+=Math.sin(now/220)*0.7*dt;if(Math.abs(cx-f.x)>4)f.flip=(cx-f.x)>0?1:-1;}
+   else if(dz){f.vx+=(Math.random()-.5)*.34;f.vy+=(Math.random()-.5)*.34;const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;f.x+=f.vx*f.sp*0.6*dt;f.y+=f.vy*f.sp*0.6*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
+   else{if(f.seek){const dx=f.seek.x-f.x,dy=f.seek.y-f.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.32;f.vy+=dy/d*0.32;}
+    else if(f.flee){const dx=f.x-f.flee.x,dy=f.y-f.flee.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.34;f.vy+=dy/d*0.34;}
+    else{f.vx+=(Math.random()-.5)*.06;f.vy+=(Math.random()-.5)*.05;}
+    const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;
+    const slow=1-(f.size-MINR)/(MAXR-MINR)*.5;const v=f.sp*slow*1.6*(f.boost||1);
+    f.x+=f.vx*v*dt;f.y+=f.vy*v*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
+   if(f.x<PAD){f.x=PAD;f.vx=Math.abs(f.vx);wallHit(f);}if(f.x>VW-PAD){f.x=VW-PAD;f.vx=-Math.abs(f.vx);wallHit(f);}
+   if(f.y<PAD){f.y=PAD;f.vy=Math.abs(f.vy);wallHit(f);}if(f.y>VH-PAD){f.y=VH-PAD;f.vy=-Math.abs(f.vy);wallHit(f);}
+  }
+  f.size+=(f.target*(f.sizeMul||1)-f.size)*0.08*dt;
+  const px=f.x*sx,py=f.y*sy,k=(f.size*sx)/80,bw=f.size*sx,half=bw*0.27;
+  f.el.style.left=px+'px';f.el.style.top=py+'px';
+  const rot=dz?' rotate('+((now/2)%360).toFixed(0)+'deg)':'';
+  f.body.style.transform='translate(-50%,-50%) scaleX('+f.flip+') scale('+k.toFixed(3)+')'+rot;
+  f.flag.style.width=(f.pair?Math.max(13,Math.min(30,bw*0.34)):Math.max(10,Math.min(22,bw*0.22)))+'px';
+  f.rankic.style.transform='translate(-50%,-50%) translate('+(f.flip*bw*0.15).toFixed(0)+'px,'+(-(half*0.82+3)).toFixed(0)+'px)';
+  f.rankic.style.fontSize=(11+k*3).toFixed(0)+'px';
+  f.dizzyEl.style.transform='translate(-50%,-50%) translateY('+(-(half+13)).toFixed(0)+'px)';
+  f.lab.style.top=(half*0.6+2).toFixed(0)+'px';f.lab.style.left='0';
+  f.pop.style.top=(-(half+15)).toFixed(0)+'px';f.pop.style.left='0';}
+ requestAnimationFrame(loop);}
+function wallHit(f){}
+const playBtn=document.getElementById('play');
+function setPlaying(p){playing=p;playBtn.textContent=p?'⏸ Paus':'▶ Söötmine';if(p){if(curStep>=LAST)goto(0,false);tick();}else clearTimeout(timer);}
+function tick(){if(!playing)return;if(curStep>=LAST){setPlaying(false);return;}goto(curStep+1,true);timer=setTimeout(tick,1300/speed);}
+function goto(i,eat){curStep=Math.max(0,Math.min(LAST,i));applyStep(curStep,eat);}
+playBtn.onclick=()=>setPlaying(!playing);
+document.getElementById('restart').onclick=()=>{setPlaying(false);resetFX();goto(0,false);};
+document.getElementById('step-f').onclick=()=>{setPlaying(false);goto(curStep+1,true);};
+document.getElementById('step-b').onclick=()=>{setPlaying(false);resetFX();goto(curStep-1,false);};
+document.getElementById('scrub').oninput=e=>{setPlaying(false);resetFX();goto(+e.target.value,false);};
+document.getElementById('spd').onclick=e=>{const b=e.target.closest('button[data-s]');if(!b)return;speed=+b.dataset.s;[...e.currentTarget.querySelectorAll('button')].forEach(c=>c.classList.toggle('on',c===b));};
+const fsBtn=document.getElementById('fs');
+function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';setTimeout(measure,60);}
+function fsFallbackOn(){wrap.classList.add('fs-fallback');afterFS();}
+fsBtn.onclick=()=>{const inFS=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');
+ if(inFS){if(document.fullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}wrap.classList.remove('fs-fallback');afterFS();}
+ else{const rq=wrap.requestFullscreen||wrap.webkitRequestFullscreen;if(rq){try{const pr=rq.call(wrap);if(pr&&pr.catch)pr.catch(fsFallbackOn);}catch(e){fsFallbackOn();}}else fsFallbackOn();}};
+document.addEventListener('fullscreenchange',afterFS);document.addEventListener('webkitfullscreenchange',afterFS);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&wrap.classList.contains('fs-fallback')){wrap.classList.remove('fs-fallback');afterFS();}});
+const sb=document.getElementById('scrub');sb.max=LAST;
+const tk=document.getElementById('ticks');const seen=new Set();
+matchLabels.forEach((m,i)=>{const day=m.d.split(' ')[1];if(!seen.has(day)&&(i%9===0||i===LAST)){seen.add(day);const s=document.createElement('span');s.textContent=day;tk.appendChild(s);}});
+(function(){const t=document.getElementById('tank');
+ for(let i=0;i<16;i++){const b=document.createElement('div');b.className='bub';const s=4+Math.random()*9;b.style.width=b.style.height=s+'px';b.style.left=(Math.random()*100)+'%';b.style.animationDuration=(6+Math.random()*7)+'s';b.style.animationDelay=(-Math.random()*8)+'s';t.appendChild(b);}
+ [12,28,55,72,88].forEach(lx=>{const w=document.createElement('div');w.className='weed';w.style.left=lx+'%';w.style.height=(60+Math.random()*55)+'px';w.style.animationDelay=(-Math.random()*5)+'s';w.style.opacity=.6;t.appendChild(w);});})();
+measure();goto(LAST,false);requestAnimationFrame(loop);addEventListener('load',measure);
+wrap.classList.add('fs-fallback');afterFS();
+</script></body></html>
