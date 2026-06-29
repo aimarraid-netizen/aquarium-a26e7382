@@ -28,11 +28,11 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 .tank.flash{animation:tankflash .5s ease-out}
 @keyframes tankflash{0%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 0 rgba(255,150,70,0)}30%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 7px rgba(255,150,70,.45)}100%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 0 rgba(255,150,70,0)}}
 .fish.boss .body{filter:drop-shadow(0 0 12px var(--gold)) drop-shadow(0 0 5px var(--gold))}
-.wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 200px}
-.wrap.fs-fallback .transport,.wrap:fullscreen .transport{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);width:min(700px,94vw);margin:0;z-index:10000;background:rgba(10,26,38,.82);backdrop-filter:blur(6px);transition:opacity .45s}
-.wrap.fs-fallback.hidectl .transport,.wrap:fullscreen.hidectl .transport{opacity:0;pointer-events:none}
-.wrap.fs-fallback.hidectl,.wrap:fullscreen.hidectl{cursor:none}
-.arena{display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start}
+.fish.r-silver .body{filter:drop-shadow(0 0 11px #d4e4f0) drop-shadow(0 0 4px #aebfce)}
+.fish.r-bronze .body{filter:drop-shadow(0 0 11px #e6a868) drop-shadow(0 0 4px #c87b32)}
+.wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 208px}
+.wrap.fs-fallback .transport,.wrap:fullscreen .transport{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);width:min(700px,94vw);margin:0;z-index:10000;background:rgba(10,26,38,.82);backdrop-filter:blur(6px)}
+.arena{display:grid;grid-template-columns:1fr 244px;gap:16px;align-items:start}
 @media(max-width:760px){.arena{grid-template-columns:1fr}}
 .flagico{display:inline-block;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.45);width:17px;height:11px;vertical-align:middle}
 .flagico svg{display:block;width:100%;height:100%}
@@ -71,14 +71,14 @@ white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.55);pointer-events:none;z-i
 .board{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:8px 6px}
 .board h3{font-family:Oswald;font-weight:500;text-transform:uppercase;letter-spacing:.07em;font-size:11px;color:var(--mut2);margin:4px 8px 8px;display:flex;justify-content:space-between}
 .lbwrap{position:relative}
-.lbrow{position:absolute;left:0;right:0;height:30px;display:grid;grid-template-columns:20px 12px 24px 1fr auto;align-items:center;gap:7px;padding:0 8px;border-radius:7px;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.05,.45,1),background .2s}
+.lbrow{position:absolute;left:0;right:0;height:30px;display:grid;grid-template-columns:18px 22px 1fr auto;align-items:center;gap:7px;padding:0 8px;border-radius:7px;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.05,.45,1),background .2s}
 .lbrow:hover{background:rgba(255,255,255,.04)}
 .lbrow.lead{background:rgba(255,213,74,.09)}
 .lbrow.pinned{background:rgba(52,224,196,.1);box-shadow:inset 0 0 0 1px rgba(52,224,196,.3)}
 .lbrow .p{font-family:Oswald;font-weight:600;font-size:13px;color:var(--mut2);text-align:center}
 .lbrow.lead .p{color:var(--gold)}
 .lbrow .dot{width:10px;height:10px;border-radius:50%}
-.lbrow .n{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lbrow .n{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lbrow .v{font-family:'JetBrains Mono';font-weight:700;font-size:13.5px}
 .lbrow.lead .v{color:var(--gold)}
 .pinrow{text-align:center;font-size:12.5px;color:var(--mut);min-height:16px;margin-top:12px}
@@ -200,7 +200,7 @@ names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish'
   x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang),vy:Math.sin(ang),sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
 const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height=(N*ROWH)+'px';const LB={};
 names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
- r.innerHTML='<span class="p">–</span><span class="dot" style="background:'+COL[n]+'"></span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span>';
+ r.innerHTML='<span class="p">–</span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span>';
  r.addEventListener('click',()=>togglePin(n));lbwrap.appendChild(r);LB[n]={el:r,p:r.querySelector('.p'),v:r.querySelector('.v')};});
 const pinned=new Set();
 function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
@@ -216,7 +216,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);
   const morph=N>1?rank/(N-1):0;f.morph=morph;f.homeY=PAD+morph*(VH-2*PAD)*0.62;
   const sp=rank<3?TOP3[rank]:f.base,metal=rank<3?METAL3[rank]:null,bucket=bucketOf(morph),skin=sp+'|'+bucket+'|'+(metal||'');
   if(skin!==f.skin){f.body.innerHTML=fishSVG(o.n,idx,sp,bucket,metal);f.skin=skin;}
-  f.el.classList.toggle('boss',rank===0);
+  f.el.classList.toggle('boss',rank===0);f.el.classList.toggle('r-silver',rank===1);f.el.classList.toggle('r-bronze',rank===2);
   f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+')';
   f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
   const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;});
@@ -313,10 +313,7 @@ document.getElementById('step-f').onclick=()=>{setPlaying(false);goto(curStep+1,
 document.getElementById('step-b').onclick=()=>{setPlaying(false);resetFX();goto(curStep-1,false);};
 document.getElementById('scrub').oninput=e=>{setPlaying(false);resetFX();goto(+e.target.value,false);};
 const fsBtn=document.getElementById('fs');
-let ctlTimer=null;
-function ctlActivity(){wrap.classList.remove('hidectl');clearTimeout(ctlTimer);const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');if(on)ctlTimer=setTimeout(()=>wrap.classList.add('hidectl'),2600);}
-wrap.addEventListener('mousemove',ctlActivity);
-function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';if(on){ctlActivity();}else{clearTimeout(ctlTimer);wrap.classList.remove('hidectl');}setTimeout(measure,60);}
+function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';setTimeout(measure,60);}
 function fsFallbackOn(){wrap.classList.add('fs-fallback');afterFS();}
 fsBtn.onclick=()=>{const inFS=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');
  if(inFS){if(document.fullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}wrap.classList.remove('fs-fallback');afterFS();}
