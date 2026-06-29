@@ -34,10 +34,13 @@ Google Sheet  --export?format=xlsx-->  build_data.py  -->  data.json  --git push
 
 ## Põhimõisted koodis
 
-- `F[name]` — kala objekt; `cum[name]` — kumulatiivsed punktid; `sizeOf(v)` eksponentskaala.
-- `applyStep(i,eat)` — seis mängu i järel; `triggerFeed(i)` — söök kukub, punkti saajad seek, nulli saajad flee.
-- `celebrateOlle(i)` — eriefekt Olle 2-punkti hetkel. Edetabel reastub ümber; kroon/medal 1.–3.
-- Lipud `flagHTML()` + `FCODE` (EE/PL/EEPL); mängijavärvid `PAL`; mustrid `fishSVG()`. **UI eesti keeles.**
+- `F[name]` — kala objekt (`base`, `skin`, `morph`, `homeY`…); `cum[name]` kumulatiivsed punktid; `sizeOf(v)` eksponentskaala.
+- **Kalaliigid:** `fishSVG(n,idx,species,bucket,metal)` + `speciesShape(sp)` — 6 parameetrilist SVG-keha (piraaja/hai/ahven/karp/räim/mõõkkala), viewBox `-14 0 92 48`, keha tsenter ~(34,24). Baasliik idx-st, **esikolmik koha järgi** (`TOP3`/`METAL3`). `skin`-cache → `body.innerHTML` uueneb AINULT liigi/ilme/metalli muutudes (jõudlus).
+- **Saba = riigilipp:** `flagStops(code)` ehitab vertikaalse gradiendi (horisontaalsed triibud); `FCODE` (EE/PL/**PLEE**=Ola&Kaur). 4-täheline kood = jagatud saba (ülemine pool = 1. riik).
+- **Morfoloogia:** `morph=rank/(N-1)` → `bucket` (ilme: silm/suu) + loop'is keha-droop-rotate + `el.style.filter` kahvatus. Tipp uhke/sirge, põhi longus/kahvatu/kurb.
+- `applyStep(i,eat)` — seis + liigi/morph-uuendus; `triggerFeed(i)` — **lihatükk** kukub, punkti saajad rebivad tüki (`tearPiece`, 2p suurem), `spawnParticles` (pool `PCL`) + `flashTank`.
+- `celebrateOlle(i)` — Olle 2-punkti eriefekt (9.4s, ajatelg pausile via `tick` `if(celebrating)return`). `finale()` — võitja koroneerimine i===LAST.
+- Edetabel reastub ümber; `.boss` (kuld-glow) 1. kohale. Kommentaator + tempo-valik EEMALDATUD (vt Lõksud). **UI eesti keeles.**
 
 ## Deploy / käivitamine
 
@@ -57,11 +60,16 @@ GitHub Pages = "deploy from branch" (main, juur). Push main'i → leht uueneb ~1
 - Sheeti trükivead normaliseeritakse `build_data.py`-s: topelttühikud kokku + `TEAM_TYPO_FIX` (`Hailti`→`Haiti`).
 - Export-URL on **autentimata** (Sheet on link-ligipääsetav). Kui ligipääs muutub privaatseks, build kukub → push'i ei tehta (vana data.json + FALLBACK jäävad).
 - Avalik repo (`aquarium-a26e7382`) — Pages-nõue; URL äraarvamatu (turvalisus läbi varjatuse, nagu trenn).
+- **Auto-täisekraan on brauseris VÕIMATU** (requestFullscreen nõuab kasutaja klõpsu). Default = CSS-pseudo-fullscreen (`fs-fallback`, täidab ekraani, pealkirjad peidus); `⛶`-nupp annab päris Fullscreen API. Ära lisa load'il requestFullscreen — see ei tööta kunagi.
+- Jõudlus: per-frame'is EI tohi panna CSS `filter`-it kõigile kaladele (kahvatus käib `applyStep`-is, harva). Boids/screenshake teadlikult välja jäetud (v2). Particle'id pool'itud (`PCL`).
 
 ## Ajalugu
 
 - 29.06.2026: loodud `~/Downloads/wc2026_aquarium.html`-ist; lisatud dashboardile (`:8080/aquarium/`).
 - 29.06.2026: DATA → `data.json` (Google Sheetist), GitHub Pages deploy, cron-automaatika 15 min.
   Transform verifitseeritud: genereeritud data.json = käsitsi-sisestatud DATA (kõik 9 välja identsed).
+- 29.06.2026: suur visuaalne ümbertegemine (4-disaineri töövoog → süntees → jõudluskriitik): kalaliigid,
+  esikolmik (kuld-piraaja/hõbe-hai/pronks-kiskja), saba-lipud, söögi-rebimine, caustic/sügavus/finaal;
+  eemaldatud kommentaator + tempo-valik.
 
 > Seotud: `~/projects/worldcup-bot/` (sama Sheet + ennustusmäng, botikomponent).
