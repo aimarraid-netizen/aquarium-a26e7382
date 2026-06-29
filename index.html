@@ -79,7 +79,7 @@ white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.55);pointer-events:none;z-i
 .board{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:8px 6px}
 .board h3{font-family:Oswald;font-weight:500;text-transform:uppercase;letter-spacing:.07em;font-size:11px;color:var(--mut2);margin:4px 8px 8px;display:flex;justify-content:space-between}
 .lbwrap{position:relative}
-.lbrow{position:absolute;left:0;right:0;height:30px;display:grid;grid-template-columns:18px 22px 1fr auto;align-items:center;gap:7px;padding:0 8px;border-radius:7px;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.05,.45,1),background .2s}
+.lbrow{position:absolute;left:0;right:0;height:30px;display:grid;grid-template-columns:18px 22px 1fr auto 24px;align-items:center;gap:6px;padding:0 8px;border-radius:7px;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.05,.45,1),background .2s}
 .lbrow:hover{background:rgba(255,255,255,.04)}
 .lbrow.lead{background:rgba(255,213,74,.09)}
 .lbrow.pinned{background:rgba(52,224,196,.1);box-shadow:inset 0 0 0 1px rgba(52,224,196,.3)}
@@ -87,7 +87,9 @@ white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.55);pointer-events:none;z-i
 .lbrow.lead .p{color:var(--gold)}
 .lbrow .dot{width:10px;height:10px;border-radius:50%}
 .lbrow .n{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lbrow .v{font-family:'JetBrains Mono';font-weight:700;font-size:13.5px}
+.lbrow .v{font-family:'JetBrains Mono';font-weight:700;font-size:13.5px;text-align:right}
+.lbrow .chg{font-family:'JetBrains Mono';font-weight:700;font-size:9.5px;text-align:left;line-height:1;white-space:nowrap}
+.lbrow .chg.up{color:#5ee0a0}.lbrow .chg.down{color:#ff7a7a}
 .lbrow.lead .v{color:var(--gold)}
 .pinrow{text-align:center;font-size:12.5px;color:var(--mut);min-height:16px;margin-top:12px}
 .pinrow .ok{color:var(--teal)} .pinrow .no{color:var(--mut2)}
@@ -213,8 +215,8 @@ names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish'
   x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang),vy:Math.sin(ang),sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
 const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height=(N*ROWH)+'px';const LB={};
 names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
- r.innerHTML='<span class="p">–</span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span>';
- r.addEventListener('click',()=>togglePin(n));lbwrap.appendChild(r);LB[n]={el:r,p:r.querySelector('.p'),v:r.querySelector('.v'),nEl:r.querySelector('.n')};});
+ r.innerHTML='<span class="p">–</span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span><span class="chg"></span>';
+ r.addEventListener('click',()=>togglePin(n));lbwrap.appendChild(r);LB[n]={el:r,p:r.querySelector('.p'),v:r.querySelector('.v'),nEl:r.querySelector('.n'),chg:r.querySelector('.chg')};});
 function fitNames(){names.forEach(n=>{const e=LB[n].nEl;if(!e)return;e.style.fontSize='';let fs=12.5,g=0;e.style.fontSize=fs+'px';while(e.scrollWidth>e.clientWidth+0.5&&fs>8&&g++<16){fs-=0.5;e.style.fontSize=fs+'px';}});}
 const pinned=new Set();
 function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
@@ -224,7 +226,7 @@ const TOP3=['piranha','shark','perch'],METAL3=['gold','silver','bronze'],RANKBOO
 function bucketOf(m){return m<0.34?0:m<0.67?1:2;}
 let curStep=LAST,playing=false,speed=1,timer=null,food=null,feedTok=0;
 let celebrating=false,bannerEl=null;const OLLE='Olle & Kätlin';const OLLE_STEP=(ptsByPlayer[OLLE]||[]).findIndex(p=>p===2);
-function applyStep(i,eat){const {a:arr}=rankAt(i);
+function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:null;
  arr.forEach((o,rank)=>{const f=F[o.n];const idx=IDX[o.n];
   f.target=sizeOf(o.v);f.sizeMul=RANKBOOST[rank]||1;
   const morph=N>1?rank/(N-1):0;f.morph=morph;f.homeY=PAD+morph*(VH-2*PAD)*0.62;
@@ -233,7 +235,8 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);
   f.el.classList.toggle('boss',rank===0);f.el.classList.toggle('r-silver',rank===1);f.el.classList.toggle('r-bronze',rank===2);
   f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+') blur('+(morph>0.55?((morph-0.55)*1.5).toFixed(2):'0')+'px)';
   f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
-  const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;});
+  const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;
+  const dch=prevM?(prevM[o.n]-rank):0;if(L.chg){if(dch>0){L.chg.textContent='▲'+dch;L.chg.className='chg up';}else if(dch<0){L.chg.textContent='▼'+(-dch);L.chg.className='chg down';}else{L.chg.textContent='';L.chg.className='chg';}}});
  document.getElementById('b-step').textContent=(i+1)+'/'+nMatches;renderPin();
  const sb=document.getElementById('scrub');sb.value=i;sb.style.setProperty('--p',(i/LAST*100)+'%');
  if(eat) triggerFeed(i);
