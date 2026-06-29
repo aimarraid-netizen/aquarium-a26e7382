@@ -191,10 +191,10 @@ function rankBadge(metal,vx,vy,vw,vh){
   return '<g transform="translate('+x+','+y+') scale('+u+')"><path d="M-7 10 L-8 1 L-3 5 L0 -2 L3 5 L8 1 L7 10 Z" fill="#ffd54a" stroke="#9a7b1a" stroke-width=".7"/><circle cx="0" cy="2" r="1.5" fill="#ff5b6b"/><circle cx="-5" cy="3" r="1.1" fill="#5ec9f2"/><circle cx="5" cy="3" r="1.1" fill="#5ec9f2"/></g>';}
  const x=(vx+vw*0.66).toFixed(1),y=(vy+vh*0.56).toFixed(1);
  const disc=metal==='silver'?'#e6eef3':'#cd8442',rim=metal==='silver'?'#7d92a2':'#7a4717',num=metal==='silver'?'2':'3';
- return '<g transform="translate('+x+','+y+') scale('+u+')"><path d="M-3 -7 L-1.4 1 L1.4 1 L3 -7 Z" fill="#b23b3b" stroke="#7a2424" stroke-width=".4"/><circle cx="0" cy="4.4" r="3.7" fill="'+disc+'" stroke="'+rim+'" stroke-width="1"/><text x="0" y="6.3" text-anchor="middle" font-family="Oswald,Arial,sans-serif" font-weight="700" font-size="5.4" fill="'+rim+'">'+num+'</text></g>';
+ return '<g transform="translate('+x+','+y+') scale('+u+')"><path d="M-3 -7 L-1.4 1 L1.4 1 L3 -7 Z" fill="#b23b3b" stroke="#7a2424" stroke-width=".4"/><circle cx="0" cy="4.4" r="3.7" fill="'+disc+'" stroke="'+rim+'" stroke-width="1"/><g class="mnum"><text x="0" y="6.3" text-anchor="middle" font-family="Oswald,Arial,sans-serif" font-weight="700" font-size="5.4" fill="'+rim+'">'+num+'</text></g></g>';
 }
 function customFish(n,idx,sp,bucket,metal){
- const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5),code=FCODE[n]||'PL';
+ const c=COL[n],code=FCODE[n]||'PL',dk=metal?shade(METAL[metal][2],0.06):shade(c,-0.34),lt=metal?METAL[metal][0]:shade(c,0.5);
  const t=CUSTOM[sp];const vb=((t.match(/viewBox="([^"]+)"/)||[])[1])||'-14 0 92 48';
  const p=vb.split(/[\s,]+/).map(Number),vx=p[0]||0,vy=p[1]||0,vw=p[2]||92,vh=p[3]||48;
  let inner=t.replace(/<\?xml[\s\S]*?\?>/i,'').replace(/<!DOCTYPE[\s\S]*?>/i,'').replace(/^[\s\S]*?<svg[^>]*>/i,'').replace(/<\/svg>[\s\S]*$/i,'').replace(/<!--[\s\S]*?-->/g,'');
@@ -209,7 +209,7 @@ function customFish(n,idx,sp,bucket,metal){
 }
 function fishSVG(n,idx,sp,bucket,metal){
  if(CUSTOM[sp])return customFish(n,idx,sp,bucket,metal);
- const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5);const code=FCODE[n]||'PL';const sh=speciesShape(sp);
+ const c=COL[n],code=FCODE[n]||'PL',dk=metal?shade(METAL[metal][2],0.06):shade(c,-0.34),lt=metal?METAL[metal][0]:shade(c,0.5);const sh=speciesShape(sp);
  const bellyCol=metal?'rgba(255,255,255,.4)':lt;const bodyFill=metal?'url(#bd'+idx+')':'url(#bg'+idx+')';
  const dorsalCol=metal?shade(METAL[metal][2],0.12):dk;
  const tail=sp==='shark'?'M16 24 L-11 6 L-2 24 L-10 40 Z':'M16 24 L-10 12 L-3 24 L-10 36 Z';
@@ -252,7 +252,7 @@ names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish'
  const ang=Math.random()*Math.PI*2;
  F[n]={el:d,body:d.querySelector('.body'),dizzyEl:d.querySelector('.dizzy'),lab:d.querySelector('.lab'),pop:d.querySelector('.pop'),burst:d.querySelector('.burst'),
   base:base,skin:base+'|1|',morph:1,homeY:VH/2,
-  x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang),vy:Math.sin(ang),sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
+  x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang)*.4,vy:Math.sin(ang)*.4,head:ang,phase:Math.random()*6.283,sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
 const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height=(N*ROWH)+'px';const LB={};
 names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
  r.innerHTML='<span class="p">–</span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span><span class="chg"></span>';
@@ -262,7 +262,7 @@ const pinned=new Set();
 function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
  document.getElementById('tank').classList.toggle('dim',pinned.size>0);
  names.forEach(m=>{F[m].el.classList.toggle('pinned',pinned.has(m));LB[m].el.classList.toggle('pinned',pinned.has(m));});renderPin();}
-const TOP3=['piranha','shark','perch'],METAL3=['gold','silver','bronze'],RANKBOOST=[1.32,1.22,1.14];
+const TOP3=['shark','shark','shark'],METAL3=['gold','silver','bronze'],RANKBOOST=[1.32,1.22,1.14];
 function bucketOf(m){return m<0.34?0:m<0.67?1:2;}
 let curStep=LAST,playing=false,speed=1,timer=null,food=null,feedTok=0;
 let celebrating=false,bannerEl=null;const OLLE='Olle & Kätlin';const OLLE_STEP=(ptsByPlayer[OLLE]||[]).findIndex(p=>p===2);
@@ -273,7 +273,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:
   let sp,metal=null;if(rank<3){sp=TOP3[rank];metal=METAL3[rank];}else if(rank>=N-3){sp='deadfish';}else{sp=f.base;}
   const dead=rank>=N-3;f.dead=dead;if(dead){f.sizeMul=0.72;f.homeY=VH-PAD-4;}
   const bucket=bucketOf(morph),skin=sp+'|'+bucket+'|'+(metal||'');
-  if(skin!==f.skin){f.body.innerHTML=fishSVG(o.n,idx,sp,bucket,metal);f.skin=skin;}
+  if(skin!==f.skin){f.body.innerHTML=fishSVG(o.n,idx,sp,bucket,metal);f.skin=skin;f.mnum=f.body.querySelector('.mnum');f.mnumFlip=null;}
   f.el.classList.toggle('boss',rank===0);f.el.classList.toggle('r-silver',rank===1);f.el.classList.toggle('r-bronze',rank===2);
   f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+') blur('+(morph>0.55?((morph-0.55)*1.5).toFixed(2):'0')+'px)';
   f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
@@ -344,19 +344,35 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
    if(celebrating&&n===OLLE){const cx=VW/2,cy=VH/2;f.x+=(cx-f.x)*0.10*dt;f.y+=(cy-f.y)*0.10*dt;f.y+=Math.sin(now/220)*0.7*dt;if(Math.abs(cx-f.x)>4)f.flip=(cx-f.x)>0?1:-1;}
    else if(dz){f.vx+=(Math.random()-.5)*.34;f.vy+=(Math.random()-.5)*.34;const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;f.x+=f.vx*f.sp*0.6*dt;f.y+=f.vy*f.sp*0.6*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
    else if(f.dead){f.vx+=(Math.random()-.5)*.03;f.vx=Math.max(-1,Math.min(1,f.vx));f.x+=f.vx*0.35*dt;f.y+=Math.min(0.9,(f.homeY-f.y)*0.05)*dt+Math.sin(now/1100+f.x)*0.05*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
-   else{if(f.seek){const dx=f.seek.x-f.x,dy=f.seek.y-f.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.32;f.vy+=dy/d*0.32;}
-    else if(f.flee){const dx=f.x-f.flee.x,dy=f.y-f.flee.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.34;f.vy+=dy/d*0.34;}
-    else{f.vx+=(Math.random()-.5)*(f.dead?.02:.06);f.vy+=(Math.random()-.5)*(f.dead?.02:.05)+(f.homeY-f.y)*(f.dead?0.006:0.0006);}
-    const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;
-    const slow=1-(f.size-MINR)/(MAXR-MINR)*.5;const v=f.sp*slow*1.6*(f.boost||1)*(f.dead?0.15:1);
-    f.x+=f.vx*v*dt;f.y+=f.vy*v*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
+   else{const slow=1-(f.size-MINR)/(MAXR-MINR)*.5;const vmax=f.sp*slow*1.6*(f.boost||1);
+    let dvx,dvy;                                   // soovitud kiirus
+    if(f.seek){const dx=f.seek.x-f.x,dy=f.seek.y-f.y,d=Math.hypot(dx,dy)||1;dvx=dx/d*vmax;dvy=dy/d*vmax;}
+    else if(f.flee){const dx=f.x-f.flee.x,dy=f.y-f.flee.y,d=Math.hypot(dx,dy)||1;dvx=dx/d*vmax;dvy=dy/d*vmax;}
+    else{f.head+=(Math.random()-.5)*0.22*dt;        // sujuv uitamine: pööra kurssi, ära hüppa suunda
+     const pulse=0.5+0.5*Math.sin(now/900+f.phase); // hoog → libisemine → hoog
+     const cruise=vmax*(0.32+0.55*pulse);
+     let hx=Math.cos(f.head),hy=Math.sin(f.head)+(f.homeY-f.y)*0.006; // sügavus-tõmme kodukihti
+     const hm=Math.hypot(hx,hy)||1;dvx=hx/hm*cruise;dvy=hy/hm*cruise;}
+    if(f.x<PAD+60)dvx+=(PAD+60-f.x)/60*vmax*0.9;    // pehmed seinad: pööra enne põiget eemale
+    else if(f.x>VW-PAD-60)dvx-=(f.x-(VW-PAD-60))/60*vmax*0.9;
+    if(f.y<PAD+40)dvy+=(PAD+40-f.y)/40*vmax*0.9;
+    else if(f.y>VH-PAD-40)dvy-=(f.y-(VH-PAD-40))/40*vmax*0.9;
+    let spx=0,spy=0;for(const o of names){if(o===n)continue;const g=F[o];if(g.dead)continue;const ax=f.x-g.x,ay=f.y-g.y,d2=ax*ax+ay*ay,R=(f.size+g.size)*0.55+16;if(d2<R*R&&d2>0.1){const d=Math.sqrt(d2);spx+=ax/d*(R-d)/R;spy+=ay/d*(R-d)/R;}}
+    dvx+=spx*vmax*0.85;dvy+=spy*vmax*0.85;          // eraldumine naabritest (boids-lite)
+    const turn=0.10*dt;f.vx+=(dvx-f.vx)*turn;f.vy+=(dvy-f.vy)*turn; // sujuv kiirendus → dart & glide
+    f.x+=f.vx*dt;f.y+=f.vy*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
    if(f.x<PAD){f.x=PAD;f.vx=Math.abs(f.vx);wallHit(f);}if(f.x>VW-PAD){f.x=VW-PAD;f.vx=-Math.abs(f.vx);wallHit(f);}
    if(f.y<PAD){f.y=PAD;f.vy=Math.abs(f.vy);wallHit(f);}if(f.y>VH-PAD){f.y=VH-PAD;f.vy=-Math.abs(f.vy);wallHit(f);}
   }
   f.size+=(f.target*(f.sizeMul||1)-f.size)*0.08*dt;
   const px=f.x*sx,py=f.y*sy,k=(f.size*sx)/80,bw=f.size*sx,half=bw*0.27;
   f.el.style.left=px+'px';f.el.style.top=py+'px';
-  const droop=dz?((now/2)%360):(f.flip*((f.morph-0.15)*14));
+  const spd=Math.hypot(f.vx,f.vy);                       // saba vehib kiirusega: kiire = sage, seisev = laisk
+  const wag=Math.max(.30,Math.min(1.15,1.15-spd*0.55));
+  if(Math.abs((f.wag||0)-wag)>0.06){f.wag=wag;f.el.style.setProperty('--wag',wag.toFixed(2)+'s');}
+  const bank=(dz||f.dead)?0:Math.max(-22,Math.min(22,f.vy*12))*f.flip; // kallutus üles/alla ujudes
+  const droop=dz?((now/2)%360):(f.flip*((f.morph-0.15)*14)+bank);
+  if(f.mnum&&f.flip!==f.mnumFlip){f.mnum.setAttribute('transform',f.flip<0?'scale(-1,1)':'scale(1,1)');f.mnumFlip=f.flip;} // medali number alati õigetpidi, ka vasakule ujudes
   f.body.style.transform='translate(-50%,-50%) scaleX('+f.flip+') scale(1,'+(f.dead?-1:1)+') rotate('+droop.toFixed(1)+'deg) scale('+k.toFixed(3)+')';
   f.dizzyEl.style.transform='translate(-50%,-50%) translateY('+(-(half+13)).toFixed(0)+'px)';
   f.lab.style.top=(half*0.6+2).toFixed(0)+'px';f.lab.style.left='0';
