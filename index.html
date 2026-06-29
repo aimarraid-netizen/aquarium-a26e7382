@@ -14,7 +14,24 @@ color:var(--txt);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:a
 .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
 h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:clamp(20px,3.6vw,27px);margin:0 0 4px}
 .psub{color:var(--mut);font-size:13px;margin:0 0 14px}
-.comm{font-size:13.5px;color:var(--txt);text-align:center;min-height:20px;margin:0 0 10px;line-height:1.4}
+/* sügavus + caustic + söögi-FX */
+.rays2{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.10;background:repeating-linear-gradient(76deg,transparent 0 80px,rgba(150,220,255,.4) 80px 84px,transparent 84px 180px);animation:caustic2 21s linear infinite}
+.deep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(150,215,245,.07) 0%,transparent 28%,transparent 56%,rgba(3,12,22,.55) 100%)}
+@keyframes caustic{from{background-position:0 0}to{background-position:240px 64px}}
+@keyframes caustic2{from{background-position:0 0}to{background-position:-220px 90px}}
+.fmeta{font-family:'JetBrains Mono';font-size:11px;color:var(--txt);white-space:nowrap}.fmeta b{color:var(--gold)}
+.food .chunk{line-height:0;display:block}
+.chunkpiece{position:absolute;left:0;top:0;transform:translate(-50%,-50%);pointer-events:none;z-index:6;line-height:0;transition:left .45s cubic-bezier(.4,1.1,.5,1),top .45s cubic-bezier(.4,1.1,.5,1),opacity .42s ease-in,transform .45s}
+.pcl{position:absolute;left:0;top:0;width:7px;height:7px;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0;z-index:7;will-change:transform,opacity}
+.pcl.go{animation:pclb .7s ease-out forwards}
+@keyframes pclb{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.25)}}
+.tank.flash{animation:tankflash .5s ease-out}
+@keyframes tankflash{0%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 0 rgba(255,150,70,0)}30%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 7px rgba(255,150,70,.45)}100%{box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 0 0 0 rgba(255,150,70,0)}}
+.fish.boss .body{filter:drop-shadow(0 0 12px var(--gold)) drop-shadow(0 0 5px var(--gold))}
+.wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 200px}
+.wrap.fs-fallback .transport,.wrap:fullscreen .transport{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);width:min(700px,94vw);margin:0;z-index:10000;background:rgba(10,26,38,.82);backdrop-filter:blur(6px);transition:opacity .45s}
+.wrap.fs-fallback.hidectl .transport,.wrap:fullscreen.hidectl .transport{opacity:0;pointer-events:none}
+.wrap.fs-fallback.hidectl,.wrap:fullscreen.hidectl{cursor:none}
 .arena{display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start}
 @media(max-width:760px){.arena{grid-template-columns:1fr}}
 .flagico{display:inline-block;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.45);width:17px;height:11px;vertical-align:middle}
@@ -23,7 +40,7 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 .flagpair .flagico{width:48%}
 .tank{position:relative;width:100%;height:480px;border-radius:16px;overflow:hidden;border:1px solid var(--line2);
 background:linear-gradient(180deg,#0e3a52 0%,#0a2c44 45%,#071f31 100%);box-shadow:inset 0 0 80px rgba(0,0,0,.45)}
-.rays{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.18;background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(180,235,255,.5) 60px 64px,transparent 64px 150px)}
+.rays{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.18;background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(180,235,255,.5) 60px 64px,transparent 64px 150px);animation:caustic 16s linear infinite}
 .sand{position:absolute;left:0;right:0;bottom:0;height:50px;background:linear-gradient(180deg,transparent,rgba(90,120,80,.35) 40%,rgba(70,95,60,.55));border-radius:0 0 16px 16px}
 .weed{position:absolute;bottom:32px;width:18px;transform-origin:bottom center;background:linear-gradient(180deg,transparent,rgba(60,170,120,.45));border-radius:50% 50% 8px 8px;animation:sway 5s ease-in-out infinite}
 @keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(7deg)}}
@@ -99,17 +116,15 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 </style></head>
 <body><div class="wrap">
 <h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
-<p class="psub">Iga osaleja on kala (lipp keha peal). Iga mäng kukub akvaariumi söögina ⚽ — kalad rabavad, mõni saab 2 p, mõni 1, mõni mitte midagi. Õigesti pakkunu kasvab. Kliki kalal või edetabelil → spotlight.</p>
-<div class="comm" id="comm">🌊 –</div>
+<p class="psub">Iga osaleja on kala — eri liik ja saba-lipp näitavad teda. Iga mäng kukub söögitükina; õigesti pakkunu rebib tüki ja kasvab, 2 punkti = suurem tükk. Esikolmik tõuseb tippu: 🥇 kuld-piraaja · 🥈 hõbe-hai · 🥉 pronks-kiskja. Kliki kalal või edetabelil → spotlight.</p>
 <div class="arena">
- <div class="tank" id="tank"><div class="rays"></div><div class="sand"></div><div id="fishlayer"></div></div>
+ <div class="tank" id="tank"><div class="rays"></div><div class="rays2"></div><div class="deep"></div><div class="sand"></div><div id="fishlayer"></div></div>
  <div class="board" id="board"><h3><span>Edetabel</span><span id="b-step" class="mono">–/–</span></h3><div class="lbwrap" id="lbwrap"></div></div>
 </div>
 <div class="pinrow" id="pin"></div>
 <div class="transport"><div class="tr-row">
  <button class="ctl primary" id="play">▶ Söötmine</button><button class="ctl" id="restart">⟲ Algusest</button>
  <button class="ctl" id="step-b">◀</button><button class="ctl" id="step-f">▶</button><button class="ctl" id="fs">⛶ Täisekraan</button>
- <div class="spd" id="spd"><span class="lbl">tempo</span><button data-s="1" class="on">Aeglane</button><button data-s="2">Keskmine</button><button data-s="4">Kärme</button></div>
 </div><div class="scrub"><input type="range" id="scrub" min="0" max="0" value="0"><div class="ticks" id="ticks"></div></div></div>
 <div class="hint">Kala suurus = kumulatiivsed punktid (eksponentskaala). Maailmameistri 5 p pole veel jagatud.</div>
 </div>
@@ -135,29 +150,53 @@ const GMAX=Math.max(...names.map(n=>cum[n][LAST]));
 const rankAt=i=>{const a=names.map(n=>({n,v:cum[n][i]}));a.sort((x,y)=>y.v-x.v||x.n.localeCompare(y.n));const m={};a.forEach((o,r)=>m[o.n]=r);return {a,m};};
 const MINR=12,MAXR=138,EXP=2.6;const sizeOf=v=> MINR+(MAXR-MINR)*Math.pow(v/GMAX,EXP);
 function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;const f=t=>Math.max(0,Math.min(255,Math.round(p<0?t*(1+p):t+(255-t)*p)));return '#'+((1<<24)+(f(r)<<16)+(f(g)<<8)+f(b)).toString(16).slice(1);}
-function fishSVG(c,idx){
- const dk=shade(c,-0.32),lt=shade(c,0.5);const ry=12+(idx%3)*2;const cl='cl'+idx;const pat=idx%5;
- let inner;
- if(pat===0) inner='<ellipse cx="30" cy="29" rx="22" ry="7" fill="'+lt+'" opacity=".55"/>';
- else if(pat===1) inner='<g fill="'+dk+'" opacity=".5"><rect x="20" y="4" width="5" height="40"/><rect x="31" y="4" width="5" height="40"/><rect x="42" y="4" width="5" height="40"/></g>';
- else if(pat===2) inner='<g fill="'+lt+'" opacity=".8"><circle cx="26" cy="20" r="3.2"/><circle cx="38" cy="28" r="3"/><circle cx="30" cy="30" r="2.6"/><circle cx="45" cy="19" r="2.6"/><circle cx="20" cy="27" r="2.3"/></g>';
- else if(pat===3) inner='<rect x="0" y="8" width="70" height="16" fill="'+dk+'" opacity=".45"/>';
- else inner='<path d="M6 24 q10 -7 20 0 t20 0 t20 0" stroke="'+dk+'" stroke-width="3" fill="none" opacity=".55"/><ellipse cx="30" cy="31" rx="20" ry="6" fill="'+lt+'" opacity=".4"/>';
- const tail=(idx%2)?'<polygon points="12,24 -12,8 0,24 -12,40" fill="'+c+'"/>':'<polygon points="14,24 -12,9 -12,39" fill="'+c+'" opacity=".92"/>';
- const fin='<polygon points="30,'+(24-ry)+' 47,'+(24-ry)+' 38,'+(24-ry-9)+'" fill="'+dk+'" opacity=".75"/>';
- return '<svg viewBox="-14 0 92 48" width="80" xmlns="http://www.w3.org/2000/svg">'
-  +'<defs><clipPath id="'+cl+'"><ellipse cx="34" cy="24" rx="30" ry="'+ry+'"/></clipPath></defs>'
-  +tail+'<ellipse cx="34" cy="24" rx="30" ry="'+ry+'" fill="'+c+'"/>'
-  +'<g clip-path="url(#'+cl+')">'+inner+'</g>'+fin
-  +'<circle cx="54" cy="20" r="4.5" fill="#fff"/><circle cx="55.6" cy="20" r="2.3" fill="#0a1a26"/>'
-  +'<path d="M40 24 q6 4 12 0" stroke="rgba(0,0,0,.22)" stroke-width="1.4" fill="none"/></svg>';
+const IDX={};names.forEach((n,i)=>IDX[n]=i);
+// riigivärvid — saba kannab lippu (vertikaalne gradient = horisontaalsed triibud)
+const COUNTRY={EE:['#0a64c8','#10151b','#f3f6f8'],PL:['#f3f6f8','#d8203a']};
+function flagBands(cols,lo,hi){let s='';const n=cols.length;cols.forEach((col,i)=>{const a=lo+(hi-lo)*i/n,b=lo+(hi-lo)*(i+1)/n;s+='<stop offset="'+(a*100).toFixed(1)+'%" stop-color="'+col+'"/><stop offset="'+(b*100).toFixed(1)+'%" stop-color="'+col+'"/>';});return s;}
+function flagStops(code){if(code&&code.length===4)return flagBands(COUNTRY[code.slice(0,2)]||COUNTRY.PL,0,0.5)+flagBands(COUNTRY[code.slice(2)]||COUNTRY.EE,0.5,1);return flagBands(COUNTRY[code]||COUNTRY.PL,0,1);}
+const METAL={gold:['#fff6cf','#ffd54a','#b8860b'],silver:['#ffffff','#cfe0ec','#8aa0b0'],bronze:['#ffd9a8','#c87b32','#7a3f12']};
+function metalStops(m){return '<stop offset="0%" stop-color="'+m[0]+'"/><stop offset="48%" stop-color="'+m[1]+'"/><stop offset="100%" stop-color="'+m[2]+'"/>';}
+// liigi-siluetid — viewBox "-14 0 92 48", keha tsenter ~(37,24)
+function speciesShape(sp){switch(sp){
+ case 'piranha':return {body:'M16 24 Q16 8 36 7 Q57 8 61 21 L65 24 L60 28 Q57 40 36 41 Q16 40 16 24 Z',dorsal:'<polygon points="28,9 44,9 35,1"/>',belly:'<path d="M22 33 Q37 40 56 30" fill="BELLY" opacity=".5"/>',teeth:'<path d="M57 27 l2 3 l2 -2.5 l2 3 l2 -2.5 l1.6 2.6" fill="none" stroke="#fff" stroke-width="1.3"/>'};
+ case 'shark':return {body:'M14 24 Q22 15 46 16 Q62 17 67 24 Q62 31 46 32 Q22 33 14 24 Z',dorsal:'<polygon points="33,16 47,16 35,3"/>',belly:'<path d="M22 30 Q44 35 62 27" fill="BELLY" opacity=".45"/>',fin:'<polygon points="40,30 50,30 44,38" fill="DK" opacity=".7"/>'};
+ case 'perch':return {body:'M15 24 Q16 12 37 11 Q58 12 61 24 Q58 36 37 37 Q16 36 15 24 Z',dorsal:'<path d="M25 11 l2 -7 l2 6 l2 -7 l2 6 l2 -6 l2 6 l2 -5 l2 5 Z"/>',belly:'<path d="M22 32 Q37 38 56 31" fill="BELLY" opacity=".45"/>',bars:'<g fill="DK" opacity=".4"><rect x="28" y="13" width="3" height="22"/><rect x="37" y="12" width="3" height="24"/><rect x="46" y="13" width="3" height="22"/></g>'};
+ case 'herring':return {body:'M15 24 Q18 17 39 16 Q58 17 62 24 Q58 31 39 32 Q18 31 15 24 Z',dorsal:'<polygon points="34,16 44,16 38,9"/>',belly:'<path d="M22 29 Q40 34 58 27" fill="BELLY" opacity=".5"/>'};
+ case 'sword':return {body:'M15 24 Q18 16 40 15 Q56 16 61 23 L78 22 L61 25 Q56 32 40 33 Q18 32 15 24 Z',dorsal:'<polygon points="33,15 45,15 36,7"/>',belly:'<path d="M22 29 Q40 34 56 27" fill="BELLY" opacity=".45"/>'};
+ default:return {body:'M14 24 Q15 11 37 10 Q60 11 63 24 Q60 37 37 38 Q15 37 14 24 Z',dorsal:'<path d="M30 10 Q37 1 46 11 Z"/>',belly:'<path d="M22 33 Q37 40 58 31" fill="BELLY" opacity=".5"/>'};
+}}
+function fishSVG(n,idx,sp,bucket,metal){
+ const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5);const code=FCODE[n]||'PL';const sh=speciesShape(sp);
+ const bellyCol=metal?'rgba(255,255,255,.4)':lt;const bodyFill=metal?'url(#bd'+idx+')':c;
+ const dorsalCol=metal?shade(METAL[metal][2],0.12):dk;
+ const tail=sp==='shark'?'M16 24 L-11 6 L-2 24 L-10 40 Z':'M16 24 L-10 12 L-3 24 L-10 36 Z';
+ const eyeR=(4.9-bucket*0.9).toFixed(2),pupY=(20+bucket*1.4).toFixed(1),mctl=(bucket===0?20:bucket===1?25:30);
+ let s='<svg viewBox="-14 0 92 48" width="80" xmlns="http://www.w3.org/2000/svg"><defs>';
+ s+='<linearGradient id="tl'+idx+'" x1="0" y1="0" x2="0" y2="1">'+flagStops(code)+'</linearGradient>';
+ if(metal) s+='<linearGradient id="bd'+idx+'" x1="0" y1="0" x2="0" y2="1">'+metalStops(METAL[metal])+'</linearGradient>';
+ s+='</defs>';
+ s+='<path d="'+tail+'" fill="url(#tl'+idx+')" stroke="rgba(0,0,0,.28)" stroke-width=".7"/>';
+ s+='<g fill="'+dorsalCol+'" opacity=".85">'+sh.dorsal+'</g>';
+ if(sh.fin) s+=sh.fin.replace('DK',dk);
+ s+='<path d="'+sh.body+'" fill="'+bodyFill+'" stroke="rgba(0,0,0,.18)" stroke-width=".6"/>';
+ s+=(sh.belly||'').replace('BELLY',bellyCol);
+ if(sh.bars) s+=sh.bars.replace('DK',dk);
+ s+='<circle cx="54" cy="20" r="'+eyeR+'" fill="#fff"/><circle cx="55.3" cy="'+pupY+'" r="'+(eyeR*0.5).toFixed(2)+'" fill="#0a1a26"/><circle cx="52.6" cy="18.4" r="0.9" fill="#fff" opacity=".9"/>';
+ s+='<path d="M57 25 Q62 '+mctl+' 66 24.5" stroke="rgba(0,0,0,.45)" stroke-width="1.5" fill="none"/>';
+ if(sh.teeth) s+=sh.teeth;
+ if(metal==='gold'&&sp==='piranha') s+='<g><path d="M48 9 L47 2 L52 5 L54 0 L56 5 L61 2 L60 9 Z" fill="#ffd54a" stroke="#9a7b1a" stroke-width=".6"/><circle cx="54" cy="2.2" r="1.4" fill="#ff5b6b"/><circle cx="50" cy="3.4" r="1" fill="#5ec9f2"/><circle cx="58" cy="3.4" r="1" fill="#5ec9f2"/></g>';
+ return s+'</svg>';
 }
 const layer=document.getElementById('fishlayer');const F={};
+const BASES=['carp','herring','sword'];
 names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish';d.dataset.n=n;
- d.innerHTML='<div class="body">'+fishSVG(COL[n],idx)+'</div><span class="rankic"></span><span class="dizzy">💫</span><span class="flag">'+flagHTML(n)+'</span><div class="lab">'+n+'</div><div class="pop"></div><div class="burst"></div>';
+ const base=BASES[idx%3];
+ d.innerHTML='<div class="body">'+fishSVG(n,idx,base,1,null)+'</div><span class="dizzy">💫</span><div class="lab">'+n+'</div><div class="pop"></div><div class="burst"></div>';
  d.addEventListener('click',()=>togglePin(n));layer.appendChild(d);
  const ang=Math.random()*Math.PI*2;
- F[n]={el:d,body:d.querySelector('.body'),rankic:d.querySelector('.rankic'),dizzyEl:d.querySelector('.dizzy'),flag:d.querySelector('.flag'),lab:d.querySelector('.lab'),pop:d.querySelector('.pop'),burst:d.querySelector('.burst'),pair:FCODE[n]==='EEPL',
+ F[n]={el:d,body:d.querySelector('.body'),dizzyEl:d.querySelector('.dizzy'),lab:d.querySelector('.lab'),pop:d.querySelector('.pop'),burst:d.querySelector('.burst'),
+  base:base,skin:base+'|1|',morph:1,homeY:VH/2,
   x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang),vy:Math.sin(ang),sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
 const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height=(N*ROWH)+'px';const LB={};
 names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
@@ -167,54 +206,59 @@ const pinned=new Set();
 function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
  document.getElementById('tank').classList.toggle('dim',pinned.size>0);
  names.forEach(m=>{F[m].el.classList.toggle('pinned',pinned.has(m));LB[m].el.classList.toggle('pinned',pinned.has(m));});renderPin();}
-function commentary(i){const {a:arr,m}=rankAt(i);const prev=i>0?rankAt(i-1).m:m;
- const exact=names.filter(n=>ptsByPlayer[n][i]===2);const scorers=names.filter(n=>ptsByPlayer[n][i]>0);
- const lead=arr[0],second=arr[1],last=arr[arr.length-1],gap=lead.v-second.v;
- let climber=null,best=0;names.forEach(n=>{const d=prev[n]-m[n];if(d>best){best=d;climber=n;}});
- const ml=matchLabels[i],pool=[];
- if(exact.length) pool.push('🎯 '+exact[0]+' õgib täppistabamuse '+ml.r+' ja paisub silmade ees!');
- if(best>=3&&climber) pool.push('🐟💨 '+climber+' sööb end '+best+' koha võrra ette!');
- if(gap===0) pool.push('📸 '+lead.n+' ja '+second.n+' sama suured — ninapidi ujumas!');
- else if(gap>=6) pool.push('🐋 '+lead.n+' on akvaariumi vaal — '+gap+' p ees.');
- if(scorers.length===0) pool.push('🫧 '+ml.m+': söök jäi püüdmata, kõhud korisevad.');
- if(scorers.length>=8) pool.push('🍽️ '+scorers.length+' kala korraga söömas — veepind keeb!');
- if(i===LAST) pool.push('🏁 Alagrupid läbi: '+lead.n+' on suurim kala ('+lead.v+' p).');
- if(i%7===3) pool.push('🐠 '+last.n+' on veel kalapoeg ('+last.v+' p), aga kasvab veel.');
- if(!pool.length) pool.push('🌊 '+ml.m+' '+ml.r+' — '+lead.n+' hoiab suurimat uime.');
- return pool[i%pool.length];}
+const TOP3=['piranha','shark','perch'],METAL3=['gold','silver','bronze'],RANKBOOST=[1.32,1.22,1.14];
+function bucketOf(m){return m<0.34?0:m<0.67?1:2;}
 let curStep=LAST,playing=false,speed=1,timer=null,food=null,feedTok=0;
 let celebrating=false,bannerEl=null;const OLLE='Olle & Kätlin';const OLLE_STEP=(ptsByPlayer[OLLE]||[]).findIndex(p=>p===2);
-const RANKIC=['👑','🥈','🥉'];
 function applyStep(i,eat){const {a:arr}=rankAt(i);
- arr.forEach((o,rank)=>{const f=F[o.n];f.target=sizeOf(o.v);
-  f.rankic.textContent=RANKIC[rank]||'';f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
+ arr.forEach((o,rank)=>{const f=F[o.n];const idx=IDX[o.n];
+  f.target=sizeOf(o.v);f.sizeMul=RANKBOOST[rank]||1;
+  const morph=N>1?rank/(N-1):0;f.morph=morph;f.homeY=PAD+morph*(VH-2*PAD)*0.62;
+  const sp=rank<3?TOP3[rank]:f.base,metal=rank<3?METAL3[rank]:null,bucket=bucketOf(morph),skin=sp+'|'+bucket+'|'+(metal||'');
+  if(skin!==f.skin){f.body.innerHTML=fishSVG(o.n,idx,sp,bucket,metal);f.skin=skin;}
+  f.el.classList.toggle('boss',rank===0);
+  f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+')';
+  f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
   const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;});
- document.getElementById('comm').textContent=commentary(i);
  document.getElementById('b-step').textContent=(i+1)+'/'+nMatches;renderPin();
  const sb=document.getElementById('scrub');sb.value=i;sb.style.setProperty('--p',(i/LAST*100)+'%');
- if(eat) triggerFeed(i);}
+ if(eat) triggerFeed(i);
+ if(eat&&i===LAST) finale();}
+function finale(){const {a:arr}=rankAt(LAST);const w=arr[0];showBanner('🏆 '+w.n+' — akvaariumi kuningas!');
+ let c=0;const iv=setInterval(()=>{const f=F[w.n];spawnParticles(f.x,f.y,c%2?'#ffd54a':'#fff3b0',7);if(++c>10)clearInterval(iv);},220);}
 function removeFood(){if(food&&food.el&&food.el.parentNode)food.el.parentNode.removeChild(food.el);food=null;}
+const PCL=[];let pclI=0;(function(){const t=document.getElementById('tank');for(let i=0;i<48;i++){const p=document.createElement('div');p.className='pcl';t.appendChild(p);PCL.push(p);}})();
+function spawnParticles(vx,vy,color,n){for(let i=0;i<n;i++){const p=PCL[pclI=(pclI+1)%PCL.length];p.style.background=color;p.style.left=(vx*sx)+'px';p.style.top=(vy*sy)+'px';const a=Math.random()*Math.PI*2,d=14+Math.random()*30;p.style.setProperty('--dx',(Math.cos(a)*d).toFixed(0)+'px');p.style.setProperty('--dy',(Math.sin(a)*d).toFixed(0)+'px');p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}}
+function flashTank(){const t=document.getElementById('tank');t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),520);}
+function chunkSVG(scale){const w=(36*scale).toFixed(0);return '<svg width="'+w+'" height="'+w+'" viewBox="0 0 40 40"><path d="M20 3 L29 7 L37 16 L34 27 L24 36 L12 33 L4 23 L6 11 Z" fill="#9b2d24" stroke="#5e1813" stroke-width="2"/><path d="M16 12 L26 14 L28 23 L18 27 L11 20 Z" fill="#c2443a" opacity=".85"/><circle cx="22" cy="18" r="2.4" fill="#e07a6e" opacity=".7"/></svg>';}
+function tearPiece(P,f,dp,tok){const t=document.getElementById('tank');const e=document.createElement('div');e.className='chunkpiece';e.innerHTML=chunkSVG(dp===2?0.62:0.42);
+ e.style.left=(P.x*sx)+'px';e.style.top=(P.y*sy)+'px';t.appendChild(e);
+ requestAnimationFrame(()=>{if(tok!==feedTok){if(e.parentNode)e.remove();return;}e.style.left=(f.x*sx)+'px';e.style.top=(f.y*sy)+'px';e.style.opacity='0';e.style.transform='translate(-50%,-50%) scale(.3)';});
+ setTimeout(()=>{if(e.parentNode)e.remove();},700);}
 function triggerFeed(i){feedTok++;const tok=feedTok;removeFood();names.forEach(n=>{F[n].seek=null;F[n].flee=null;F[n].boost=1;F[n].panic=false;});
- const ml=matchLabels[i];const P={x:220+Math.random()*460,y:170+Math.random()*210};
+ const ml=matchLabels[i];const P={x:240+Math.random()*420,y:170+Math.random()*200};const big2=names.some(n=>ptsByPlayer[n][i]===2);
  const fd=document.createElement('div');fd.className='food';
- fd.innerHTML='<span class="ball">⚽</span><span>'+ml.m+'</span><span class="res">'+ml.r+'</span>';
+ fd.innerHTML='<span class="chunk">'+chunkSVG(big2?1.25:1)+'</span><span class="fmeta">'+ml.m+' <b>'+ml.r+'</b></span>';
  document.getElementById('tank').appendChild(fd);food={x:P.x,y:-40,ty:P.y,el:fd};
  if(i===OLLE_STEP){celebrateOlle(i);}
- else{names.forEach(n=>{const p=ptsByPlayer[n][i];if(p>0){F[n].seek={x:P.x,y:P.y};F[n].boost=2.6;}else{F[n].flee={x:P.x,y:P.y};F[n].boost=1.8;}});}
+ else{names.forEach(n=>{const p=ptsByPlayer[n][i];if(p>0){F[n].seek={x:P.x,y:P.y};F[n].boost=2.6;}else{F[n].flee={x:P.x,y:P.y};F[n].boost=1.7;}});}
  const D=Math.max(150,640/speed);
- setTimeout(()=>{if(tok!==feedTok)return;
+ setTimeout(()=>{if(tok!==feedTok)return;let bang=false;
    names.forEach(n=>{const dp=ptsByPlayer[n][i];if(dp>0){const f=F[n];
-     f.pop.textContent='⚽+'+dp;f.pop.style.color=dp===2?'var(--gold)':'var(--teal)';
+     f.pop.textContent='+'+dp;f.pop.style.color=dp===2?'var(--gold)':'var(--teal)';
      f.pop.classList.remove('go');void f.pop.offsetWidth;f.pop.classList.add('go');
-     if(dp===2){f.burst.classList.remove('go');void f.burst.offsetWidth;f.burst.classList.add('go');
-       f.el.classList.add('hot');setTimeout(()=>f.el.classList.remove('hot'),750);}}});},D);
+     tearPiece({x:(food?food.x:P.x),y:(food?food.ty:P.y)},f,dp,tok);
+     spawnParticles((food?food.x:P.x),(food?food.ty:P.y),dp===2?'#ffd54a':'#c2443a',dp===2?9:5);
+     if(dp===2){bang=true;f.burst.classList.remove('go');void f.burst.offsetWidth;f.burst.classList.add('go');
+       f.el.classList.add('hot');setTimeout(()=>f.el.classList.remove('hot'),750);}}});
+   if(bang)flashTank();},D);
  setTimeout(()=>{if(tok!==feedTok)return;names.forEach(n=>{F[n].seek=null;F[n].flee=null;F[n].boost=1;F[n].panic=false;});if(food&&food.el)food.el.style.opacity=0;},D+Math.max(350,520/speed));
  setTimeout(()=>{if(tok!==feedTok)return;removeFood();},D+Math.max(750,900/speed));}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;const t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function spawnFW(){const e=document.createElement('div');e.className='fw';e.textContent=Math.random()<.5?'🎆':'🎇';e.style.left=(10+Math.random()*80)+'%';e.style.top=(8+Math.random()*55)+'%';document.getElementById('tank').appendChild(e);setTimeout(()=>{if(e.parentNode)e.remove();},1100);}
 function showBanner(txt){hideBanner();bannerEl=document.createElement('div');bannerEl.className='vamos';bannerEl.textContent=txt;document.getElementById('tank').appendChild(bannerEl);}
 function hideBanner(){if(bannerEl){const b=bannerEl;b.classList.add('out');setTimeout(()=>{if(b.parentNode)b.remove();},500);bannerEl=null;}}
-function resetFX(){celebrating=false;hideBanner();names.forEach(n=>{const f=F[n];f.seek=null;f.flee=null;f.orbit=null;f.panic=false;f.boost=1;f.sizeMul=1;f.dizzyUntil=0;f.el.classList.remove('dizzy','hot');});document.querySelectorAll('.fw').forEach(e=>e.remove());removeFood();}
+function resetFX(){celebrating=false;hideBanner();names.forEach(n=>{const f=F[n];f.seek=null;f.flee=null;f.orbit=null;f.panic=false;f.boost=1;f.sizeMul=1;f.dizzyUntil=0;f.el.classList.remove('dizzy','hot');});document.querySelectorAll('.fw,.chunkpiece').forEach(e=>e.remove());PCL.forEach(p=>p.classList.remove('go'));document.getElementById('tank').classList.remove('flash');removeFood();}
 function celebrateOlle(i){celebrating=true;let k=0;
  names.forEach(n=>{F[n].seek=null;F[n].flee=null;F[n].panic=false;F[n].boost=1;
   if(n!==OLLE){F[n].orbit={r:108+(k%4)*24+Math.random()*14,a:(k/(N-1))*Math.PI*2,spd:0.02+Math.random()*0.012};k++;}});
@@ -242,7 +286,7 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
    else if(dz){f.vx+=(Math.random()-.5)*.34;f.vy+=(Math.random()-.5)*.34;const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;f.x+=f.vx*f.sp*0.6*dt;f.y+=f.vy*f.sp*0.6*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
    else{if(f.seek){const dx=f.seek.x-f.x,dy=f.seek.y-f.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.32;f.vy+=dy/d*0.32;}
     else if(f.flee){const dx=f.x-f.flee.x,dy=f.y-f.flee.y,d=Math.hypot(dx,dy)||1;f.vx+=dx/d*0.34;f.vy+=dy/d*0.34;}
-    else{f.vx+=(Math.random()-.5)*.06;f.vy+=(Math.random()-.5)*.05;}
+    else{f.vx+=(Math.random()-.5)*.06;f.vy+=(Math.random()-.5)*.05+(f.homeY-f.y)*0.0006;}
     const m=Math.hypot(f.vx,f.vy)||1;f.vx/=m;f.vy/=m;
     const slow=1-(f.size-MINR)/(MAXR-MINR)*.5;const v=f.sp*slow*1.6*(f.boost||1);
     f.x+=f.vx*v*dt;f.y+=f.vy*v*dt;if(f.vx>0.02)f.flip=1;else if(f.vx<-0.02)f.flip=-1;}
@@ -252,11 +296,8 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
   f.size+=(f.target*(f.sizeMul||1)-f.size)*0.08*dt;
   const px=f.x*sx,py=f.y*sy,k=(f.size*sx)/80,bw=f.size*sx,half=bw*0.27;
   f.el.style.left=px+'px';f.el.style.top=py+'px';
-  const rot=dz?' rotate('+((now/2)%360).toFixed(0)+'deg)':'';
-  f.body.style.transform='translate(-50%,-50%) scaleX('+f.flip+') scale('+k.toFixed(3)+')'+rot;
-  f.flag.style.width=(f.pair?Math.max(13,Math.min(30,bw*0.34)):Math.max(10,Math.min(22,bw*0.22)))+'px';
-  f.rankic.style.transform='translate(-50%,-50%) translate('+(f.flip*bw*0.15).toFixed(0)+'px,'+(-(half*0.82+3)).toFixed(0)+'px)';
-  f.rankic.style.fontSize=(11+k*3).toFixed(0)+'px';
+  const droop=dz?((now/2)%360):(f.flip*((f.morph-0.15)*14));
+  f.body.style.transform='translate(-50%,-50%) scaleX('+f.flip+') rotate('+droop.toFixed(1)+'deg) scale('+k.toFixed(3)+')';
   f.dizzyEl.style.transform='translate(-50%,-50%) translateY('+(-(half+13)).toFixed(0)+'px)';
   f.lab.style.top=(half*0.6+2).toFixed(0)+'px';f.lab.style.left='0';
   f.pop.style.top=(-(half+15)).toFixed(0)+'px';f.pop.style.left='0';}
@@ -271,9 +312,11 @@ document.getElementById('restart').onclick=()=>{setPlaying(false);resetFX();goto
 document.getElementById('step-f').onclick=()=>{setPlaying(false);goto(curStep+1,true);};
 document.getElementById('step-b').onclick=()=>{setPlaying(false);resetFX();goto(curStep-1,false);};
 document.getElementById('scrub').oninput=e=>{setPlaying(false);resetFX();goto(+e.target.value,false);};
-document.getElementById('spd').onclick=e=>{const b=e.target.closest('button[data-s]');if(!b)return;speed=+b.dataset.s;[...e.currentTarget.querySelectorAll('button')].forEach(c=>c.classList.toggle('on',c===b));};
 const fsBtn=document.getElementById('fs');
-function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';setTimeout(measure,60);}
+let ctlTimer=null;
+function ctlActivity(){wrap.classList.remove('hidectl');clearTimeout(ctlTimer);const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');if(on)ctlTimer=setTimeout(()=>wrap.classList.add('hidectl'),2600);}
+wrap.addEventListener('mousemove',ctlActivity);
+function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';if(on){ctlActivity();}else{clearTimeout(ctlTimer);wrap.classList.remove('hidectl');}setTimeout(measure,60);}
 function fsFallbackOn(){wrap.classList.add('fs-fallback');afterFS();}
 fsBtn.onclick=()=>{const inFS=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');
  if(inFS){if(document.fullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}wrap.classList.remove('fs-fallback');afterFS();}
