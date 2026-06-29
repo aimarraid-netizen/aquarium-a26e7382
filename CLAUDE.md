@@ -35,7 +35,7 @@ Google Sheet  --export?format=xlsx-->  build_data.py  -->  data.json  --git push
 ## Põhimõisted koodis
 
 - `F[name]` — kala objekt (`base`, `skin`, `morph`, `homeY`…); `cum[name]` kumulatiivsed punktid; `sizeOf(v)` eksponentskaala.
-- **Kalaliigid:** `fishSVG(n,idx,species,bucket,metal)` + `speciesShape(sp)` — 6 parameetrilist SVG-keha (piraaja/hai/ahven/karp/räim/mõõkkala), viewBox `-14 0 92 48`, keha tsenter ~(34,24). Baasliik idx-st, **esikolmik koha järgi** (`TOP3`/`METAL3`). `skin`-cache → `body.innerHTML` uueneb AINULT liigi/ilme/metalli muutudes (jõudlus).
+- **Kalaliigid:** `fishSVG(n,idx,species,bucket,metal)` + `speciesShape(sp)` — 6 parameetrilist SVG-keha (piraaja/hai/ahven/karp/räim/mõõkkala), viewBox `-14 0 92 48`, keha tsenter ~(34,24). Baasliik idx-st, **esikolmik koha järgi** (`TOP3`=3× hai, eristub metalli järgi kuld/hõbe/pronks). Custom-art (`fish/shark.svg`) laetakse `CUSTOM`-i; metallkalal tulevad uimed+heledus metalli toonist. `skin`-cache → `body.innerHTML` uueneb AINULT liigi/ilme/metalli muutudes (jõudlus).
 - **Saba = riigilipp:** `flagStops(code)` ehitab vertikaalse gradiendi (horisontaalsed triibud); `FCODE` (EE/PL/**PLEE**=Ola&Kaur). 4-täheline kood = jagatud saba (ülemine pool = 1. riik).
 - **Morfoloogia:** `morph=rank/(N-1)` → `bucket` (ilme: silm/suu) + loop'is keha-droop-rotate + `el.style.filter` kahvatus. Tipp uhke/sirge, põhi longus/kahvatu/kurb.
 - `applyStep(i,eat)` — seis + liigi/morph-uuendus; `triggerFeed(i)` — **lihatükk** kukub, punkti saajad rebivad tüki (`tearPiece`, 2p suurem), `spawnParticles` (pool `PCL`) + `flashTank`.
@@ -71,5 +71,8 @@ GitHub Pages = "deploy from branch" (main, juur). Push main'i → leht uueneb ~1
 - 29.06.2026: suur visuaalne ümbertegemine (4-disaineri töövoog → süntees → jõudluskriitik): kalaliigid,
   esikolmik (kuld-piraaja/hõbe-hai/pronks-kiskja), saba-lipud, söögi-rebimine, caustic/sügavus/finaal;
   eemaldatud kommentaator + tempo-valik.
+- 29.06.2026: ujumis-süsteem ümber (boids-lite eraldumine, dart&glide hoog, sujuv kursipööre, saba vehib kiirusega,
+  kallutus üles/alla); esikolmik = 3× hai (custom `fish/shark.svg`, metall kuld/hõbe/pronks); surnud-räimed kõht ülespidi;
+  **medali number `.mnum`-grupis, loop keerab vasakule ujudes `scale(-1,1)` → number jääb õigetpidi mõlemas suunas.**
 
 > Seotud: `~/projects/worldcup-bot/` (sama Sheet + ennustusmäng, botikomponent).
