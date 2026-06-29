@@ -1,0 +1,26 @@
+<svg viewBox="-14 0 92 48" width="80" xmlns="http://www.w3.org/2000/svg">
+  <!-- NÄIDISMALL — kala vaatab PAREMALE. Kasuta NEID täpseid placeholder-värve ainult
+       värvitavatel osadel; mootor asendab need (lipp/identiteet/metall):
+         #8FB3B8 = KEHA  ·  #3C6CA8 = SABA (lipuvärv)  ·  #2F5358 = uimed/tume  ·  #D6E6E6 = kõhu-hele
+       Silm/suu/kontuur = fikseeritud värvid (jäävad). -->
+
+  <!-- SABA: mähitud .tw-gruppi (vehib); transform-origin saba liigendil (~16,24) -->
+  <g class="tw" style="transform-box:view-box;transform-origin:16px 24px">
+    <path d="M16 24 L-10 11 L-2 24 L-10 37 Z" fill="#3C6CA8" stroke="#1d2e30" stroke-width=".6"/>
+  </g>
+
+  <path d="M30 11 Q38 2 47 12 Z" fill="#2F5358"/>                <!-- seljauim -->
+  <path d="M44 30 Q50 38 40 37 Q42 33 44 30 Z" fill="#2F5358" opacity=".85"/>  <!-- rinnauim -->
+
+  <!-- KEHA -->
+  <path d="M16 24 Q15 10 37 9 Q58 10 63 23 Q63 25 62 26 Q58 38 37 39 Q15 38 16 24 Z"
+        fill="#8FB3B8" stroke="#1d2e30" stroke-width=".7"/>
+  <path d="M24 32 Q40 40 58 30" fill="#D6E6E6" opacity=".5"/>     <!-- kõhu-hele -->
+  <path d="M48 14 Q45 24 48 34" stroke="#1d2e30" stroke-width="1" fill="none" opacity=".4"/> <!-- lõpus -->
+
+  <!-- SILM + SUU (fikseeritud) -->
+  <circle cx="54" cy="20" r="4.6" fill="#fff"/>
+  <circle cx="55.3" cy="20" r="2.2" fill="#0a1a26"/>
+  <circle cx="52.6" cy="18.4" r=".9" fill="#fff"/>
+  <path d="M57 26 Q62 25 66 24" stroke="#1d2e30" stroke-width="1.4" fill="none"/>
+</svg>

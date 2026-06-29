@@ -144,6 +144,9 @@ const FALLBACK_DATA={"names": ["Aimar", "Avo", "Hania", "Herbert", "Janusz", "Ja
 let DATA=FALLBACK_DATA;
 (async()=>{
 try{const _r=await fetch('data.json',{cache:'no-store'});if(_r.ok){const _d=await _r.json();if(_d&&Array.isArray(_d.names)&&_d.names.length){DATA=_d;}}}catch(_e){}
+/* Kohandatud kala-SVG-d: kui fish/<liik>.svg olemas, asendab sisseehitatud kala. Vt fish/SPEC.md. */
+const CUSTOM={};
+try{await Promise.all(['piranha','shark','perch','carp','herring','sword'].map(_sp=>fetch('fish/'+_sp+'.svg',{cache:'no-store'}).then(r=>r.ok?r.text():null).then(tx=>{if(tx&&tx.indexOf('<svg')>=0)CUSTOM[_sp]=tx;}).catch(()=>{})));}catch(_e){}
 const PAL=['#ffd54a','#4cc9f0','#7bed9f','#f78fb3','#b794f6','#ffa552','#5ee0c9','#ff8a8a','#a0c4ff','#ffcf8a','#c8b6ff','#74e0f2','#f4978e','#cfe377','#9bb1ff','#e0a3ff'];
 const FCODE={"Aimar":"EE","Avo":"EE","Hania":"PL","Herbert":"EE","Janusz":"PL","Jaś":"PL","Joanna & Adam":"PL","Magda & Krzysiek":"PL","Mihkel":"EE","Ola & Kaur":"PLEE","Olle & Kätlin":"EE","Paweł":"PL","Piotrek":"PL","Przemek":"PL","Sebastian":"PL","Timo":"EE"};
 function flagOne(cc){
@@ -176,7 +179,24 @@ function speciesShape(sp){switch(sp){
  case 'sword':return {body:'M15 24 Q18 16 40 15 Q56 16 61 23 L78 22 L61 25 Q56 32 40 33 Q18 32 15 24 Z',dorsal:'<polygon points="33,15 45,15 36,7"/>',belly:'<path d="M22 29 Q40 34 56 27" fill="BELLY" opacity=".45"/>'};
  default:return {body:'M14 24 Q15 11 37 10 Q60 11 63 24 Q60 37 37 38 Q15 37 14 24 Z',dorsal:'<path d="M30 10 Q37 1 46 11 Z"/>',belly:'<path d="M22 33 Q37 40 58 31" fill="BELLY" opacity=".5"/>'};
 }}
+function customFish(n,idx,sp,bucket,metal){
+ const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5),code=FCODE[n]||'PL';
+ const t=CUSTOM[sp];const vb=((t.match(/viewBox="([^"]+)"/)||[])[1])||'-14 0 92 48';
+ const p=vb.split(/[\s,]+/).map(Number),vx=p[0]||0,vy=p[1]||0,vw=p[2]||92,vh=p[3]||48;
+ let inner=t.replace(/<\?xml[\s\S]*?\?>/i,'').replace(/<!DOCTYPE[\s\S]*?>/i,'').replace(/^[\s\S]*?<svg[^>]*>/i,'').replace(/<\/svg>[\s\S]*$/i,'').replace(/<!--[\s\S]*?-->/g,'');
+ const bodyPaint=metal?'url(#bd'+idx+')':'url(#bg'+idx+')';
+ inner=inner.replace(/#8FB3B8/gi,bodyPaint).replace(/#3C6CA8/gi,'url(#tl'+idx+')').replace(/#2F5358/gi,dk).replace(/#D6E6E6/gi,lt);
+ let defs='<defs><linearGradient id="tl'+idx+'" x1="0" y1="0" x2="0" y2="1">'+flagStops(code)+'</linearGradient>';
+ defs+=metal?'<linearGradient id="bd'+idx+'" x1="0" y1="0" x2="0" y2="1">'+metalStops(METAL[metal])+'</linearGradient>'
+            :'<linearGradient id="bg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+shade(c,-0.3)+'"/><stop offset="44%" stop-color="'+c+'"/><stop offset="100%" stop-color="'+shade(c,0.34)+'"/></linearGradient>';
+ defs+='</defs>';
+ let crown='';
+ if(metal==='gold'&&sp==='piranha'){const cx=(vx+vw*0.5).toFixed(1),cy=(vy+vh*0.05).toFixed(1),u=(vw/92).toFixed(3);
+  crown='<g transform="translate('+cx+','+cy+') scale('+u+')"><path d="M-6 9 L-7 1 L-2 5 L0 -1 L2 5 L7 1 L6 9 Z" fill="#ffd54a" stroke="#9a7b1a" stroke-width=".6"/><circle cx="0" cy="2" r="1.4" fill="#ff5b6b"/><circle cx="-4" cy="3" r="1" fill="#5ec9f2"/><circle cx="4" cy="3" r="1" fill="#5ec9f2"/></g>';}
+ return '<svg viewBox="'+vb+'" width="80" xmlns="http://www.w3.org/2000/svg">'+defs+inner+crown+'</svg>';
+}
 function fishSVG(n,idx,sp,bucket,metal){
+ if(CUSTOM[sp])return customFish(n,idx,sp,bucket,metal);
  const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5);const code=FCODE[n]||'PL';const sh=speciesShape(sp);
  const bellyCol=metal?'rgba(255,255,255,.4)':lt;const bodyFill=metal?'url(#bd'+idx+')':'url(#bg'+idx+')';
  const dorsalCol=metal?shade(METAL[metal][2],0.12):dk;
