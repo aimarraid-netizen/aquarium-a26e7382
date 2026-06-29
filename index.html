@@ -120,7 +120,7 @@ let DATA=FALLBACK_DATA;
 (async()=>{
 try{const _r=await fetch('data.json',{cache:'no-store'});if(_r.ok){const _d=await _r.json();if(_d&&Array.isArray(_d.names)&&_d.names.length){DATA=_d;}}}catch(_e){}
 const PAL=['#ffd54a','#4cc9f0','#7bed9f','#f78fb3','#b794f6','#ffa552','#5ee0c9','#ff8a8a','#a0c4ff','#ffcf8a','#c8b6ff','#74e0f2','#f4978e','#cfe377','#9bb1ff','#e0a3ff'];
-const FCODE={"Aimar":"EE","Avo":"EE","Hania":"PL","Herbert":"EE","Janusz":"PL","Jaś":"PL","Joanna & Adam":"PL","Magda & Krzysiek":"PL","Mihkel":"EE","Ola & Kaur":"EEPL","Olle & Kätlin":"EE","Paweł":"PL","Piotrek":"PL","Przemek":"PL","Sebastian":"PL","Timo":"EE"};
+const FCODE={"Aimar":"EE","Avo":"EE","Hania":"PL","Herbert":"EE","Janusz":"PL","Jaś":"PL","Joanna & Adam":"PL","Magda & Krzysiek":"PL","Mihkel":"EE","Ola & Kaur":"PLEE","Olle & Kätlin":"EE","Paweł":"PL","Piotrek":"PL","Przemek":"PL","Sebastian":"PL","Timo":"EE"};
 function flagOne(cc){
  if(cc==='EE')return '<span class="flagico"><svg viewBox="0 0 21 14" preserveAspectRatio="none"><rect width="21" height="14" fill="#0072CE"/><rect y="4.667" width="21" height="4.667" fill="#0a0a0a"/><rect y="9.333" width="21" height="4.667" fill="#fff"/></svg></span>';
  return '<span class="flagico"><svg viewBox="0 0 21 14" preserveAspectRatio="none"><rect width="21" height="7" fill="#fff"/><rect y="7" width="21" height="7" fill="#DC143C"/></svg></span>';
@@ -264,7 +264,7 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
 function wallHit(f){}
 const playBtn=document.getElementById('play');
 function setPlaying(p){playing=p;playBtn.textContent=p?'⏸ Paus':'▶ Söötmine';if(p){if(curStep>=LAST)goto(0,false);tick();}else clearTimeout(timer);}
-function tick(){if(!playing)return;if(curStep>=LAST){setPlaying(false);return;}goto(curStep+1,true);timer=setTimeout(tick,1300/speed);}
+function tick(){if(!playing)return;if(curStep>=LAST){setPlaying(false);return;}goto(curStep+1,true);if(celebrating)return;/* tähistamise ajaks ajatelg pausile — celebrateOlle lõpp jätkab ise */timer=setTimeout(tick,1300/speed);}
 function goto(i,eat){curStep=Math.max(0,Math.min(LAST,i));applyStep(curStep,eat);}
 playBtn.onclick=()=>setPlaying(!playing);
 document.getElementById('restart').onclick=()=>{setPlaying(false);resetFX();goto(0,false);};
