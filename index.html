@@ -102,7 +102,7 @@ white-space:nowrap;pointer-events:none;z-index:6;transition:opacity .4s}
 .lbrow.lead .v{color:var(--gold)}
 .pinrow{text-align:center;font-size:12.5px;color:var(--mut);min-height:16px;margin-top:12px}
 .pinrow .ok{color:var(--teal)} .pinrow .no{color:var(--mut2)}
-.transport{border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:14px 16px;margin-top:14px}
+.transport{border:1px solid var(--line);border-radius:12px;background:var(--ink2);padding:14px 16px;margin:0 0 18px}
 .tr-row{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
 button.ctl{font-family:Oswald;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:13px;color:var(--txt);background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:9px 13px;cursor:pointer;transition:.15s}
 button.ctl:hover{border-color:var(--gold);color:var(--gold)}
@@ -121,7 +121,7 @@ input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:4p
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);border:2px solid #06121b;box-shadow:0 0 0 1px var(--gold)}
 input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid #06121b}
 .ticks{display:flex;justify-content:space-between;margin-top:6px;font-family:'JetBrains Mono';font-size:10px;color:var(--mut2)}
-.timeline{display:flex;gap:3px;align-items:stretch;margin:0 0 14px;width:100%}
+.timeline{display:flex;gap:3px;align-items:stretch;margin-top:12px;width:100%}
 .tl-day{flex:1;display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:4px 2px 2px;border-radius:7px;transition:background .15s;min-width:0}
 .tl-day:hover{background:rgba(255,255,255,.06)}
 .tl-day.cur{background:rgba(255,213,74,.12)}
@@ -138,10 +138,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .wrap:fullscreen .arena,.wrap.fs-fallback .arena{flex:1;min-height:0;grid-template-rows:1fr;align-items:stretch}
 .wrap:fullscreen .tank,.wrap.fs-fallback .tank{height:100%!important}
 .wrap:fullscreen .board,.wrap.fs-fallback .board{height:100%;overflow:auto}
-.wrap:fullscreen .transport,.wrap.fs-fallback .transport{margin-top:6px}
+.wrap:fullscreen .transport,.wrap.fs-fallback .transport{margin:0 0 6px}
 .wrap:fullscreen .ctl,.wrap.fs-fallback .ctl{padding:6px 12px;font-size:12px}
 .wrap:fullscreen .tr-row,.wrap.fs-fallback .tr-row{gap:7px}
-.wrap:fullscreen .timeline,.wrap.fs-fallback .timeline{margin:0 0 7px}
+.wrap:fullscreen .timeline,.wrap.fs-fallback .timeline{margin-top:7px}
 .wrap:fullscreen .tl-cells,.wrap.fs-fallback .tl-cells{height:10px}
 .wrap:fullscreen .tl-day,.wrap.fs-fallback .tl-day{gap:3px;padding:3px 2px 1px}
 .wrap:fullscreen .tl-date,.wrap.fs-fallback .tl-date{font-size:8.5px}
@@ -172,11 +172,11 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
  .lbrow{grid-template-columns:26px 28px 1fr auto 28px;gap:8px}
  .lbrow .n{font-size:15px!important}                /* mobiilis kindel loetav nimi — ei lase fitNames'il kahandada */
  .lbrow .p{font-size:15px}.lbrow .v{font-size:15px}
- .transport{margin-top:6px;padding:5px 9px;background:rgba(10,26,38,.55)}
+ .transport{margin:0 0 6px;padding:5px 9px;background:rgba(10,26,38,.55)}
  .tr-row{gap:6px}
  button.ctl{padding:6px 10px;font-size:11px}
  button#fs{display:none}
- .timeline{margin:0 0 6px}
+ .timeline{margin-top:6px}
  .tl-cells{height:9px}
  .tl-day{gap:2px;padding:2px 1px 1px}
  .tl-date{font-size:8px}
@@ -184,7 +184,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 }
 </style></head>
 <body><div class="wrap">
-<div class="timeline" id="timeline"></div>
+<div class="transport"><div class="tr-row">
+ <button class="ctl primary" id="play">▶ Söötmine</button><button class="ctl" id="restart">⟲ Algusest</button>
+ <button class="ctl" id="step-b">◀</button><button class="ctl" id="step-f">▶</button><button class="ctl" id="fs">⛶ Täisekraan</button>
+</div><div class="fstip" id="fstip">💡 Parim vaade — vajuta <span class="x">⛶ Täisekraan</span></div><div class="timeline" id="timeline"></div></div>
 <h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
 <p class="psub">Iga osaleja on kala — liik ja saba-lipp eristavad teda. Iga mäng kukub akvaariumi söögitükina: õigesti pakkunu rebib tüki ja kasvab (2 punkti = suurem tükk). Esikolmik ujub tippu kuld-, hõbe- ja pronkshaina 🥇 🥈 🥉. Kliki kalal või edetabeli real — avaneb spotlight.</p>
 <div class="viewtabs" id="viewtabs"><button class="vt active" data-v="tank">🐟 Akvaarium</button><button class="vt" data-v="board">📊 Edetabel</button></div>
@@ -193,10 +196,6 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
  <div class="board" id="board"><h3><span>Edetabel</span><span id="b-step" class="mono">–/–</span></h3><div class="lbwrap" id="lbwrap"></div></div>
 </div>
 <div class="pinrow" id="pin"></div>
-<div class="transport"><div class="tr-row">
- <button class="ctl primary" id="play">▶ Söötmine</button><button class="ctl" id="restart">⟲ Algusest</button>
- <button class="ctl" id="step-b">◀</button><button class="ctl" id="step-f">▶</button><button class="ctl" id="fs">⛶ Täisekraan</button>
-</div><div class="fstip" id="fstip">💡 Parim vaade — vajuta <span class="x">⛶ Täisekraan</span></div></div>
 <div class="hint">Kala suurus = kumulatiivsed punktid (eksponentskaala). Maailmameistri 5 p pole veel jagatud.</div>
 </div>
 <script>
@@ -222,7 +221,7 @@ const cum=names.reduce((o,n)=>(o[n]=[],o),{});
 names.forEach(n=>{let s=0;ptsByPlayer[n].forEach(p=>{s+=p;cum[n].push(s);});});
 const GMAX=Math.max(...names.map(n=>cum[n][LAST]));
 const rankAt=i=>{const a=names.map(n=>({n,v:cum[n][i]}));a.sort((x,y)=>y.v-x.v||x.n.localeCompare(y.n));const m={};a.forEach((o,r)=>m[o.n]=r);return {a,m};};
-const MINR=12,MAXR=138,EXP=2.6;const sizeOf=v=> MINR+(MAXR-MINR)*Math.pow(v/GMAX,EXP);
+const MINR=24,MAXR=138,EXP=2.6;const sizeOf=v=> MINR+(MAXR-MINR)*Math.pow(v/GMAX,EXP);
 function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;const f=t=>Math.max(0,Math.min(255,Math.round(p<0?t*(1+p):t+(255-t)*p)));return '#'+((1<<24)+(f(r)<<16)+(f(g)<<8)+f(b)).toString(16).slice(1);}
 const IDX={};names.forEach((n,i)=>IDX[n]=i);
 // riigivärvid — saba kannab lippu (vertikaalne gradient = horisontaalsed triibud)
