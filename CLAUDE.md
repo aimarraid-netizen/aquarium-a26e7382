@@ -60,7 +60,7 @@ GitHub Pages = "deploy from branch" (main, juur). Push main'i → leht uueneb ~1
 - Sheeti trükivead normaliseeritakse `build_data.py`-s: topelttühikud kokku + `TEAM_TYPO_FIX` (`Hailti`→`Haiti`).
 - Export-URL on **autentimata** (Sheet on link-ligipääsetav). Kui ligipääs muutub privaatseks, build kukub → push'i ei tehta (vana data.json + FALLBACK jäävad).
 - Avalik repo (`aquarium-a26e7382`) — Pages-nõue; URL äraarvamatu (turvalisus läbi varjatuse, nagu trenn).
-- **Auto-täisekraan on brauseris VÕIMATU** (requestFullscreen nõuab kasutaja klõpsu). Default = CSS-pseudo-fullscreen (`fs-fallback`, täidab ekraani, pealkirjad peidus); `⛶`-nupp annab päris Fullscreen API. Ära lisa load'il requestFullscreen — see ei tööta kunagi.
+- **Auto-täisekraan on brauseris VÕIMATU** (requestFullscreen nõuab kasutaja klõpsu). Leht avaneb **tavavaates** (mitte enam pseudo-fullscreenis); `⛶ Täisekraan`-nupp annab päris Fullscreen API ja kukub vajadusel tagasi CSS-pseudo-fullscreeni (`fs-fallback`, täidab ekraani, pealkirjad peidus). Ära lisa load'il requestFullscreen ega `fs-fallback`-i — kasutaja valib ise.
 - Jõudlus: per-frame'is EI tohi panna CSS `filter`-it kõigile kaladele (kahvatus käib `applyStep`-is, harva). Boids/screenshake teadlikult välja jäetud (v2). Particle'id pool'itud (`PCL`).
 
 ## Ajalugu

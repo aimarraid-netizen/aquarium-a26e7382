@@ -108,6 +108,11 @@ white-space:nowrap;pointer-events:none;z-index:6;transition:opacity .4s}
 button.ctl{font-family:Oswald;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:13px;color:var(--txt);background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:9px 13px;cursor:pointer;transition:.15s}
 button.ctl:hover{border-color:var(--gold);color:var(--gold)}
 button.ctl.primary{background:var(--gold);color:#06121b;border-color:var(--gold)}
+button.ctl.attn{border-color:var(--gold);color:var(--gold);animation:fspulse 1.9s ease-in-out infinite}
+@keyframes fspulse{0%,100%{box-shadow:0 0 0 0 rgba(255,213,74,0)}50%{box-shadow:0 0 0 4px rgba(255,213,74,.16),0 0 16px rgba(255,213,74,.45)}}
+.fstip{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--gold);margin-top:9px;text-align:center}
+.fstip .x{font-family:Oswald;font-weight:600}
+.wrap:fullscreen .fstip,.wrap.fs-fallback .fstip{display:none}
 .spd{display:flex;gap:4px;margin-left:auto;align-items:center}
 .spd .lbl{font-family:'JetBrains Mono';font-size:11px;color:var(--mut2);margin-right:2px}
 .spd button{font-family:Oswald;font-weight:500;text-transform:uppercase;letter-spacing:.03em;font-size:12px;padding:7px 9px;background:transparent;color:var(--mut);border:1px solid var(--line);border-radius:6px;cursor:pointer}
@@ -151,6 +156,22 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 @keyframes fwPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}
 .fish .dizzy{opacity:0;font-size:13px;transition:opacity .2s}
 .fish.dizzy .dizzy{opacity:1}
+/* Mobiil landscape — täida ekraan, kala + edetabel kõrvuti, päised peidus (nagu fullscreen) */
+@media (orientation:landscape) and (max-height:560px){
+ .wrap{position:fixed;inset:0;max-width:none;width:100vw;height:100vh;height:100dvh;padding:7px 9px;display:flex;flex-direction:column;overflow:hidden;background:var(--ink)}
+ h1.page,.psub,.hint,.fstip{display:none}
+ .arena{flex:1;min-height:0;grid-template-columns:1fr 38vw;max-width:none;grid-template-rows:1fr;align-items:stretch;gap:8px}
+ .tank{height:100%!important}
+ .board{height:100%;overflow:auto;padding:6px 5px}
+ .transport{margin-top:5px;padding:5px 9px;background:rgba(10,26,38,.55)}
+ .tr-row{gap:6px}
+ button.ctl{padding:5px 9px;font-size:11px}
+ .timeline{margin-top:5px}
+ .tl-cells{height:9px}
+ .tl-day{gap:2px;padding:2px 1px 1px}
+ .tl-date{font-size:7.5px}
+ .pinrow{margin-top:3px;min-height:0;font-size:11px}
+}
 </style></head>
 <body><div class="wrap">
 <h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
@@ -163,7 +184,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 <div class="transport"><div class="tr-row">
  <button class="ctl primary" id="play">▶ Söötmine</button><button class="ctl" id="restart">⟲ Algusest</button>
  <button class="ctl" id="step-b">◀</button><button class="ctl" id="step-f">▶</button><button class="ctl" id="fs">⛶ Täisekraan</button>
-</div><div class="timeline" id="timeline"></div></div>
+</div><div class="fstip" id="fstip">💡 Parim vaade — vajuta <span class="x">⛶ Täisekraan</span></div><div class="timeline" id="timeline"></div></div>
 <div class="hint">Kala suurus = kumulatiivsed punktid (eksponentskaala). Maailmameistri 5 p pole veel jagatud.</div>
 </div>
 <script>
@@ -367,7 +388,7 @@ function renderPin(){const pl=document.getElementById('pin');if(!pinned.size){pl
   const tag=p===2?'<span class="ok">+2 täppi 🎯</span>':p===1?'<span class="ok">+1</span>':'<span class="no">+0</span>';
   return flagHTML(n)+' <b style="color:'+COL[n]+'">'+n+'</b> pakkus '+bet+' · '+tag;}).join('&nbsp;&nbsp;·&nbsp;&nbsp;');}
 const tank=document.getElementById('tank'),board=document.getElementById('board'),wrap=document.querySelector('.wrap');let sx=1,sy=1;
-function measure(){const w=tank.clientWidth;const fs=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');
+function measure(){const w=tank.clientWidth;const mlands=window.matchMedia('(orientation:landscape) and (max-height:560px)').matches;const fs=!!document.fullscreenElement||wrap.classList.contains('fs-fallback')||mlands;
  let h;if(fs){tank.style.height='';h=tank.clientHeight;}else if(window.innerWidth<=760){h=Math.round(w*0.72);tank.style.height=h+'px';}else{h=board.offsetHeight;tank.style.height=h+'px';}
  sx=w/VW;sy=h/VH;tank.style.setProperty('--rise',(h+20)+'px');fitNames();}
 addEventListener('resize',measure);
@@ -425,8 +446,8 @@ playBtn.onclick=()=>{if(playing){setPlaying(false);}else{playUntil=LAST;setPlayi
 document.getElementById('restart').onclick=()=>{setPlaying(false);resetFX();playUntil=LAST;goto(0,false);};
 document.getElementById('step-f').onclick=()=>{setPlaying(false);playUntil=LAST;goto(curStep+1,true);};
 document.getElementById('step-b').onclick=()=>{setPlaying(false);resetFX();playUntil=LAST;goto(curStep-1,false);};
-const fsBtn=document.getElementById('fs');
-function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';setTimeout(measure,60);}
+const fsBtn=document.getElementById('fs');fsBtn.classList.add('attn'); // tõmba tähelepanu kuni kasutaja avastab täisekraani
+function afterFS(){const on=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');fsBtn.textContent=on?'⛶ Välju':'⛶ Täisekraan';if(on)fsBtn.classList.remove('attn');setTimeout(measure,60);}
 function fsFallbackOn(){wrap.classList.add('fs-fallback');afterFS();}
 fsBtn.onclick=()=>{const inFS=!!document.fullscreenElement||wrap.classList.contains('fs-fallback');
  if(inFS){if(document.fullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}wrap.classList.remove('fs-fallback');afterFS();}
@@ -451,7 +472,6 @@ function playDay(di){const d=DAYS[di];setPlaying(false);resetFX();playUntil=d.la
  [12,28,55,72,88].forEach(lx=>{const w=document.createElement('div');w.className='weed';w.style.left=lx+'%';w.style.height=(60+Math.random()*55)+'px';w.style.animationDelay=(-Math.random()*5)+'s';w.style.opacity=.6;t.appendChild(w);});
  for(let i=0;i<16;i++){const sd=document.createElement('div');sd.className='snow';const z=(1+Math.random()*2.4).toFixed(1);sd.style.width=sd.style.height=z+'px';sd.style.left=(Math.random()*100)+'%';sd.style.setProperty('--sf',(360+Math.random()*180)+'px');sd.style.animationDuration=(9+Math.random()*10)+'s';sd.style.animationDelay=(-Math.random()*12)+'s';t.appendChild(sd);}})();
 measure();goto(LAST,false);requestAnimationFrame(loop);addEventListener('load',measure);
-wrap.classList.add('fs-fallback');afterFS();
 try{if(DATA.updatedAt){const _el=document.querySelector('.hint');if(_el){const _t=new Date(DATA.updatedAt),_p=n=>String(n).padStart(2,'0');_el.innerHTML+=' · <b>Andmed uuendatud:</b> '+_p(_t.getDate())+'.'+_p(_t.getMonth()+1)+'. '+_p(_t.getHours())+':'+_p(_t.getMinutes());}}}catch(_e){}
 })();
 </script></body></html>
