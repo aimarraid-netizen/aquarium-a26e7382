@@ -16,7 +16,15 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 .psub{color:var(--mut);font-size:13px;margin:0 0 14px}
 /* sügavus + caustic + söögi-FX */
 .rays2{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.10;background:repeating-linear-gradient(76deg,transparent 0 80px,rgba(150,220,255,.4) 80px 84px,transparent 84px 180px);animation:caustic2 21s linear infinite}
-.deep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(150,215,245,.07) 0%,transparent 28%,transparent 56%,rgba(3,12,22,.55) 100%)}
+.deep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(150,215,245,.09) 0%,transparent 26%,transparent 50%,rgba(2,10,20,.62) 100%)}
+.vig{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 110px 26px rgba(2,10,20,.5);border-radius:16px}
+.surface{position:absolute;left:0;right:0;top:0;height:40px;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(180deg,rgba(190,235,255,.20),transparent)}
+.shafts{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.5;background:linear-gradient(96deg,transparent 12%,rgba(185,228,255,.11) 16%,transparent 22%,transparent 45%,rgba(185,228,255,.08) 50%,transparent 57%,transparent 77%,rgba(185,228,255,.10) 81%,transparent 87%);animation:shaftsway 13s ease-in-out infinite}
+@keyframes shaftsway{0%,100%{transform:translateX(-14px)}50%{transform:translateX(14px)}}
+.snow{position:absolute;border-radius:50%;background:rgba(220,240,255,.5);pointer-events:none;animation:snowdrift linear infinite}
+@keyframes snowdrift{0%{transform:translateY(-12px) translateX(0);opacity:0}12%{opacity:.55}88%{opacity:.45}100%{transform:translateY(var(--sf,520px)) translateX(20px);opacity:0}}
+.fish .tw{transform-box:view-box;transform-origin:15px 24px;animation:wag var(--wag,.85s) ease-in-out infinite}
+@keyframes wag{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
 @keyframes caustic{from{background-position:0 0}to{background-position:240px 64px}}
 @keyframes caustic2{from{background-position:0 0}to{background-position:-220px 90px}}
 .fmeta{font-family:'JetBrains Mono';font-size:11px;color:var(--txt);white-space:nowrap}.fmeta b{color:var(--gold)}
@@ -118,7 +126,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 <h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
 <p class="psub">Iga osaleja on kala — eri liik ja saba-lipp näitavad teda. Iga mäng kukub söögitükina; õigesti pakkunu rebib tüki ja kasvab, 2 punkti = suurem tükk. Esikolmik tõuseb tippu: 🥇 kuld-piraaja · 🥈 hõbe-hai · 🥉 pronks-kiskja. Kliki kalal või edetabelil → spotlight.</p>
 <div class="arena">
- <div class="tank" id="tank"><div class="rays"></div><div class="rays2"></div><div class="deep"></div><div class="sand"></div><div id="fishlayer"></div></div>
+ <div class="tank" id="tank"><div class="deep"></div><div class="shafts"></div><div class="rays"></div><div class="rays2"></div><div class="sand"></div><div id="fishlayer"></div><div class="surface"></div><div class="vig"></div></div>
  <div class="board" id="board"><h3><span>Edetabel</span><span id="b-step" class="mono">–/–</span></h3><div class="lbwrap" id="lbwrap"></div></div>
 </div>
 <div class="pinrow" id="pin"></div>
@@ -168,20 +176,24 @@ function speciesShape(sp){switch(sp){
 }}
 function fishSVG(n,idx,sp,bucket,metal){
  const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5);const code=FCODE[n]||'PL';const sh=speciesShape(sp);
- const bellyCol=metal?'rgba(255,255,255,.4)':lt;const bodyFill=metal?'url(#bd'+idx+')':c;
+ const bellyCol=metal?'rgba(255,255,255,.4)':lt;const bodyFill=metal?'url(#bd'+idx+')':'url(#bg'+idx+')';
  const dorsalCol=metal?shade(METAL[metal][2],0.12):dk;
  const tail=sp==='shark'?'M16 24 L-11 6 L-2 24 L-10 40 Z':'M16 24 L-10 12 L-3 24 L-10 36 Z';
  const eyeR=(4.9-bucket*0.9).toFixed(2),pupY=(20+bucket*1.4).toFixed(1),mctl=(bucket===0?20:bucket===1?25:30);
  let s='<svg viewBox="-14 0 92 48" width="80" xmlns="http://www.w3.org/2000/svg"><defs>';
  s+='<linearGradient id="tl'+idx+'" x1="0" y1="0" x2="0" y2="1">'+flagStops(code)+'</linearGradient>';
  if(metal) s+='<linearGradient id="bd'+idx+'" x1="0" y1="0" x2="0" y2="1">'+metalStops(METAL[metal])+'</linearGradient>';
+ else s+='<linearGradient id="bg'+idx+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+shade(c,-0.3)+'"/><stop offset="44%" stop-color="'+c+'"/><stop offset="100%" stop-color="'+shade(c,0.34)+'"/></linearGradient>';
  s+='</defs>';
- s+='<path d="'+tail+'" fill="url(#tl'+idx+')" stroke="rgba(0,0,0,.28)" stroke-width=".7"/>';
- s+='<g fill="'+dorsalCol+'" opacity=".85">'+sh.dorsal+'</g>';
+ s+='<g class="tw"><path d="'+tail+'" fill="url(#tl'+idx+')" stroke="rgba(0,0,0,.28)" stroke-width=".7"/></g>';
+ s+='<g fill="'+dorsalCol+'" opacity=".82">'+sh.dorsal+'</g>';
  if(sh.fin) s+=sh.fin.replace('DK',dk);
- s+='<path d="'+sh.body+'" fill="'+bodyFill+'" stroke="rgba(0,0,0,.18)" stroke-width=".6"/>';
+ s+='<path d="'+sh.body+'" fill="'+bodyFill+'" stroke="rgba(0,0,0,.22)" stroke-width=".6"/>';
  s+=(sh.belly||'').replace('BELLY',bellyCol);
  if(sh.bars) s+=sh.bars.replace('DK',dk);
+ s+='<path d="M44 29 Q52 37 41 36 Q43 32 44 29 Z" fill="'+dk+'" opacity=".4"/>';
+ s+='<path d="M47 13 Q44 24 47 35" stroke="'+dk+'" stroke-width="1.1" fill="none" opacity=".45"/>';
+ s+='<path d="M24 14 Q40 9 56 15 Q40 12.5 26 17 Z" fill="#fff" opacity=".16"/>';
  s+='<circle cx="54" cy="20" r="'+eyeR+'" fill="#fff"/><circle cx="55.3" cy="'+pupY+'" r="'+(eyeR*0.5).toFixed(2)+'" fill="#0a1a26"/><circle cx="52.6" cy="18.4" r="0.9" fill="#fff" opacity=".9"/>';
  s+='<path d="M57 25 Q62 '+mctl+' 66 24.5" stroke="rgba(0,0,0,.45)" stroke-width="1.5" fill="none"/>';
  if(sh.teeth) s+=sh.teeth;
@@ -193,6 +205,7 @@ const BASES=['carp','herring','sword'];
 names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish';d.dataset.n=n;
  const base=BASES[idx%3];
  d.innerHTML='<div class="body">'+fishSVG(n,idx,base,1,null)+'</div><span class="dizzy">💫</span><div class="lab">'+n+'</div><div class="pop"></div><div class="burst"></div>';
+ d.style.setProperty('--wag',(0.7+Math.random()*0.55).toFixed(2)+'s');
  d.addEventListener('click',()=>togglePin(n));layer.appendChild(d);
  const ang=Math.random()*Math.PI*2;
  F[n]={el:d,body:d.querySelector('.body'),dizzyEl:d.querySelector('.dizzy'),lab:d.querySelector('.lab'),pop:d.querySelector('.pop'),burst:d.querySelector('.burst'),
@@ -217,7 +230,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);
   const sp=rank<3?TOP3[rank]:f.base,metal=rank<3?METAL3[rank]:null,bucket=bucketOf(morph),skin=sp+'|'+bucket+'|'+(metal||'');
   if(skin!==f.skin){f.body.innerHTML=fishSVG(o.n,idx,sp,bucket,metal);f.skin=skin;}
   f.el.classList.toggle('boss',rank===0);f.el.classList.toggle('r-silver',rank===1);f.el.classList.toggle('r-bronze',rank===2);
-  f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+')';
+  f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+') blur('+(morph>0.55?((morph-0.55)*1.5).toFixed(2):'0')+'px)';
   f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
   const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;});
  document.getElementById('b-step').textContent=(i+1)+'/'+nMatches;renderPin();
@@ -325,7 +338,8 @@ const tk=document.getElementById('ticks');const seen=new Set();
 matchLabels.forEach((m,i)=>{const day=m.d.split(' ')[1];if(!seen.has(day)&&(i%9===0||i===LAST)){seen.add(day);const s=document.createElement('span');s.textContent=day;tk.appendChild(s);}});
 (function(){const t=document.getElementById('tank');
  for(let i=0;i<16;i++){const b=document.createElement('div');b.className='bub';const s=4+Math.random()*9;b.style.width=b.style.height=s+'px';b.style.left=(Math.random()*100)+'%';b.style.animationDuration=(6+Math.random()*7)+'s';b.style.animationDelay=(-Math.random()*8)+'s';t.appendChild(b);}
- [12,28,55,72,88].forEach(lx=>{const w=document.createElement('div');w.className='weed';w.style.left=lx+'%';w.style.height=(60+Math.random()*55)+'px';w.style.animationDelay=(-Math.random()*5)+'s';w.style.opacity=.6;t.appendChild(w);});})();
+ [12,28,55,72,88].forEach(lx=>{const w=document.createElement('div');w.className='weed';w.style.left=lx+'%';w.style.height=(60+Math.random()*55)+'px';w.style.animationDelay=(-Math.random()*5)+'s';w.style.opacity=.6;t.appendChild(w);});
+ for(let i=0;i<16;i++){const sd=document.createElement('div');sd.className='snow';const z=(1+Math.random()*2.4).toFixed(1);sd.style.width=sd.style.height=z+'px';sd.style.left=(Math.random()*100)+'%';sd.style.setProperty('--sf',(360+Math.random()*180)+'px');sd.style.animationDuration=(9+Math.random()*10)+'s';sd.style.animationDelay=(-Math.random()*12)+'s';t.appendChild(sd);}})();
 measure();goto(LAST,false);requestAnimationFrame(loop);addEventListener('load',measure);
 wrap.classList.add('fs-fallback');afterFS();
 try{if(DATA.updatedAt){const _el=document.querySelector('.hint');if(_el){const _t=new Date(DATA.updatedAt),_p=n=>String(n).padStart(2,'0');_el.innerHTML+=' · <b>Andmed uuendatud:</b> '+_p(_t.getDate())+'.'+_p(_t.getMonth()+1)+'. '+_p(_t.getHours())+':'+_p(_t.getMinutes());}}}catch(_e){}
