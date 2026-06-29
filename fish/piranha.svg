@@ -1,11 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 0 92 48">
   <g transform="translate(0 1)">
     <g class="tw" style="transform-box:view-box;transform-origin:16px 24px">
-      <path d="M15 24C4 16-2 8-6 4c-1 8-1 15 0 22 4 6 10 13 21 16-2-5-3-11-3-18s1-13 3-18z" fill="#3C6CA8" stroke="#1d2e30" stroke-width="1.9" stroke-linejoin="round"/>
-      <path d="M14.2 24c-4.6-4.7-9.5-9.2-15.4-12.8" fill="none" stroke="#1d2e30" stroke-width="0.9" stroke-linecap="round" opacity="0.75"/>
-      <path d="M14.6 24c-5.1-1.9-10.4-3.1-15.7-3.5" fill="none" stroke="#1d2e30" stroke-width="0.9" stroke-linecap="round" opacity="0.75"/>
-      <path d="M14.6 24c-5 .6-10.2 2-15.5 4.4" fill="none" stroke="#1d2e30" stroke-width="0.9" stroke-linecap="round" opacity="0.75"/>
-      <path d="M14.2 24c-4.4 3.8-8.8 8.3-13.4 13" fill="none" stroke="#1d2e30" stroke-width="0.9" stroke-linecap="round" opacity="0.75"/>
+      <path d="M16 24 L-11 10 L-3 24 L-11 38 Z" fill="#3C6CA8" stroke="#1d2e30" stroke-width="1.9" stroke-linejoin="round"/>
     </g>
 
     <path d="M16.8 24c0-11 13.7-17.8 27.9-17.8 13.4 0 23.3 6.3 23.3 17.8 0 10.6-9.3 17.8-23.5 17.8C29.3 42 16.8 35 16.8 24z" fill="#8FB3B8" stroke="#1d2e30" stroke-width="2.1" stroke-linejoin="round"/>
@@ -31,12 +27,11 @@
     <path d="M32.1 11.5c0.8-0.5 1.6-0.7 2.6-0.3" fill="none" stroke="#1d2e30" stroke-width="0.8" stroke-linecap="round"/>
     <path d="M33.2 10.3c0.7-0.2 1.4-0.5 2.1-1.1" fill="none" stroke="#1d2e30" stroke-width="0.8" stroke-linecap="round"/>
 
-    <path d="M51.7 13.4c4.3-0.6 7.5 0.4 10 2.9" fill="none" stroke="#1d2e30" stroke-width="2" stroke-linecap="round"/>
     <circle cx="53.9" cy="19.5" r="4.05" fill="#fff" stroke="#1d2e30" stroke-width="1.6"/>
     <circle cx="55.1" cy="20.2" r="1.8" fill="#0a1a26"/>
     <circle cx="54.3" cy="18.9" r="0.55" fill="#fff"/>
 
-    <path d="M48.8 13.7c2-1.8 4.8-2.5 8.4-2 2.5 0.4 4.1 1.2 5.4 2.4" fill="none" stroke="#1d2e30" stroke-width="2.1" stroke-linecap="round"/>
+    <path d="M49.5 14 Q56 12 62 15.2" fill="none" stroke="#1d2e30" stroke-width="2.2" stroke-linecap="round"/>
     <path d="M48.5 14.5c-3.7 3.1-5.8 7.8-5.8 13.8 0 5.9 2.3 10 6.9 12.5" fill="none" stroke="#1d2e30" stroke-width="1.7" stroke-linecap="round"/>
 
     <path d="M56.6 24.7c3.2 0.1 6.5 0 9.8-0.7" fill="none" stroke="#1d2e30" stroke-width="1.8" stroke-linecap="round"/>

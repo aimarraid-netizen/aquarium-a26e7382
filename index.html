@@ -81,7 +81,11 @@ white-space:nowrap;box-shadow:0 5px 16px rgba(0,0,0,.55);pointer-events:none;z-i
 .lbwrap{position:relative}
 .lbrow{position:absolute;left:0;right:0;height:30px;display:grid;grid-template-columns:18px 22px 1fr auto 24px;align-items:center;gap:6px;padding:0 8px;border-radius:7px;cursor:pointer;transition:transform .6s cubic-bezier(.34,1.05,.45,1),background .2s}
 .lbrow:hover{background:rgba(255,255,255,.04)}
-.lbrow.lead{background:rgba(255,213,74,.09)}
+.lbrow.lead{background:rgba(255,213,74,.10)}
+.lbrow.silver{background:rgba(207,224,236,.11)}
+.lbrow.bronze{background:rgba(210,150,90,.11)}
+.lbrow.silver .p,.lbrow.silver .v{color:#cfe0ec}
+.lbrow.bronze .p,.lbrow.bronze .v{color:#dca06a}
 .lbrow.pinned{background:rgba(52,224,196,.1);box-shadow:inset 0 0 0 1px rgba(52,224,196,.3)}
 .lbrow .p{font-family:Oswald;font-weight:600;font-size:13px;color:var(--mut2);text-align:center}
 .lbrow.lead .p{color:var(--gold)}
@@ -186,8 +190,8 @@ function rankBadge(metal,vx,vy,vw,vh){
  if(metal==='gold'){const x=(vx+vw*0.74).toFixed(1),y=(vy+vh*0.03).toFixed(1);
   return '<g transform="translate('+x+','+y+') scale('+u+')"><path d="M-7 10 L-8 1 L-3 5 L0 -2 L3 5 L8 1 L7 10 Z" fill="#ffd54a" stroke="#9a7b1a" stroke-width=".7"/><circle cx="0" cy="2" r="1.5" fill="#ff5b6b"/><circle cx="-5" cy="3" r="1.1" fill="#5ec9f2"/><circle cx="5" cy="3" r="1.1" fill="#5ec9f2"/></g>';}
  const x=(vx+vw*0.66).toFixed(1),y=(vy+vh*0.56).toFixed(1);
- const disc=metal==='silver'?'#e6eef3':'#cd8442',rim=metal==='silver'?'#9fb3c2':'#8a531f',hl=metal==='silver'?'#fff':'#f0c89a';
- return '<g transform="translate('+x+','+y+') scale('+u+')"><path d="M-3 -7 L-1.4 1 L1.4 1 L3 -7 Z" fill="#b23b3b" stroke="#7a2424" stroke-width=".4"/><circle cx="0" cy="4.4" r="3.6" fill="'+disc+'" stroke="'+rim+'" stroke-width="1"/><circle cx="-1.1" cy="3.2" r="1" fill="'+hl+'" opacity=".7"/></g>';
+ const disc=metal==='silver'?'#e6eef3':'#cd8442',rim=metal==='silver'?'#7d92a2':'#7a4717',num=metal==='silver'?'2':'3';
+ return '<g transform="translate('+x+','+y+') scale('+u+')"><path d="M-3 -7 L-1.4 1 L1.4 1 L3 -7 Z" fill="#b23b3b" stroke="#7a2424" stroke-width=".4"/><circle cx="0" cy="4.4" r="3.7" fill="'+disc+'" stroke="'+rim+'" stroke-width="1"/><text x="0" y="6.3" text-anchor="middle" font-family="Oswald,Arial,sans-serif" font-weight="700" font-size="5.4" fill="'+rim+'">'+num+'</text></g>';
 }
 function customFish(n,idx,sp,bucket,metal){
  const c=COL[n],dk=shade(c,-0.34),lt=shade(c,0.5),code=FCODE[n]||'PL';
@@ -273,7 +277,7 @@ function applyStep(i,eat){const {a:arr}=rankAt(i);const prevM=i>0?rankAt(i-1).m:
   f.el.classList.toggle('boss',rank===0);f.el.classList.toggle('r-silver',rank===1);f.el.classList.toggle('r-bronze',rank===2);
   f.el.style.filter='saturate('+(1-morph*0.62).toFixed(2)+') brightness('+(1-morph*0.20).toFixed(2)+') blur('+(morph>0.55?((morph-0.55)*1.5).toFixed(2):'0')+'px)';
   f.el.classList.add('show');f.lab.textContent=o.n+' '+o.v;
-  const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.p.textContent=rank+1;L.v.textContent=o.v;
+  const L=LB[o.n];L.el.style.transform='translateY('+(rank*ROWH)+'px)';L.el.classList.toggle('lead',rank===0);L.el.classList.toggle('silver',rank===1);L.el.classList.toggle('bronze',rank===2);L.p.textContent=rank+1;L.v.textContent=o.v;
   const dch=prevM?(prevM[o.n]-rank):0;if(L.chg){if(dch>0){L.chg.textContent='▲'+dch;L.chg.className='chg up';}else if(dch<0){L.chg.textContent='▼'+(-dch);L.chg.className='chg down';}else{L.chg.textContent='';L.chg.className='chg';}}});
  document.getElementById('b-step').textContent=(i+1)+'/'+nMatches;renderPin();
  const sb=document.getElementById('scrub');sb.value=i;sb.style.setProperty('--p',(i/LAST*100)+'%');
