@@ -41,7 +41,6 @@ h1.page{font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spaci
 .wrap.fs-fallback .arena,.wrap:fullscreen .arena{grid-template-columns:1fr 270px}
 .wrap.fs-fallback .transport,.wrap:fullscreen .transport{width:100%;padding:6px 14px;background:rgba(10,26,38,.55)}
 .arena{display:grid;grid-template-columns:1fr 290px;gap:16px;align-items:start}
-@media(max-width:760px){.arena{grid-template-columns:1fr}}
 .flagico{display:inline-block;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 2px rgba(255,255,255,.45);width:17px;height:11px;vertical-align:middle}
 .flagico svg{display:block;width:100%;height:100%}
 .flagpair{display:inline-flex;gap:1px;vertical-align:middle}
@@ -156,26 +155,35 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 @keyframes fwPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}
 .fish .dizzy{opacity:0;font-size:13px;transition:opacity .2s}
 .fish.dizzy .dizzy{opacity:1}
-/* Mobiil landscape — täida ekraan, kala + edetabel kõrvuti, päised peidus (nagu fullscreen) */
-@media (orientation:landscape) and (max-height:560px){
+/* Vaate-vahetuse tabid (ainult mobiilis nähtaval) */
+.viewtabs{display:none;gap:6px;margin-bottom:7px}
+.viewtabs .vt{flex:1;font-family:Oswald;font-weight:600;text-transform:uppercase;letter-spacing:.03em;font-size:13px;color:var(--mut);background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:9px 8px;cursor:pointer}
+.viewtabs .vt.active{background:var(--gold);color:#06121b;border-color:var(--gold)}
+/* Mobiil (kitsas VÕI lühike landscape) — täida ekraan, korraga ÜKS vaade, vaheta tabidega */
+@media (max-width:760px) and (pointer:coarse),(orientation:landscape) and (max-height:560px) and (pointer:coarse){
  .wrap{position:fixed;inset:0;max-width:none;width:100vw;height:100vh;height:100dvh;padding:7px 9px;display:flex;flex-direction:column;overflow:hidden;background:var(--ink)}
  h1.page,.psub,.hint,.fstip{display:none}
- .arena{flex:1;min-height:0;grid-template-columns:1fr 38vw;max-width:none;grid-template-rows:1fr;align-items:stretch;gap:8px}
- .tank{height:100%!important}
- .board{height:100%;overflow:auto;padding:6px 5px}
- .transport{margin-top:5px;padding:5px 9px;background:rgba(10,26,38,.55)}
+ .viewtabs{display:flex}
+ .arena{flex:1;min-height:0;display:flex;flex-direction:column;max-width:none;gap:0}
+ .tank{flex:1;min-height:0;height:auto!important}
+ .board{flex:1;min-height:0;overflow:auto;padding:6px 5px}
+ .wrap:not(.view-board) .board{display:none}
+ .wrap.view-board .tank{display:none}
+ .transport{margin-top:6px;padding:5px 9px;background:rgba(10,26,38,.55)}
  .tr-row{gap:6px}
- button.ctl{padding:5px 9px;font-size:11px}
- .timeline{margin-top:5px}
+ button.ctl{padding:6px 10px;font-size:11px}
+ button#fs{display:none}
+ .timeline{margin-top:6px}
  .tl-cells{height:9px}
  .tl-day{gap:2px;padding:2px 1px 1px}
- .tl-date{font-size:7.5px}
+ .tl-date{font-size:8px}
  .pinrow{margin-top:3px;min-height:0;font-size:11px}
 }
 </style></head>
 <body><div class="wrap">
 <h1 class="page">MM 2026 · Ennustusakvaarium 🐟</h1>
 <p class="psub">Iga osaleja on kala — liik ja saba-lipp eristavad teda. Iga mäng kukub akvaariumi söögitükina: õigesti pakkunu rebib tüki ja kasvab (2 punkti = suurem tükk). Esikolmik ujub tippu kuld-, hõbe- ja pronkshaina 🥇 🥈 🥉. Kliki kalal või edetabeli real — avaneb spotlight.</p>
+<div class="viewtabs" id="viewtabs"><button class="vt active" data-v="tank">🐟 Akvaarium</button><button class="vt" data-v="board">📊 Edetabel</button></div>
 <div class="arena">
  <div class="tank" id="tank"><div class="deep"></div><div class="shafts"></div><div class="rays"></div><div class="rays2"></div><div class="sand"></div><div id="fishlayer"></div><div class="surface"></div><div class="vig"></div></div>
  <div class="board" id="board"><h3><span>Edetabel</span><span id="b-step" class="mono">–/–</span></h3><div class="lbwrap" id="lbwrap"></div></div>
@@ -297,14 +305,19 @@ names.forEach((n,idx)=>{const d=document.createElement('div');d.className='fish'
  const ang=Math.random()*Math.PI*2;
  F[n]={el:d,body:d.querySelector('.body'),dizzyEl:d.querySelector('.dizzy'),lab:d.querySelector('.lab'),pop:d.querySelector('.pop'),burst:d.querySelector('.burst'),
   base:base,skin:base+'|1|',morph:1,homeY:VH/2,
-  x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang)*.4,vy:Math.sin(ang)*.4,head:ang,phase:Math.random()*6.283,hoff:(Math.random()-.5)*80,sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
+  x:PAD+Math.random()*(VW-2*PAD),y:PAD+Math.random()*(VH-2*PAD),vx:Math.cos(ang)*.4,vy:Math.sin(ang)*.4,head:ang,phase:Math.random()*6.283,hoff:(Math.random()-.5)*80,dartUntil:0,sp:.5+Math.random()*.5,size:MINR,target:MINR,flip:1,seek:null,flee:null,boost:1,panic:false,orbit:null,sizeMul:1,dizzyUntil:0};});
 const ROWH=30;const lbwrap=document.getElementById('lbwrap');lbwrap.style.height=(N*ROWH)+'px';const LB={};
 names.forEach(n=>{const r=document.createElement('div');r.className='lbrow';r.dataset.n=n;
  r.innerHTML='<span class="p">–</span><span class="fl">'+flagHTML(n)+'</span><span class="n">'+n+'</span><span class="v">0</span><span class="chg"></span>';
  r.addEventListener('click',()=>togglePin(n));lbwrap.appendChild(r);LB[n]={el:r,p:r.querySelector('.p'),v:r.querySelector('.v'),nEl:r.querySelector('.n'),chg:r.querySelector('.chg')};});
-function fitNames(){let fs=12.5,g=0;const set=v=>names.forEach(n=>{const e=LB[n].nEl;if(e)e.style.fontSize=v+'px';});
+function fitNames(){const probe=LB[names[0]]&&LB[names[0]].nEl;if(!probe||!probe.clientWidth)return; // edetabel peidus (mobiili tank-vaade) → ära kahanda
+ let fs=12.5,g=0;const set=v=>names.forEach(n=>{const e=LB[n].nEl;if(e)e.style.fontSize=v+'px';});
  set(fs);const over=()=>names.some(n=>{const e=LB[n].nEl;return e&&e.scrollWidth>e.clientWidth+0.5;});
  while(over()&&fs>8&&g++<16){fs-=0.5;set(fs);}}              // ühtlane font: kahanda KÕIKI kuni pikim mahub
+function fitSidebar(){if(window.matchMedia(MOBILEQ).matches)return; // mobiilis pole sidebar fikseeritud
+ let maxw=0;names.forEach(n=>{const e=LB[n].nEl;if(e){e.style.fontSize='12.5px';if(e.scrollWidth>maxw)maxw=e.scrollWidth;}}); // pikima nime tegelik laius täisfondis
+ if(!maxw)return;const W=Math.max(190,Math.min(330,Math.round(maxw)+146)); // + veergude overhead (koht/lipp/punktid/nool/vahed/polster)
+ document.querySelector('.arena').style.gridTemplateColumns='1fr '+W+'px';} // sidebar täpselt nii lai kui vaja → akvaarium saab ülejäänu
 const pinned=new Set();
 function togglePin(n){pinned.has(n)?pinned.delete(n):pinned.add(n);
  document.getElementById('tank').classList.toggle('dim',pinned.size>0);
@@ -388,9 +401,13 @@ function renderPin(){const pl=document.getElementById('pin');if(!pinned.size){pl
   const tag=p===2?'<span class="ok">+2 täppi 🎯</span>':p===1?'<span class="ok">+1</span>':'<span class="no">+0</span>';
   return flagHTML(n)+' <b style="color:'+COL[n]+'">'+n+'</b> pakkus '+bet+' · '+tag;}).join('&nbsp;&nbsp;·&nbsp;&nbsp;');}
 const tank=document.getElementById('tank'),board=document.getElementById('board'),wrap=document.querySelector('.wrap');let sx=1,sy=1;
-function measure(){const w=tank.clientWidth;const mlands=window.matchMedia('(orientation:landscape) and (max-height:560px)').matches;const fs=!!document.fullscreenElement||wrap.classList.contains('fs-fallback')||mlands;
- let h;if(fs){tank.style.height='';h=tank.clientHeight;}else if(window.innerWidth<=760){h=Math.round(w*0.72);tank.style.height=h+'px';}else{h=board.offsetHeight;tank.style.height=h+'px';}
+const MOBILEQ='(max-width:760px) and (pointer:coarse),(orientation:landscape) and (max-height:560px) and (pointer:coarse)';
+function measure(){fitSidebar();const w=tank.clientWidth;if(!w)return;const mob=window.matchMedia(MOBILEQ).matches;const fs=!!document.fullscreenElement||wrap.classList.contains('fs-fallback')||mob;
+ let h;if(fs){tank.style.height='';h=tank.clientHeight;}else{h=board.offsetHeight;tank.style.height=h+'px';}
  sx=w/VW;sy=h/VH;tank.style.setProperty('--rise',(h+20)+'px');fitNames();}
+const viewtabs=document.getElementById('viewtabs');
+function setView(v){wrap.classList.toggle('view-board',v==='board');[...viewtabs.children].forEach(b=>b.classList.toggle('active',b.dataset.v===v));setTimeout(()=>{if(v==='tank')measure();else fitNames();},30);}
+[...viewtabs.children].forEach(b=>b.onclick=()=>setView(b.dataset.v));
 addEventListener('resize',measure);
 let lastT=performance.now();
 function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
@@ -407,10 +424,12 @@ function loop(t){const dt=Math.min(40,t-lastT)/16.67;lastT=t;const now=t;
     let dvx,dvy;                                   // soovitud kiirus
     if(f.seek){const dx=f.seek.x-f.x,dy=f.seek.y-f.y,d=Math.hypot(dx,dy)||1;dvx=dx/d*vmax;dvy=dy/d*vmax;}
     else if(f.flee){const dx=f.x-f.flee.x,dy=f.y-f.flee.y,d=Math.hypot(dx,dy)||1;dvx=dx/d*vmax;dvy=dy/d*vmax;}
-    else{f.head+=(Math.random()-.5)*0.22*dt;        // sujuv uitamine: pööra kurssi, ära hüppa suunda
-     const pulse=0.5+0.5*Math.sin(now/900+f.phase); // hoog → libisemine → hoog
-     const cruise=vmax*(0.32+0.55*pulse);
-     let hx=Math.cos(f.head),hy=Math.sin(f.head)+(f.homeY-f.y)*0.006; // sügavus-tõmme kodukihti
+    else{if(now>f.dartUntil&&Math.random()<0.0045*dt){f.dartUntil=now+500+Math.random()*900;f.head=Math.random()*6.283;} // juhuslik äkkrünnak uude kohta — elavdab idle-uitamist
+     const darting=now<f.dartUntil;
+     f.head+=(Math.random()-.5)*0.22*dt;             // sujuv uitamine: pööra kurssi, ära hüppa suunda
+     const pulse=0.5+0.5*Math.sin(now/780+f.phase);  // hoog → libisemine → hoog
+     let cruise=vmax*(0.42+0.5*pulse);if(darting)cruise*=1.7;
+     let hx=Math.cos(f.head),hy=Math.sin(f.head)+(f.homeY-f.y)*(darting?0.002:0.004); // sügavus-tõmme kodukihti (darti ajal lõdvem)
      const hm=Math.hypot(hx,hy)||1;dvx=hx/hm*cruise;dvy=hy/hm*cruise;}
     if(f.x<PAD+60)dvx+=(PAD+60-f.x)/60*vmax*0.9;    // pehmed seinad: pööra enne põiget eemale
     else if(f.x>VW-PAD-60)dvx-=(f.x-(VW-PAD-60))/60*vmax*0.9;
