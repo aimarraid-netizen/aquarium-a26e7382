@@ -40,7 +40,10 @@ Google Sheet  --export?format=xlsx-->  build_data.py  -->  data.json  --git push
 - **Morfoloogia:** `morph=rank/(N-1)` → `bucket` (ilme: silm/suu) + loop'is keha-droop-rotate + `el.style.filter` kahvatus. Tipp uhke/sirge, põhi longus/kahvatu/kurb.
 - `applyStep(i,eat)` — seis + liigi/morph-uuendus; `triggerFeed(i)` — **lihatükk** kukub, punkti saajad rebivad tüki (`tearPiece`, 2p suurem), `spawnParticles` (pool `PCL`) + `flashTank`.
 - `celebrateOlle(i)` — Olle 2-punkti eriefekt (9.4s, ajatelg pausile via `tick` `if(celebrating)return`). `finale()` — võitja koroneerimine i===LAST.
-- Edetabel reastub ümber; `.boss` (kuld-glow) 1. kohale. Kommentaator + tempo-valik EEMALDATUD (vt Lõksud). **UI eesti keeles.**
+- Edetabel reastub ümber; `.boss` (kuld-glow) 1. kohale. Kommentaator + tempo-valik EEMALDATUD (vt Lõksud).
+- **Keel (et/pl):** `LANG` = `?lang=pl|et` > `localStorage.aq_lang` > brauseri keel (`pl*`→pl, muidu et). `I18N.et/.pl` → `T`;
+  staatilised tekstid seatakse DOM-i kohe pärast `DATA` laadimist, nupp `#lang` vahetab keelt (salvestab + laeb URL-iga uuesti).
+  Riiginimed: `TEAM_PL` + `TEAM_RE` (pikimad ees) → `plTeams()` rakendub PL-režiimis `matchLabels[].m`-ile. Sheet jääb inglise keelde.
 
 ## Deploy / käivitamine
 
@@ -74,5 +77,7 @@ GitHub Pages = "deploy from branch" (main, juur). Push main'i → leht uueneb ~1
 - 29.06.2026: ujumis-süsteem ümber (boids-lite eraldumine, dart&glide hoog, sujuv kursipööre, saba vehib kiirusega,
   kallutus üles/alla); esikolmik = 3× hai (custom `fish/shark.svg`, metall kuld/hõbe/pronks); surnud-räimed kõht ülespidi;
   **medali number `.mnum`-grupis, loop keerab vasakule ujudes `scale(-1,1)` → number jääb õigetpidi mõlemas suunas.**
+
+- 20.07.2026: poolakeelne versioon — i18n samas failis (`?lang=pl`, keelenupp, riiginimed poola keeles).
 
 > Seotud: `~/projects/worldcup-bot/` (sama Sheet + ennustusmäng, botikomponent).
