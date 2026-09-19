@@ -6,7 +6,7 @@ mis kasvab punktide võrra. Üksik HTML-visualiseering; andmed tulevad Google Sh
 ## URL-id
 
 - **Avalik (GitHub Pages):** https://aimarraid-netizen.github.io/aquarium-a26e7382/
-- **Lokaalne (dashboard):** http://192.168.1.191:8080/aquarium/ (bind-mount, alati live)
+- **Lokaalne (dashboard):** http://192.168.1.5:8080/aquarium/ (bind-mount, alati live)
 - **Andmeallikas:** Google Sheet `1XN_oDXDhUP-upHVr3m4mldv7OPHFmbck` (sama mille worldcup-bot loeb)
 
 ## Andmevoog (Sheet → data.json → Pages)
